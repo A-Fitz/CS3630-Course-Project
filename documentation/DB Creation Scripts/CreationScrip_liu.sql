@@ -8,7 +8,7 @@ DROP TABLE Gate;
 DROP TABLE Airport;
 
 
-CREATE TABLE AirlineEmployee
+CREATE TABLE airline_employee
 (
 	id serial PRIMARY KEY,
 	airline_id integer NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE AirlineEmployee
 	birth_date date  NOT NULL
 );
 
-CREATE TABLE AirportEmployee
+CREATE TABLE airport_employee
 (
 	id serial PRIMARY KEY,
 	airport_id integer  NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE AirportEmployee
 	birth_date date  NOT NULL
 );
 
-CREATE TABLE Ticket
+CREATE TABLE ticket
 (
 	id serial PRIMARY KEY,	
 	passenger_on_flight_id integer NOT NULL,
@@ -43,28 +43,28 @@ CREATE TABLE Ticket
 
 );
 
-CREATE TABLE AirlineEmployee_On_Flight
+CREATE TABLE airline_employee_on_flight
 (
 	id serial PRIMARY KEY,
 	flight_id integer NOT NULL,
 	airline_employee_id	integer NOT NULL
 );
 
-CREATE TABLE Terminal
+CREATE TABLE terminal
 (
 	id serial PRIMARY KEY,
 	airport_id integer NOT NULL,
 	terminal_code varchar(255)
 );
 
-CREATE TABLE Gate
+CREATE TABLE gate
 (
 	id serial PRIMARY KEY,
 	terminal_id integer,
 	gate_code varchar(255) NOT NULL	
 );
 
-CREATE TABLE Airport
+CREATE TABLE airport
 (
 	id serial PRIMARY KEY,
 	name varchar(255) NOT NULL,
