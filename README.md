@@ -1,7 +1,8 @@
 ## CS3630 S20 - Course Project - Team_01
 
 **Project Description**
-//TODO
+Airport Management System. Utilizes a database to record and track entities related to airports 
+such as aircrafts, employees, flights, as well as passengers and their belongings.
 	
 **Authors**
 Ross Baldwin, Austin FitzGerald, Zexin/Jason Liu
