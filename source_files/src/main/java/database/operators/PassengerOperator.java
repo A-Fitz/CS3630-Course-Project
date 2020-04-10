@@ -131,4 +131,20 @@ public class PassengerOperator
 
         return rowsAffected;
     }
+
+    /**
+     * Tries to delete a row in the passenger table given an id.
+     * @param id The value of the id column of the row to delete.
+     * @return (0 if the delete failed, the id did not exist in the table) (1 if the row was successfully deleted)
+     */
+    public int deleteById(int id)
+    {
+        String queryTemplate = "DELETE FROM passenger "
+                + " WHERE "+ Passenger.ID_COLUMN_NAME + " = :id";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("id", id);
+
+        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+    }
 }
