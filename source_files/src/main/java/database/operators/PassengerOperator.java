@@ -32,7 +32,7 @@ public class PassengerOperator
     /**
      * Selects a passenger row, in the form of a Java object, from the passenger table given an id.
      * @param id The value of the id column for a passenger row
-     * @return (null if no passenger exists with that id) (a Passenger object if row exists with that id)
+     * @return (null if no passenger row exists with that id) (a Passenger object if row exists with that id)
      */
     public Passenger selectById(int id)
     {
@@ -86,7 +86,7 @@ public class PassengerOperator
 
     /**
      * Tries to insert a new row into the passenger table given a representative Java object.
-     * @param passenger The passenger object which holds the data to insert into columns
+     * @param passenger The Passenger object which holds the data to insert into columns
      * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
      */
     public int insert(Passenger passenger)

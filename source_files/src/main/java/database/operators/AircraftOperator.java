@@ -31,7 +31,7 @@ public class AircraftOperator {
      * Selects an aircraft row, in the form of a Java object, from the aircraft table given an id.
      *
      * @param id The value of the id column for an aircraft row
-     * @return (null if no aircraft exists with that id) (an Aircraft object if row exists with that id)
+     * @return (null if no aircraft row exists with that id) (an Aircraft object if row exists with that id)
      */
     public Aircraft selectById(int id) {
         AircraftExtractor extractor = new AircraftExtractor();
@@ -50,7 +50,7 @@ public class AircraftOperator {
     }
 
     /**
-     * Tries to update a row in the Aircraft table given an id and a representative Java object.
+     * Tries to update a row in the aircraft table given an id and a representative Java object.
      *
      * @param id       The value of the id column of the row to update.
      * @param aircraft A java object representing the new values for the row.
@@ -58,13 +58,13 @@ public class AircraftOperator {
      */
     public int updateById(int id, Aircraft aircraft) {
         String queryTemplate = "UPDATE aircraft SET "
-                + aircraft.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id"
-                + aircraft.SERIAL_NUMBER_COLUMN_NAME + " = :new_serial_number"
-                + aircraft.MAKE_COLUMN_NAME + " = :new_make"
-                + aircraft.MODEL_COLUMN_NAME + " = :new_model"
-                + aircraft.YEAR_COLUMN_NAME + " = :new_year"
-                + aircraft.CAPACITY_COLUMN_NAME + " = :new_capacity"
-                + " WHERE " + aircraft.ID_COLUMN_NAME + " = :id";
+                + Aircraft.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id"
+                + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " = :new_serial_number"
+                + Aircraft.MAKE_COLUMN_NAME + " = :new_make"
+                + Aircraft.MODEL_COLUMN_NAME + " = :new_model"
+                + Aircraft.YEAR_COLUMN_NAME + " = :new_year"
+                + Aircraft.CAPACITY_COLUMN_NAME + " = :new_capacity"
+                + " WHERE " + Aircraft.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("new_airline_id", aircraft.getAirline_id());
