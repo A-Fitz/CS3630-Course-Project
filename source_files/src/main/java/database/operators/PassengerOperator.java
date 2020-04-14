@@ -60,13 +60,13 @@ public class PassengerOperator
     public int updateById(int id, Passenger passenger)
     {
         String queryTemplate = "UPDATE passenger SET "
-                + Passenger.PASSPORT_NUMBER_COLUMN_NAME + " = :new_passport_number"
-                + Passenger.FIRST_NAME_COLUMN_NAME + " = :new_first_name"
-                + Passenger.MIDDLE_NAME_COLUMN_NAME + " = :new_middle_name"
-                + Passenger.LAST_NAME_COLUMN_NAME + " = :new_last_name"
-                + Passenger.EMAIL_COLUMN_NAME + " = :new_email"
-                + Passenger.ADDRESS_COLUMN_NAME + " = :new_address"
-                + Passenger.PHONE_COLUMN_NAME + " = :new_phone"
+                + Passenger.PASSPORT_NUMBER_COLUMN_NAME + " = :new_passport_number, "
+                + Passenger.FIRST_NAME_COLUMN_NAME + " = :new_first_name, "
+                + Passenger.MIDDLE_NAME_COLUMN_NAME + " = :new_middle_name, "
+                + Passenger.LAST_NAME_COLUMN_NAME + " = :new_last_name, "
+                + Passenger.EMAIL_COLUMN_NAME + " = :new_email, "
+                + Passenger.ADDRESS_COLUMN_NAME + " = :new_address, "
+                + Passenger.PHONE_COLUMN_NAME + " = :new_phone, "
                 + Passenger.BIRTH_DATE_COLUMN_NAME + " = :new_birth_date"
                 + " WHERE "+ Passenger.ID_COLUMN_NAME + " = :id";
 

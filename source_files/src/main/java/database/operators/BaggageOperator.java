@@ -58,8 +58,8 @@ public class BaggageOperator {
      */
     public int updateById(int id, Baggage baggage) {
         String queryTemplate = "UPDATE baggage SET "
-                + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + " = :new_passenger_on_flight_id"
-                + Baggage.WEIGHT_COLUMN_NAME + " = :new_weight"
+                + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + " = :new_passenger_on_flight_id, "
+                + Baggage.WEIGHT_COLUMN_NAME + " = :new_weight, "
                 + Baggage.BAGGAGE_STATUS_ID_COLUMN_NAME + " = :new_baggage_status_id"
                 + " WHERE " + Baggage.ID_COLUMN_NAME + " = :id";
 

@@ -58,11 +58,11 @@ public class AircraftOperator {
      */
     public int updateById(int id, Aircraft aircraft) {
         String queryTemplate = "UPDATE aircraft SET "
-                + Aircraft.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id"
-                + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " = :new_serial_number"
-                + Aircraft.MAKE_COLUMN_NAME + " = :new_make"
-                + Aircraft.MODEL_COLUMN_NAME + " = :new_model"
-                + Aircraft.YEAR_COLUMN_NAME + " = :new_year"
+                + Aircraft.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id, "
+                + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " = :new_serial_number, "
+                + Aircraft.MAKE_COLUMN_NAME + " = :new_make, "
+                + Aircraft.MODEL_COLUMN_NAME + " = :new_model, "
+                + Aircraft.YEAR_COLUMN_NAME + " = :new_year, "
                 + Aircraft.CAPACITY_COLUMN_NAME + " = :new_capacity"
                 + " WHERE " + Aircraft.ID_COLUMN_NAME + " = :id";
 

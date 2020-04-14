@@ -60,14 +60,14 @@ public class AirportEmployeeOperator
     public int updateById(int id, AirportEmployee airportEmployee)
     {
         String queryTemplate = "UPDATE airport_employee SET "
-                + AirportEmployee.AIRPORT_ID_COLUMN_NAME + " = :new_airport_id"
-                + AirportEmployee.JOB_ID_COLUMN_NAME + " = :new_job_id"
-                + AirportEmployee.FIRST_NAME_COLUMN_NAME + " = :new_first_name"
-                + AirportEmployee.MIDDLE_NAME_COLUMN_NAME + " = :new_middle_name"
-                + AirportEmployee.LAST_NAME_COLUMN_NAME + " = :new_last_name"
-                + AirportEmployee.EMAIL_COLUMN_NAME + " = :new_email"
-                + AirportEmployee.ADDRESS_COLUMN_NAME + " = :new_address"
-                + AirportEmployee.PHONE_COLUMN_NAME + " = :new_phone"
+                + AirportEmployee.AIRPORT_ID_COLUMN_NAME + " = :new_airport_id, "
+                + AirportEmployee.JOB_ID_COLUMN_NAME + " = :new_job_id, "
+                + AirportEmployee.FIRST_NAME_COLUMN_NAME + " = :new_first_name, "
+                + AirportEmployee.MIDDLE_NAME_COLUMN_NAME + " = :new_middle_name, "
+                + AirportEmployee.LAST_NAME_COLUMN_NAME + " = :new_last_name, "
+                + AirportEmployee.EMAIL_COLUMN_NAME + " = :new_email, "
+                + AirportEmployee.ADDRESS_COLUMN_NAME + " = :new_address, "
+                + AirportEmployee.PHONE_COLUMN_NAME + " = :new_phone, "
                 + AirportEmployee.BIRTH_DATE_COLUMN_NAME + " = :new_birth_date"
                 + " WHERE "+ AirportEmployee.ID_COLUMN_NAME + " = :id";
 

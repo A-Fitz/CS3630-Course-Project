@@ -60,14 +60,14 @@ public class AirlineEmployeeOperator
     public int updateById(int id, AirlineEmployee airlineEmployee)
     {
         String queryTemplate = "UPDATE airline_employee SET "
-                + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id"
-                + AirlineEmployee.JOB_ID_COLUMN_NAME + " = :new_job_id"
-                + AirlineEmployee.FIRST_NAME_COLUMN_NAME + " = :new_first_name"
-                + AirlineEmployee.MIDDLE_NAME_COLUMN_NAME + " = :new_middle_name"
-                + AirlineEmployee.LAST_NAME_COLUMN_NAME + " = :new_last_name"
-                + AirlineEmployee.EMAIL_COLUMN_NAME + " = :new_email"
-                + AirlineEmployee.ADDRESS_COLUMN_NAME + " = :new_address"
-                + AirlineEmployee.PHONE_COLUMN_NAME + " = :new_phone"
+                + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id, "
+                + AirlineEmployee.JOB_ID_COLUMN_NAME + " = :new_job_id, "
+                + AirlineEmployee.FIRST_NAME_COLUMN_NAME + " = :new_first_name, "
+                + AirlineEmployee.MIDDLE_NAME_COLUMN_NAME + " = :new_middle_name, "
+                + AirlineEmployee.LAST_NAME_COLUMN_NAME + " = :new_last_name, "
+                + AirlineEmployee.EMAIL_COLUMN_NAME + " = :new_email, "
+                + AirlineEmployee.ADDRESS_COLUMN_NAME + " = :new_address, "
+                + AirlineEmployee.PHONE_COLUMN_NAME + " = :new_phone, "
                 + AirlineEmployee.BIRTH_DATE_COLUMN_NAME + " = :new_birth_date"
                 + " WHERE "+ AirlineEmployee.ID_COLUMN_NAME + " = :id";
 
