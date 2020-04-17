@@ -1,7 +1,4 @@
-import database.operators.PassengerOperator;
-import database.tables.Passenger;
-
-import java.util.List;
+import ui.Launcher;
 
 /**
  * Do not delete or overwrite this class. It is needed to create an executable jar which uses JavaFX binaries. The main
@@ -9,6 +6,6 @@ import java.util.List;
  */
 public class Main {
     public static void main(String[] args) {
-        TestLauncher.main(args);
+        Launcher.main(args);
     }
 }

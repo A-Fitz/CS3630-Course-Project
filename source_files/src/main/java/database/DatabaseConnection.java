@@ -3,6 +3,9 @@ package database;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class DatabaseConnection {
     private static DatabaseConnection instance = new DatabaseConnection();
 
@@ -37,5 +40,13 @@ public class DatabaseConnection {
 
     public static DatabaseConnection getInstance() {
         return instance;
+    }
+
+    /**
+     * Used by Launcher class to check when the instance is made.
+     * @return True if the instance is created
+     */
+    public boolean operate() throws SQLException {
+        return !instance.dataSource.getConnection().isClosed();
     }
 }
