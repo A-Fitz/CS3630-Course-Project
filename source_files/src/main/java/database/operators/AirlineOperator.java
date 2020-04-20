@@ -5,6 +5,7 @@ import database.extractors.AirlineExtractor;
 import database.extractors.TicketExtractor;
 import database.tables.Airline;
 import database.tables.Ticket;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -78,7 +79,7 @@ public class AirlineOperator {
      * @param airline The Airline object which holds the data to insert into columns
      * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
      */
-    public int insert(Airline airline) {
+    public int insert(Airline airline) throws DuplicateKeyException {
         String queryTemplate = "INSERT INTO airline ("
                 + Airline.NAME_COLUMN_NAME  + ", "
                 + Airline.ABBREVIATION_COLUMN_NAME  + ") "
@@ -97,13 +98,13 @@ public class AirlineOperator {
         KeyHolder keyHolder = new GeneratedKeyHolder(keyList);
 
         // Statement to insert the row
-        int rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters, keyHolder);
-
-        // Can get the keys returned
-        Map<String, Object> keyMap = keyHolder.getKeys();
-        int id = (int) keyMap.get(Ticket.ID_COLUMN_NAME);
-
-        airline.setId(id);
+        int rowsAffected = 0;
+        try {
+            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        } catch (DuplicateKeyException dke)
+        {
+            // do nothing
+        }
 
         return rowsAffected;
     }
