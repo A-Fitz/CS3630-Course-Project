@@ -3,54 +3,67 @@ package ui;
 import database.DatabaseConnection;
 import javafx.application.Application;
 import javafx.concurrent.Task;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.sql.SQLException;
 
 /**
- * This class functions only as a test launcher. Real implementation will overwrite it.
+ * This class functions as a launcher. It will connect the client to the database and show them the start screen.
  */
 public class Launcher extends Application {
-    public static Stage stage;
+    private static Stage stage;
 
     @Override
     public void start(Stage stage) {
         Launcher.stage = stage;
 
-        // create loading dialog
+        // show loading dialog until database is connected, then show start screen
+        Alert loadingDialog = createLoadingDialog();
+        task.setOnRunning((e) -> loadingDialog.show());
+        task.setOnSucceeded((e) -> {
+            loadingDialog.hide();
+            try {
+                // show the start screen
+                Parent root = FXMLLoader.load(getClass().getResource("/StartScreen.fxml"));
+                stage.setTitle("Airport Management System");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (Exception ex) {
+                ex.printStackTrace(); // TODO better exception handling
+                System.exit(0);
+            }
+        });
+        new Thread(task).start();
+
+        Launcher.stage.setOnCloseRequest(e -> System.exit(0));
+    }
+
+    public static void main(String[] args) {
+        launch();
+    }
+
+    public static void closeStage() {
+        Launcher.stage.close();
+    }
+
+    public static void showStage() {
+        Launcher.stage.show();
+    }
+
+    private Alert createLoadingDialog() {
         Alert loadingDialog = new Alert(Alert.AlertType.INFORMATION);
         loadingDialog.setHeaderText(null);
         loadingDialog.setTitle("Airport Management System");
         loadingDialog.setContentText("Airport Management System is loading... Please Wait");
         loadingDialog.getDialogPane().lookupButton(ButtonType.OK).setVisible(false);
         loadingDialog.initStyle(StageStyle.UNDECORATED);
-
-        task.setOnRunning((e) -> loadingDialog.show());
-        task.setOnSucceeded((e) -> {
-            loadingDialog.hide();
-            try {
-                // TODO this is where we show the main screen
-                String javaVersion = System.getProperty("java.version");
-                String javafxVersion = System.getProperty("javafx.version");
-                Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-                Scene scene = new Scene(new StackPane(l), 640, 480);
-                stage.setScene(scene);
-                stage.show();
-            } catch (Exception ex) {
-                ex.printStackTrace(); // TODO better exception handling
-            }
-        });
-        new Thread(task).start();
-    }
-
-    public static void main(String[] args) {
-        launch();
+        return loadingDialog;
     }
 
     /**
