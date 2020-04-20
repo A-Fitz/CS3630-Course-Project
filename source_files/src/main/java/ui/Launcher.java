@@ -3,8 +3,6 @@ package ui;
 import database.DatabaseConnection;
 import javafx.application.Application;
 import javafx.concurrent.Task;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -13,7 +11,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -39,7 +36,6 @@ public class Launcher extends Application {
             loadingDialog.hide();
             try {
                 // TODO this is where we show the main screen
-
                 String javaVersion = System.getProperty("java.version");
                 String javafxVersion = System.getProperty("javafx.version");
                 Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
@@ -61,7 +57,8 @@ public class Launcher extends Application {
      * This task is used to make a connection to the database before the program can be used by a user.
      */
     private Task<Boolean> task = new Task<>() {
-        @Override public Boolean call() throws SQLException {
+        @Override
+        public Boolean call() throws SQLException {
             DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
             return databaseConnection.operate();
         }
