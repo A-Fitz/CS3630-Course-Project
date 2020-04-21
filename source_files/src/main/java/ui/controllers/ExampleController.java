@@ -58,14 +58,14 @@ public class ExampleController implements Initializable {
             // TODO int rowsAffected = someOperator....
 
             if (rowsAffected == 0)
-                Util.setMessageLabel("Something went wrong.", Color.RED, , messageLabel);
+                Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel);
             else {
                 // Operation succeeded. Maybe clear the textfields on the screen?
-                Util.setMessageLabel("Something done.", Color.GREEN, , messageLabel);
+                Util.setMessageLabel("Something done.", Color.GREEN, messageLabel);
             }
 
         } else {
-            Util.setMessageLabel("Your input is wrong.", Color.RED, , messageLabel);
+            Util.setMessageLabel("Your input is wrong.", Color.RED, messageLabel);
         }
         mainGridPane.setDisable(false); // Don't forget to unlock the components.
     }
