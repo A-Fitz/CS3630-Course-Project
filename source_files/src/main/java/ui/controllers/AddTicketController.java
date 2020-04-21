@@ -3,6 +3,7 @@ package ui.controllers;
 import database.operators.TicketOperator;
 import database.tables.Ticket;
 import database.tables.Passenger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,11 +28,10 @@ public class AddTicketController {
     @FXML
     public void initialize()
     {
-        backButton.setOnAction(e -> backButtonClicked());
-        addButton.setOnAction(e -> addTicketButtonClicked());
+        Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
     }
 
-    public void addTicketButtonClicked() {
+    public void addTicketButtonClicked(ActionEvent actionEvent) {
         if (passengerOnFlightIdTextField.getText()!= null &&
                 seatClassTextField.getText()!= null &&
                 seatTextField.getText()!= null &&
@@ -51,16 +51,16 @@ public class AddTicketController {
 
             if (rowsAffected == 0) {
                 // ticket not inserted (probably due to unique constraints on abbreviation or name). Display error message.
-                ui.Util.setMessageLabel("Ticket not added.", Color.RED, 5, messageLabel);
+                ui.Util.setMessageLabel("Ticket not added.", Color.RED, messageLabel);
             } else {
                 // ticket inserted. Clear each text field and display success message.
                 clearAllTextFields();
-                ui.Util.setMessageLabel("Ticket added.", Color.GREEN, 5, messageLabel);
+                ui.Util.setMessageLabel("Ticket added.", Color.GREEN, messageLabel);
             }
             mainGridPane.setDisable(false);
         } else {
             // All fields must not be null. Display error message.
-            ui.Util.setMessageLabel("Ticket not added. Please fill the required fields.", Color.RED, 5, messageLabel);
+            ui.Util.setMessageLabel("Ticket not added. Please fill the required fields.", Color.RED, messageLabel);
         }
     }
 
@@ -79,7 +79,7 @@ public class AddTicketController {
      * Called when the back button is clicked. Replaces the current screen with the main screen.
      *
      */
-    public void backButtonClicked() {
+    public void backButtonClicked(ActionEvent actionEvent) {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
         ui.Launcher.showStage();

@@ -43,64 +43,15 @@ public class StartScreenController implements Initializable {
 
     // TODO see StartScreen.fxml for more button events. Feel free to add, change, and remove buttons
 
-    public void addPassengerButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void editPassengerButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void addFlightButtonClicked(ActionEvent actionEvent) {
-    }
-
     public void editFlightButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void addAirportButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void editAirportButtonClicked(ActionEvent actionEvent) {
+        changeScreen("/EditFlightScreen.fxml", "Edit Flight");
     }
 
     public void addAirlineButtonClicked(ActionEvent actionEvent) {
         changeScreen("/AddAirlineScreen.fxml", "Add Airline");
     }
 
-    public void editAirlineButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void addEmployeeButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void editEmployeeButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void addBaggageButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void editBaggageButtonClicked(ActionEvent actionEvent) {
-    }
-
     public void addTicketButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void editTicketButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void addGateButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void editGateButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void addTerminalButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void editTerminalButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void addPersonToFlightButtonClicked(ActionEvent actionEvent) {
-    }
-
-    public void addJobTypeButtonClicked(ActionEvent actionEvent) {
+        changeScreen("/AddTicketScreen.fxml", "Add Ticket");
     }
 }

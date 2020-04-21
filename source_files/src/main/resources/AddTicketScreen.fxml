@@ -57,7 +57,7 @@
                                 <TextField fx:id="priceTextField" promptText="required" HBox.hgrow="ALWAYS"/>
                             </children>
                         </HBox>
-                        <Button fx:id="addButton" mnemonicParsing="false" text="Add Ticket"/>
+                        <Button fx:id="addButton" onAction="#addTicketButtonClicked" mnemonicParsing="false" text="Add Ticket"/>
                     </children>
                 </VBox>
             </children>
@@ -78,7 +78,7 @@
                 <Insets left="5.0" right="5.0"/>
             </padding>
             <children>
-                <Button fx:id="backButton" mnemonicParsing="false" text="Back"/>
+                <Button fx:id="backButton" onAction="#backButtonClicked" mnemonicParsing="false" text="Back"/>
                 <Label fx:id="messageLabel" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER"
                        GridPane.hgrow="ALWAYS">
                     <font>
