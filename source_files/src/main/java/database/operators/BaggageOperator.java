@@ -3,6 +3,7 @@ package database.operators;
 import database.DatabaseConnection;
 import database.extractors.BaggageExtractor;
 import database.tables.Baggage;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -91,21 +92,14 @@ public class BaggageOperator {
         parameters.addValue("weight", baggage.getWeight());
         parameters.addValue("baggage_status_id", baggage.getBaggage_status_id());
 
-        // Empty list of maps to hold a mapping for column names and their values, which is held by the key holder (see next line)
-        List<Map<String, Object>> keyList = new ArrayList<>();
-
-        // Special object to hold any values from the inserted row
-        // Typically used for columns we did not provide, such as the "id" column
-        KeyHolder keyHolder = new GeneratedKeyHolder(keyList);
-
         // Statement to insert the row
-        int rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters, keyHolder);
-
-        // Can get the keys returned
-        Map<String, Object> keyMap = keyHolder.getKeys();
-        int id = (int) keyMap.get(Baggage.ID_COLUMN_NAME);
-
-        baggage.setId(id);
+        int rowsAffected = 0;
+        try {
+            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        } catch (DuplicateKeyException dke)
+        {
+            // do nothing
+        }
 
         return rowsAffected;
     }

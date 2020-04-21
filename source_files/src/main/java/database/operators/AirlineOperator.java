@@ -90,13 +90,6 @@ public class AirlineOperator {
         parameters.addValue("name", airline.getName());
         parameters.addValue("abbreviation", airline.getAbbreviation());
 
-        // Empty list of maps to hold a mapping for column names and their values, which is held by the key holder (see next line)
-        List<Map<String, Object>> keyList = new ArrayList<>();
-
-        // Special object to hold any values from the inserted row
-        // Typically used for columns we did not provide, such as the "id" column
-        KeyHolder keyHolder = new GeneratedKeyHolder(keyList);
-
         // Statement to insert the row
         int rowsAffected = 0;
         try {

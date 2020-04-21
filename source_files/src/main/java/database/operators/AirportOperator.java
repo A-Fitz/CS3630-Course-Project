@@ -3,6 +3,7 @@ package database.operators;
 import database.DatabaseConnection;
 import database.extractors.AirportExtractor;
 import database.tables.Airport;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -64,10 +65,10 @@ public class AirportOperator
     public int updateById(int id, Airport airport)
     {
         String queryTemplate = "UPDATE airport SET "
-                + airport.NAME_COLUMN_NAME + " = :new_name, "
-                + airport.IATA_CODE_COLUMN_NAME + " = :new_iata_code, "
-                + airport.CITY_COLUMN_NAME + " = :new_city, "
-                + airport.COUNTRY_COLUMN_NAME + " = :new_country"
+                + Airport.NAME_COLUMN_NAME + " = :new_name, "
+                + Airport.IATA_CODE_COLUMN_NAME + " = :new_iata_code, "
+                + Airport.CITY_COLUMN_NAME + " = :new_city, "
+                + Airport.COUNTRY_COLUMN_NAME + " = :new_country"
                 + " WHERE "+ Airport.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
@@ -88,10 +89,10 @@ public class AirportOperator
     public int insert(Airport airport)
     {
         String queryTemplate = "INSERT INTO airport ("
-                + airport.NAME_COLUMN_NAME + ", "
-                + airport.IATA_CODE_COLUMN_NAME + ", "
-                + airport.CITY_COLUMN_NAME + ", "
-                + airport.COUNTRY_COLUMN_NAME + ") "
+                + Airport.NAME_COLUMN_NAME + ", "
+                + Airport.IATA_CODE_COLUMN_NAME + ", "
+                + Airport.CITY_COLUMN_NAME + ", "
+                + Airport.COUNTRY_COLUMN_NAME + ") "
                 + "VALUES(:name, :iata_code, :city, :country)";
 
         // Map of variable names and the values to replace with
@@ -101,21 +102,14 @@ public class AirportOperator
         parameters.addValue("city", airport.getCity());
         parameters.addValue("country", airport.getCountry());
 
-        // Empty list of maps to hold a mapping for column names and their values, which is held by the key holder (see next line)
-        List<Map<String, Object>> keyList = new ArrayList<>();
-
-        // Special object to hold any values from the inserted row
-        // Typically used for columns we did not provide, such as the "id" column
-        KeyHolder keyHolder = new GeneratedKeyHolder(keyList);
-
         // Statement to insert the row
-        int rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters, keyHolder);
-
-        // Can get the keys returned
-        Map<String, Object> keyMap = keyHolder.getKeys();
-        int id = (int)keyMap.get(airport.ID_COLUMN_NAME);
-
-        airport.setId(id);
+        int rowsAffected = 0;
+        try {
+            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        } catch (DuplicateKeyException dke)
+        {
+            // do nothing
+        }
 
         return rowsAffected;
     }

@@ -3,6 +3,7 @@ package database.operators;
 import database.DatabaseConnection;
 import database.extractors.PassengerOnFlightExtractor;
 import database.tables.PassengerOnFlight;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -93,21 +94,14 @@ public class PassengerOnFlightOperator
         parameters.addValue("flight_id", passengerOnFlight.getFlight_id());
         parameters.addValue("passenger_id", passengerOnFlight.getPassenger_employee_id());
 
-        // Empty list of maps to hold a mapping for column names and their values, which is held by the key holder (see next line)
-        List<Map<String, Object>> keyList = new ArrayList<>();
-
-        // Special object to hold any values from the inserted row
-        // Typically used for columns we did not provide, such as the "id" column
-        KeyHolder keyHolder = new GeneratedKeyHolder(keyList);
-
         // Statement to insert the row
-        int rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters, keyHolder);
-
-        // Can get the keys returned
-        Map<String, Object> keyMap = keyHolder.getKeys();
-        int id = (int)keyMap.get(PassengerOnFlight.ID_COLUMN_NAME);
-
-        passengerOnFlight.setId(id);
+        int rowsAffected = 0;
+        try {
+            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        } catch (DuplicateKeyException dke)
+        {
+            // do nothing
+        }
 
         return rowsAffected;
     }
