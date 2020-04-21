@@ -38,6 +38,8 @@ public class AddAirportController implements Initializable {
     }
 
     /**
+     * Called when the "Add Airport" button is clicked. Handles verifying user input so that a new Airport can be inserted
+     * into the database. Shows success and error messages.
      * @param actionEvent Event representing the action of the button firing, holds extra information.
      */
     public void addAirportButtonClicked(ActionEvent actionEvent) {
