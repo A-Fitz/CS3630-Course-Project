@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.Launcher;
+import ui.UIConstants;
 import ui.Util;
 
 import java.net.URL;
@@ -51,20 +52,20 @@ public class ExampleController implements Initializable {
         if (exampleTextField1.getText() != null && !exampleTextField1.getText().isEmpty()) {
             // Disable interacting with components while the operator is running. Must be done for multithreaded environment.
             mainGridPane.setDisable(true);
-            messageLabel.setText("Request in progress...");
+            messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
 
             int rowsAffected = 0; // Ignore this. Look at line below.
             // TODO int rowsAffected = someOperator....
 
             if (rowsAffected == 0)
-                Util.setMessageLabel("Something went wrong.", Color.RED, 5, messageLabel);
+                Util.setMessageLabel("Something went wrong.", Color.RED, , messageLabel);
             else {
                 // Operation succeeded. Maybe clear the textfields on the screen?
-                Util.setMessageLabel("Something done.", Color.GREEN, 5, messageLabel);
+                Util.setMessageLabel("Something done.", Color.GREEN, , messageLabel);
             }
 
         } else {
-            Util.setMessageLabel("Your input is wrong.", Color.RED, 5, messageLabel);
+            Util.setMessageLabel("Your input is wrong.", Color.RED, , messageLabel);
         }
         mainGridPane.setDisable(false); // Don't forget to unlock the components.
     }

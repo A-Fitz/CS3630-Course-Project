@@ -6,15 +6,14 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import org.springframework.dao.DuplicateKeyException;
 import ui.Launcher;
+import ui.UIConstants;
 import ui.Util;
 
 import java.net.URL;
@@ -50,22 +49,22 @@ public class AddAirlineController implements Initializable {
 
             // disable buttons until a success/failure is received
             mainGridPane.setDisable(true);
-            messageLabel.setText("Request in progress...");
+            messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
 
             int rowsAffected = airlineOperator.insert(airline);
 
             if (rowsAffected == 0) {
                 // Airline not inserted (probably due to unique constraints on abbreviation or name). Display error message.
-                Util.setMessageLabel("Airline not added. Both the abbreviation and name fields are unique to an airline.", Color.RED, 5, messageLabel);
+                Util.setMessageLabel("Airline not added. Both the abbreviation and name fields are unique to an airline.", Color.RED, messageLabel);
             } else {
                 // Airline inserted. Clear each text field and display success message.
                 clearAllTextFields();
-                Util.setMessageLabel("Airline added.", Color.GREEN, 5, messageLabel);
+                Util.setMessageLabel("Airline added.", Color.GREEN, messageLabel);
             }
             mainGridPane.setDisable(false);
         } else {
             // All fields must not be null. Display error message.
-            Util.setMessageLabel("Airline not added. Please fill the required fields.", Color.RED, 5, messageLabel);
+            Util.setMessageLabel("Airline not added. Please fill the required fields.", Color.RED, messageLabel);
         }
     }
 

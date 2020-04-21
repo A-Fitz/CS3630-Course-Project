@@ -12,22 +12,21 @@ public class Util {
     private static PauseTransition messageLabelDelay;
 
     /**
-     * Displays some colored message in a label for a given number of seconds.
+     * Displays some colored message in a label for a constant tinme.
      * If called again before timer ends, cancel first timer.
      *
      * @param text         The text to display in messageLabel
      * @param color        The text color to display in messageLabel
-     * @param duration     The duration to display this messageLabel (in seconds)
      * @param messageLabel The label to change.
      */
-    public static void setMessageLabel(String text, Color color, int duration, Label messageLabel) {
+    public static void setMessageLabel(String text, Color color, Label messageLabel) {
         messageLabel.setText(text);
         messageLabel.setTextFill(color);
 
         if (messageLabelDelay != null)
             messageLabelDelay.stop();
 
-        messageLabelDelay = new PauseTransition(Duration.seconds(duration));
+        messageLabelDelay = new PauseTransition(Duration.seconds(UIConstants.MESSAGE_LABEL_DISPLAY_TIME_SECONDS));
         messageLabelDelay.setOnFinished(event ->
         {
             messageLabel.setText("");
