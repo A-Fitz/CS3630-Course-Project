@@ -172,6 +172,7 @@ public class EditFlightController implements Initializable {
             flight.setArrival_airport_id(arrivalAirportComboBox.getValue().getId());
             flight.setDeparture_gate_id(departureGateComboBox.getValue().getId());
             flight.setArrival_gate_id(arrivalGateComboBox.getValue().getId());
+            flight.setAircraft_id(aircraftComboBox.getValue().getId());
             flight.setFlight_status_id(flightStatusComboBox.getValue().getId());
             flight.setBoarding_date(Date.valueOf(boardingDateDatePicker.getValue()));
 
