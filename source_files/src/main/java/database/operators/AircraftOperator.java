@@ -145,8 +145,7 @@ public class AircraftOperator {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke)
-        {
+        } catch (DuplicateKeyException dke) {
             // do nothing
         }
 

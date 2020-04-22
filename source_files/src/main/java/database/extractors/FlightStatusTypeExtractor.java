@@ -1,7 +1,6 @@
 package database.extractors;
 
 import database.tables.FlightStatusType;
-import database.tables.Terminal;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 

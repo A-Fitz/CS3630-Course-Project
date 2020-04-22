@@ -6,12 +6,8 @@ import database.tables.Terminal;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TerminalOperator {
     private static TerminalOperator instance = new TerminalOperator();
@@ -101,8 +97,8 @@ public class TerminalOperator {
      */
     public int insert(Terminal terminal) {
         String queryTemplate = "INSERT INTO terminal ("
-                + Terminal.AIRPORT_ID_COLUMN_NAME  + ", "
-                + Terminal.TERMINAL_CODE_COLUMN_NAME  + ") "
+                + Terminal.AIRPORT_ID_COLUMN_NAME + ", "
+                + Terminal.TERMINAL_CODE_COLUMN_NAME + ") "
                 + "VALUES(:airport_id, :terminal_code)";
 
         // Map of variable names and the values to replace with
@@ -114,8 +110,7 @@ public class TerminalOperator {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke)
-        {
+        } catch (DuplicateKeyException dke) {
             // do nothing
         }
 

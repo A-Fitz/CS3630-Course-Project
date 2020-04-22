@@ -6,12 +6,8 @@ import database.tables.AirportJobType;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class AirportJobTypeOperator {
     private static AirportJobTypeOperator instance = new AirportJobTypeOperator();
@@ -88,8 +84,7 @@ public class AirportJobTypeOperator {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke)
-        {
+        } catch (DuplicateKeyException dke) {
             // do nothing
         }
 

@@ -32,12 +32,13 @@ public class AddAirlineController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Platform.runLater( () -> backButton.getScene().getRoot().requestFocus() );
+        Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
     }
 
     /**
      * Called when the "Add Airline" button is clicked. Handles verifying user input so that a new Airline can be inserted
      * into the database. Shows success and error messages.
+     *
      * @param actionEvent Event representing the action of the button firing, holds extra information.
      */
     public void addAirlineButtonClicked(ActionEvent actionEvent) {

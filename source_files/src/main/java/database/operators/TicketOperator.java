@@ -6,12 +6,8 @@ import database.tables.Ticket;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TicketOperator {
     private static TicketOperator instance = new TicketOperator();
@@ -53,7 +49,7 @@ public class TicketOperator {
     /**
      * Tries to update a row in the ticket table given an id and a representative Java object.
      *
-     * @param id       The value of the id column of the row to update.
+     * @param id     The value of the id column of the row to update.
      * @param ticket A java object representing the new values for the row.
      * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
      */
@@ -87,8 +83,8 @@ public class TicketOperator {
      */
     public int insert(Ticket ticket) {
         String queryTemplate = "INSERT INTO ticket ("
-                + Ticket.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME  + ", "
-                + Ticket.PRICE_COLUMN_NAME  + ", "
+                + Ticket.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + ", "
+                + Ticket.PRICE_COLUMN_NAME + ", "
                 + Ticket.SEAT_COLUMN_NAME + ", "
                 + Ticket.SEAT_CLASS_ID_COLUMN_NAME + ", "
                 + Ticket.TICKET_STATUS_ID_COLUMN_NAME + ", "
@@ -109,8 +105,7 @@ public class TicketOperator {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke)
-        {
+        } catch (DuplicateKeyException dke) {
             // do nothing
         }
 

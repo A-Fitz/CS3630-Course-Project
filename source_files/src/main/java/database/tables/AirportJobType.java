@@ -1,7 +1,6 @@
 package database.tables;
 
-public class AirportJobType
-{
+public class AirportJobType {
     public static final String ID_COLUMN_NAME = "id";
     public static final String TITLE_COLUMN_NAME = "title";
 

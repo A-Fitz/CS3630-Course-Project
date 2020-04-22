@@ -6,16 +6,12 @@ import database.tables.Flight;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-public class FlightOperator
-{
+public class FlightOperator {
     private static FlightOperator instance = new FlightOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate =
             DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
@@ -23,8 +19,7 @@ public class FlightOperator
     /**
      * Do not allow instantiation of a FlightOperator object. This is a Singleton.
      */
-    private FlightOperator()
-    {
+    private FlightOperator() {
 
     }
 
@@ -34,10 +29,10 @@ public class FlightOperator
 
     /**
      * Selects all rows from the flight table. Returns them as a list of Flight objects.
+     *
      * @return A List of objects representing the rows in the table.
      */
-    public List<Flight> selectAll()
-    {
+    public List<Flight> selectAll() {
         FlightExtractor extractor = new FlightExtractor();
 
         String queryTemplate = "SELECT * FROM flight";
@@ -48,12 +43,12 @@ public class FlightOperator
     /**
      * Selects a flight row, in the form of a Java object,
      * from the flight table given an id.
+     *
      * @param id The value of the id column for a flight row
      * @return (null if no flight exists with that id)
      * (an Flight object if row exists with that id)
      */
-    public Flight selectById(int id)
-    {
+    public Flight selectById(int id) {
         FlightExtractor extractor = new FlightExtractor();
 
         String queryTemplate = "SELECT * FROM flight WHERE id = :id";
@@ -64,7 +59,7 @@ public class FlightOperator
         List<Flight> flightList = namedParameterJdbcTemplate.query(queryTemplate,
                 parameters, extractor);
 
-        if(flightList == null || flightList.size() == 0)
+        if (flightList == null || flightList.size() == 0)
             return null;
         else
             return flightList.get(0);
@@ -72,12 +67,12 @@ public class FlightOperator
 
     /**
      * Tries to update a row in the flight table given an id and a representative Java object.
-     * @param id The value of the id column of the row to update.
+     *
+     * @param id     The value of the id column of the row to update.
      * @param flight A java object representing the new values for the row.
      * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
      */
-    public int updateById(int id, Flight flight)
-    {
+    public int updateById(int id, Flight flight) {
         String queryTemplate = "UPDATE flight SET "
                 + Flight.CALLSIGN_COLUMN_NAME + " = :new_callsign, "
                 + Flight.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id, "
@@ -88,7 +83,7 @@ public class FlightOperator
                 + Flight.AIRCRAFT_ID_COLUMN_NAME + " = :new_aircraft_id, "
                 + Flight.FLIGHT_STATUS_ID_COLUMN_NAME + " = :new_flight_status_id, "
                 + Flight.BOARDING_DATE_COLUMN_NAME + " = :new_boarding_date_id"
-                + " WHERE "+ Flight.ID_COLUMN_NAME + " = :id";
+                + " WHERE " + Flight.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("new_callsign", flight.getCallsign());
@@ -107,11 +102,11 @@ public class FlightOperator
 
     /**
      * Tries to insert a new row into the flight table given a representative Java object.
+     *
      * @param flight The Flight object which holds the data to insert into columns
      * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
      */
-    public int insert(Flight flight)
-    {
+    public int insert(Flight flight) {
         String queryTemplate = "INSERT INTO flight ("
                 + Flight.CALLSIGN_COLUMN_NAME + ", "
                 + Flight.AIRLINE_ID_COLUMN_NAME + ", "
@@ -123,7 +118,7 @@ public class FlightOperator
                 + Flight.FLIGHT_STATUS_ID_COLUMN_NAME + ", "
                 + Flight.BOARDING_DATE_COLUMN_NAME + ") "
                 + "VALUES(:callsign, :airline_id, :departure_airport_id, :arrival_airport_id, " +
-                    ":departure_gate_id, :arrival_gate_id, :aircraft_id, :flight_status_id, :boarding_date)";
+                ":departure_gate_id, :arrival_gate_id, :aircraft_id, :flight_status_id, :boarding_date)";
 
         // Map of variable names and the values to replace with
         MapSqlParameterSource parameters = new MapSqlParameterSource();
@@ -141,8 +136,7 @@ public class FlightOperator
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke)
-        {
+        } catch (DuplicateKeyException dke) {
             // do nothing
         }
 
@@ -151,13 +145,13 @@ public class FlightOperator
 
     /**
      * Tries to delete a row in the flight table given an id.
+     *
      * @param id The value of the id column of the row to delete.
      * @return (0 if the delete failed, the id did not exist in the table) (1 if the row was successfully deleted)
      */
-    public int deleteById(int id)
-    {
+    public int deleteById(int id) {
         String queryTemplate = "DELETE FROM flight "
-                + " WHERE "+ Flight.ID_COLUMN_NAME + " = :id";
+                + " WHERE " + Flight.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);

@@ -10,14 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PassengerExtractor implements ResultSetExtractor<List<Passenger>>
-{
+public class PassengerExtractor implements ResultSetExtractor<List<Passenger>> {
     @Override
     public List<Passenger> extractData(ResultSet rs) throws SQLException, DataAccessException {
         List<Passenger> passengerList = new ArrayList<>();
 
-        while(rs.next())
-        {
+        while (rs.next()) {
             Passenger passenger = new Passenger();
 
             Integer id;
@@ -31,10 +29,10 @@ public class PassengerExtractor implements ResultSetExtractor<List<Passenger>>
             Date birth_date;
 
             id = rs.getInt(Passenger.ID_COLUMN_NAME);
-            if(rs.wasNull())
+            if (rs.wasNull())
                 id = null;
             passport_number = rs.getString(Passenger.PASSPORT_NUMBER_COLUMN_NAME);
-            if(rs.wasNull())
+            if (rs.wasNull())
                 passport_number = null;
             first_name = rs.getString(Passenger.FIRST_NAME_COLUMN_NAME);
             middle_name = rs.getString(Passenger.MIDDLE_NAME_COLUMN_NAME);

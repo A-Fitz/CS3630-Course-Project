@@ -12,6 +12,7 @@ public class AircraftStringConverter extends StringConverter<Aircraft> {
 
     /**
      * Creates a String containing the information which can identify a given object.
+     *
      * @param aircraft The given object.
      * @return The String.
      */
@@ -43,6 +44,7 @@ public class AircraftStringConverter extends StringConverter<Aircraft> {
     /**
      * Usually used to create an object from identifiable information. In this case we do not need to use it
      * as we have specific fields for each table's columns.
+     *
      * @param s Not used.
      * @return null
      */

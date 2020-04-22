@@ -6,12 +6,8 @@ import database.tables.Baggage;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class BaggageOperator {
     private static BaggageOperator instance = new BaggageOperator();
@@ -53,7 +49,7 @@ public class BaggageOperator {
     /**
      * Tries to update a row in the baggage table given an id and a representative Java object.
      *
-     * @param id       The value of the id column of the row to update.
+     * @param id      The value of the id column of the row to update.
      * @param baggage A java object representing the new values for the row.
      * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
      */
@@ -96,8 +92,7 @@ public class BaggageOperator {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke)
-        {
+        } catch (DuplicateKeyException dke) {
             // do nothing
         }
 

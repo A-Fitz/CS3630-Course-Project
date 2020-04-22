@@ -71,7 +71,7 @@ public class GateOperator {
     /**
      * Tries to update a row in the gate table given an id and a representative Java object.
      *
-     * @param id       The value of the id column of the row to update.
+     * @param id   The value of the id column of the row to update.
      * @param gate A java object representing the new values for the row.
      * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
      */
@@ -97,8 +97,8 @@ public class GateOperator {
      */
     public int insert(Gate gate) {
         String queryTemplate = "INSERT INTO gate ("
-                + Gate.TERMINAL_ID_COLUMN_NAME  + ", "
-                + Gate.GATE_CODE_COLUMN_NAME  + ")"
+                + Gate.TERMINAL_ID_COLUMN_NAME + ", "
+                + Gate.GATE_CODE_COLUMN_NAME + ")"
                 + "VALUES(:terminal_id, :gate_code)";
 
         // Map of variable names and the values to replace with
@@ -110,8 +110,7 @@ public class GateOperator {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke)
-        {
+        } catch (DuplicateKeyException dke) {
             // do nothing
         }
 

@@ -1,6 +1,5 @@
 package database.extractors;
 
-import database.tables.BaggageStatusType;
 import database.tables.Terminal;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;

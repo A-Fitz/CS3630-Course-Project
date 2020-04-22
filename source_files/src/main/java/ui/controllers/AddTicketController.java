@@ -2,7 +2,6 @@ package ui.controllers;
 
 import database.operators.TicketOperator;
 import database.tables.Ticket;
-import database.tables.Passenger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,16 +25,15 @@ public class AddTicketController {
     @FXML private Label messageLabel;
 
     @FXML
-    public void initialize()
-    {
+    public void initialize() {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
     }
 
     public void addTicketButtonClicked(ActionEvent actionEvent) {
-        if (passengerOnFlightIdTextField.getText()!= null &&
-                seatClassTextField.getText()!= null &&
-                seatTextField.getText()!= null &&
-                priceTextField.getText()!= null  ) {
+        if (passengerOnFlightIdTextField.getText() != null &&
+                seatClassTextField.getText() != null &&
+                seatTextField.getText() != null &&
+                priceTextField.getText() != null) {
             Ticket ticket = new Ticket();
             ticket.setPassenger_on_flight_id(Integer.valueOf(passengerOnFlightIdTextField.getText()));
             ticket.setSeat_class_id(Integer.valueOf(seatClassTextField.getText()));
@@ -77,7 +75,6 @@ public class AddTicketController {
 
     /**
      * Called when the back button is clicked. Replaces the current screen with the main screen.
-     *
      */
     public void backButtonClicked(ActionEvent actionEvent) {
         Stage stage = (Stage) backButton.getScene().getWindow();

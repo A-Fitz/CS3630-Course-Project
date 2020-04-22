@@ -14,6 +14,7 @@ public class AirportEmployeeStringConverter extends StringConverter<AirportEmplo
 
     /**
      * Creates a String containing the information which can identify a given object.
+     *
      * @param airportEmployee The given object.
      * @return The String.
      */
@@ -54,6 +55,7 @@ public class AirportEmployeeStringConverter extends StringConverter<AirportEmplo
     /**
      * Usually used to create an object from identifiable information. In this case we do not need to use it
      * as we have specific fields for each table's columns.
+     *
      * @param s Not used.
      * @return null
      */

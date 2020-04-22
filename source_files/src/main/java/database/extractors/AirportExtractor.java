@@ -9,14 +9,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AirportExtractor implements ResultSetExtractor<List<Airport>>
-{
+public class AirportExtractor implements ResultSetExtractor<List<Airport>> {
     @Override
     public List<Airport> extractData(ResultSet rs) throws SQLException, DataAccessException {
         List<Airport> airportList = new ArrayList<>();
 
-        while(rs.next())
-        {
+        while (rs.next()) {
             Airport airport = new Airport();
 
             Integer id;
@@ -25,8 +23,8 @@ public class AirportExtractor implements ResultSetExtractor<List<Airport>>
             String city;
             String country;
 
-            id = rs.getInt(airport.ID_COLUMN_NAME);
-            if(rs.wasNull())
+            id = rs.getInt(Airport.ID_COLUMN_NAME);
+            if (rs.wasNull())
                 id = null;
             name = rs.getString(Airport.NAME_COLUMN_NAME);
             iata_code = rs.getString(Airport.IATA_CODE_COLUMN_NAME);

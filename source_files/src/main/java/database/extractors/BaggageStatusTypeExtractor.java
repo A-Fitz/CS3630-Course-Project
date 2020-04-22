@@ -1,6 +1,5 @@
 package database.extractors;
 
-import database.tables.Airline;
 import database.tables.BaggageStatusType;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;

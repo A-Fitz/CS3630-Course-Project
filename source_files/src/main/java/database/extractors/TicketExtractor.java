@@ -1,7 +1,6 @@
 package database.extractors;
 
 import database.tables.Ticket;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;

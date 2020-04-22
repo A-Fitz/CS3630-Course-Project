@@ -36,7 +36,7 @@ public class ExampleController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Platform.runLater( () -> backButton.getScene().getRoot().requestFocus() ); // Do this to stop text fields from getting auto focus (annoying).
+        Platform.runLater(() -> backButton.getScene().getRoot().requestFocus()); // Do this to stop text fields from getting auto focus (annoying).
 
         // This is where your code for doing any programatic ui adjustments should go.
     }

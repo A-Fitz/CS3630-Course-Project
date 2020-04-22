@@ -48,7 +48,7 @@ public class EditFlightController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Platform.runLater( () ->
+        Platform.runLater(() ->
         {
             backButton.getScene().getRoot().requestFocus();
 
@@ -73,7 +73,6 @@ public class EditFlightController implements Initializable {
      * @param actionEvent Event representing the action of the combobox choice being chosen, holds extra information.
      */
     public void flightChosen(ActionEvent actionEvent) {
-        System.out.println("flightChosen");
         Flight flightChosen = flightChoiceComboBox.getValue();
 
         callsignTextField.setText(flightChosen.getCallsign());
@@ -112,7 +111,6 @@ public class EditFlightController implements Initializable {
      * @param actionEvent Event representing the action of the combobox choice being chosen, holds extra information.
      */
     public void airlineChosen(ActionEvent actionEvent) {
-        System.out.println("airlineChosen");
         Airline airlineChosen = airlineComboBox.getValue();
         aircraftComboBox.getItems().clear();
         aircraftComboBox.setValue(null);
@@ -126,12 +124,11 @@ public class EditFlightController implements Initializable {
      * @param actionEvent Event representing the action of the combobox choice being chosen, holds extra information.
      */
     public void arrivalAirportChosen(ActionEvent actionEvent) {
-        System.out.println("arrivalAirportChosen");
         Airport arrivalAirportChosen = arrivalAirportComboBox.getValue();
         arrivalGateComboBox.getItems().clear();
         arrivalGateComboBox.setValue(null);
         List<Terminal> arrivalTerminals = terminalOperator.selectByAirportId(arrivalAirportChosen.getId());
-        for(Terminal t : arrivalTerminals)
+        for (Terminal t : arrivalTerminals)
             arrivalGateComboBox.getItems().addAll(gateOperator.selectByTerminalId(t.getId()));
     }
 
@@ -143,12 +140,11 @@ public class EditFlightController implements Initializable {
      * @param actionEvent Event representing the action of the combobox choice being chosen, holds extra information.
      */
     public void departureAirportChosen(ActionEvent actionEvent) {
-        System.out.println("departureAirportChosen");
         Airport departureAirportChosen = departureAirportComboBox.getValue();
         departureGateComboBox.getItems().clear();
         departureGateComboBox.setValue(null);
         List<Terminal> departureTerminals = terminalOperator.selectByAirportId(departureAirportChosen.getId());
-        for(Terminal t : departureTerminals)
+        for (Terminal t : departureTerminals)
             departureGateComboBox.getItems().addAll(gateOperator.selectByTerminalId(t.getId()));
     }
 
@@ -159,16 +155,15 @@ public class EditFlightController implements Initializable {
      * @param actionEvent Event representing the action of the button firing, holds extra information.
      */
     public void editFlightButtonClicked(ActionEvent actionEvent) {
-        if(callsignTextField.getText() != null && !callsignTextField.getText().isEmpty()
-            && airlineComboBox.getValue() != null
-            && departureAirportComboBox.getValue() != null
-            && arrivalAirportComboBox.getValue() != null
-            && departureGateComboBox.getValue() != null
-            && arrivalGateComboBox.getValue() != null
-            && aircraftComboBox.getValue() != null
-            && flightStatusComboBox.getValue() != null
-            && boardingDateDatePicker.getValue() != null)
-        {
+        if (callsignTextField.getText() != null && !callsignTextField.getText().isEmpty()
+                && airlineComboBox.getValue() != null
+                && departureAirportComboBox.getValue() != null
+                && arrivalAirportComboBox.getValue() != null
+                && departureGateComboBox.getValue() != null
+                && arrivalGateComboBox.getValue() != null
+                && aircraftComboBox.getValue() != null
+                && flightStatusComboBox.getValue() != null
+                && boardingDateDatePicker.getValue() != null) {
             Flight flight = new Flight();
             flight.setId(flightChoiceComboBox.getValue().getId());
             flight.setCallsign(callsignTextField.getText());
@@ -195,16 +190,13 @@ public class EditFlightController implements Initializable {
                 Util.setMessageLabel("Flight edited.", Color.GREEN, messageLabel);
             }
             mainGridPane.setDisable(false);
-        }
-        else
-        {
+        } else {
             // All fields must not be null. Display error message.
             Util.setMessageLabel("Flight not edited. Please fill the required fields.", Color.RED, messageLabel);
         }
     }
 
-    private void clearComponents()
-    {
+    private void clearComponents() {
         flightChoiceComboBox.setValue(null);
         callsignTextField.clear();
         airlineComboBox.getItems().clear();

@@ -6,23 +6,17 @@ import database.tables.AirlineEmployee;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class AirlineEmployeeOperator
-{
+public class AirlineEmployeeOperator {
     private static AirlineEmployeeOperator instance = new AirlineEmployeeOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 
     /**
      * Do not allow instantiation of a AirlineEmployeeOperator object. This is a Singleton.
      */
-    private AirlineEmployeeOperator()
-    {
+    private AirlineEmployeeOperator() {
 
     }
 
@@ -32,11 +26,11 @@ public class AirlineEmployeeOperator
 
     /**
      * Selects a airline_employee row, in the form of a Java object, from the airline_employee table given an id.
+     *
      * @param id The value of the id column for a airline_employee row
      * @return (null if no airline_employee exists with that id) (a AirlineEmployee object if row exists with that id)
      */
-    public AirlineEmployee selectById(int id)
-    {
+    public AirlineEmployee selectById(int id) {
         AirlineEmployeeExtractor extractor = new AirlineEmployeeExtractor();
 
         String queryTemplate = "SELECT * FROM airline_employee WHERE id = :id";
@@ -46,7 +40,7 @@ public class AirlineEmployeeOperator
 
         List<AirlineEmployee> airlineEmployeeList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
-        if(airlineEmployeeList == null || airlineEmployeeList.size() == 0)
+        if (airlineEmployeeList == null || airlineEmployeeList.size() == 0)
             return null;
         else
             return airlineEmployeeList.get(0);
@@ -54,12 +48,12 @@ public class AirlineEmployeeOperator
 
     /**
      * Tries to update a row in the airline_employee table given an id and a representative Java object.
-     * @param id The value of the id column of the row to update.
+     *
+     * @param id              The value of the id column of the row to update.
      * @param airlineEmployee A java object representing the new values for the row.
      * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
      */
-    public int updateById(int id, AirlineEmployee airlineEmployee)
-    {
+    public int updateById(int id, AirlineEmployee airlineEmployee) {
         String queryTemplate = "UPDATE airline_employee SET "
                 + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id, "
                 + AirlineEmployee.JOB_ID_COLUMN_NAME + " = :new_job_id, "
@@ -70,7 +64,7 @@ public class AirlineEmployeeOperator
                 + AirlineEmployee.ADDRESS_COLUMN_NAME + " = :new_address, "
                 + AirlineEmployee.PHONE_COLUMN_NAME + " = :new_phone, "
                 + AirlineEmployee.BIRTH_DATE_COLUMN_NAME + " = :new_birth_date"
-                + " WHERE "+ AirlineEmployee.ID_COLUMN_NAME + " = :id";
+                + " WHERE " + AirlineEmployee.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("new_airline_id", airlineEmployee.getAirline_id());
@@ -89,11 +83,11 @@ public class AirlineEmployeeOperator
 
     /**
      * Tries to insert a new row into the airline_employee table given a representative Java object.
+     *
      * @param airlineEmployee The AirlineEmployee object which holds the data to insert into columns
      * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
      */
-    public int insert(AirlineEmployee airlineEmployee)
-    {
+    public int insert(AirlineEmployee airlineEmployee) {
         String queryTemplate = "INSERT INTO airline_employee ("
                 + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ", "
                 + AirlineEmployee.JOB_ID_COLUMN_NAME + ", "
@@ -122,8 +116,7 @@ public class AirlineEmployeeOperator
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke)
-        {
+        } catch (DuplicateKeyException dke) {
             // do nothing
         }
 
@@ -132,13 +125,13 @@ public class AirlineEmployeeOperator
 
     /**
      * Tries to delete a row in the airline_employee table given an id.
+     *
      * @param id The value of the id column of the row to delete.
      * @return (0 if the delete failed, the id did not exist in the table) (1 if the row was successfully deleted)
      */
-    public int deleteById(int id)
-    {
+    public int deleteById(int id) {
         String queryTemplate = "DELETE FROM airline_employee "
-                + " WHERE "+ AirlineEmployee.ID_COLUMN_NAME + " = :id";
+                + " WHERE " + AirlineEmployee.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);

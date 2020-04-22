@@ -1,7 +1,6 @@
 package database.tables;
 
-public class Baggage
-{
+public class Baggage {
     public static final String ID_COLUMN_NAME = "id";
     public static final String PASSENGER_ON_FLIGHT_ID_COLUMN_NAME = "passenger_on_flight_id";
     public static final String WEIGHT_COLUMN_NAME = "weight";

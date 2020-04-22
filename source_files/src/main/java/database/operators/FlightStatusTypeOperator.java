@@ -26,17 +26,17 @@ public class FlightStatusTypeOperator {
 
     /**
      * Selects all rows from the flight_status_type table. Returns them as a list of FlightStatusType objects.
+     *
      * @return A List of objects representing the rows in the table.
      */
-    public List<FlightStatusType> selectAll()
-    {
+    public List<FlightStatusType> selectAll() {
         FlightStatusTypeExtractor extractor = new FlightStatusTypeExtractor();
 
         String queryTemplate = "SELECT * FROM flight_status_type";
 
         List<FlightStatusType> flightStatusTypeList = namedParameterJdbcTemplate.query(queryTemplate, extractor);
 
-        if(flightStatusTypeList == null || flightStatusTypeList.size() == 0)
+        if (flightStatusTypeList == null || flightStatusTypeList.size() == 0)
             return null;
         else
             return flightStatusTypeList;
@@ -67,7 +67,7 @@ public class FlightStatusTypeOperator {
     /**
      * Tries to update a row in the FlightStatusType table given an id and a representative Java object.
      *
-     * @param id       The value of the id column of the row to update.
+     * @param id               The value of the id column of the row to update.
      * @param flightStatusType A java object representing the new values for the row.
      * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
      */
@@ -91,7 +91,7 @@ public class FlightStatusTypeOperator {
      */
     public int insert(FlightStatusType flightStatusType) {
         String queryTemplate = "INSERT INTO flight_status_type ("
-                + FlightStatusType.TITLE_COLUMN_NAME  + ") "
+                + FlightStatusType.TITLE_COLUMN_NAME + ") "
                 + "VALUES(:title)";
 
         // Map of variable names and the values to replace with
@@ -102,8 +102,7 @@ public class FlightStatusTypeOperator {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke)
-        {
+        } catch (DuplicateKeyException dke) {
             // do nothing
         }
 

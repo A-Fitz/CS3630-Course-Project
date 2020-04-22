@@ -18,6 +18,7 @@ public class BaggageStringConverter extends StringConverter<Baggage> {
 
     /**
      * Creates a String containing the information which can identify a given object.
+     *
      * @param baggage The given object.
      * @return The String.
      */
@@ -27,13 +28,11 @@ public class BaggageStringConverter extends StringConverter<Baggage> {
         sb.append("Flight Callsign: [");
         sb.append(flightOperator.selectById(passengerOnFlightOperator.selectById(baggage.getPassenger_on_flight_id()).getFlight_id()).getCallsign());
         sb.append("] ");
-        if(passengerOperator.selectById(passengerOnFlightOperator.selectById(baggage.getPassenger_on_flight_id()).getPassenger_id()).getPassport_number() != null)
-        {
+        if (passengerOperator.selectById(passengerOnFlightOperator.selectById(baggage.getPassenger_on_flight_id()).getPassenger_id()).getPassport_number() != null) {
             sb.append("Passenger Passport Number: [");
             sb.append(passengerOperator.selectById(passengerOnFlightOperator.selectById(baggage.getPassenger_on_flight_id()).getPassenger_id()).getPassport_number());
             sb.append("] ");
-        }
-        else {
+        } else {
             sb.append("Passenger First Name: [");
             sb.append(passengerOperator.selectById(passengerOnFlightOperator.selectById(baggage.getPassenger_on_flight_id()).getPassenger_id()).getFirst_name());
             sb.append("] ");
@@ -57,6 +56,7 @@ public class BaggageStringConverter extends StringConverter<Baggage> {
     /**
      * Usually used to create an object from identifiable information. In this case we do not need to use it
      * as we have specific fields for each table's columns.
+     *
      * @param s Not used.
      * @return null
      */

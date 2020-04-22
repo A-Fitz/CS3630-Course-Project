@@ -1,10 +1,6 @@
 package ui.converters;
 
-import database.operators.TicketStatusTypeOperator;
-import database.operators.SeatClassTypeOperator;
-import database.operators.FlightOperator;
-import database.operators.PassengerOnFlightOperator;
-import database.operators.PassengerOperator;
+import database.operators.*;
 import database.tables.Ticket;
 import javafx.util.StringConverter;
 
@@ -20,6 +16,7 @@ public class TicketStringConverter extends StringConverter<Ticket> {
 
     /**
      * Creates a String containing the information which can identify a given object.
+     *
      * @param ticket The given object.
      * @return The String.
      */
@@ -29,13 +26,11 @@ public class TicketStringConverter extends StringConverter<Ticket> {
         sb.append("Flight Callsign: [");
         sb.append(flightOperator.selectById(passengerOnFlightOperator.selectById(ticket.getPassenger_on_flight_id()).getFlight_id()).getCallsign());
         sb.append("] ");
-        if(passengerOperator.selectById(passengerOnFlightOperator.selectById(ticket.getPassenger_on_flight_id()).getPassenger_id()).getPassport_number() != null)
-        {
+        if (passengerOperator.selectById(passengerOnFlightOperator.selectById(ticket.getPassenger_on_flight_id()).getPassenger_id()).getPassport_number() != null) {
             sb.append("Passenger Passport Number: [");
             sb.append(passengerOperator.selectById(passengerOnFlightOperator.selectById(ticket.getPassenger_on_flight_id()).getPassenger_id()).getPassport_number());
             sb.append("] ");
-        }
-        else {
+        } else {
             sb.append("Passenger First Name: [");
             sb.append(passengerOperator.selectById(passengerOnFlightOperator.selectById(ticket.getPassenger_on_flight_id()).getPassenger_id()).getFirst_name());
             sb.append("] ");
@@ -68,6 +63,7 @@ public class TicketStringConverter extends StringConverter<Ticket> {
     /**
      * Usually used to create an object from identifiable information. In this case we do not need to use it
      * as we have specific fields for each table's columns.
+     *
      * @param s Not used.
      * @return null
      */

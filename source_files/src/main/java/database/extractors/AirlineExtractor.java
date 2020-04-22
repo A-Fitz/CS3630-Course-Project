@@ -1,13 +1,11 @@
 package database.extractors;
 
 import database.tables.Airline;
-import database.tables.Ticket;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 

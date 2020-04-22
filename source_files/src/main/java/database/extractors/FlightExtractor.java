@@ -10,14 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FlightExtractor implements ResultSetExtractor<List<Flight>>
-{
+public class FlightExtractor implements ResultSetExtractor<List<Flight>> {
     @Override
     public List<Flight> extractData(ResultSet rs) throws SQLException, DataAccessException {
         List<Flight> flightList = new ArrayList<>();
 
-        while(rs.next())
-        {
+        while (rs.next()) {
             Flight flight = new Flight();
 
             Integer id;
@@ -32,7 +30,7 @@ public class FlightExtractor implements ResultSetExtractor<List<Flight>>
             Date boarding_date;
 
             id = rs.getInt(Flight.ID_COLUMN_NAME);
-            if(rs.wasNull())
+            if (rs.wasNull())
                 id = null;
             callsign = rs.getString(Flight.CALLSIGN_COLUMN_NAME);
             airline_id = rs.getInt(Flight.AIRLINE_ID_COLUMN_NAME);
@@ -44,7 +42,7 @@ public class FlightExtractor implements ResultSetExtractor<List<Flight>>
             flight_status_id = rs.getInt(Flight.FLIGHT_STATUS_ID_COLUMN_NAME);
             boarding_date = rs.getDate(Flight.BOARDING_DATE_COLUMN_NAME);
 
-            flight.setId(id);;
+            flight.setId(id);
             flight.setCallsign(callsign);
             flight.setAirline_id(airline_id);
             flight.setDeparture_airport_id(departure_airport_id);

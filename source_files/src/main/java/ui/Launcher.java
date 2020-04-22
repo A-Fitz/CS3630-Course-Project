@@ -18,6 +18,28 @@ import java.sql.SQLException;
  */
 public class Launcher extends Application {
     private static Stage stage;
+    /**
+     * This task is used to make a connection to the database before the program can be used by a user.
+     */
+    private Task<Boolean> task = new Task<>() {
+        @Override
+        public Boolean call() throws SQLException {
+            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+            return databaseConnection.operate();
+        }
+    };
+
+    public static void main(String[] args) {
+        launch();
+    }
+
+    public static void closeStage() {
+        Launcher.stage.close();
+    }
+
+    public static void showStage() {
+        Launcher.stage.show();
+    }
 
     @Override
     public void start(Stage stage) {
@@ -44,18 +66,6 @@ public class Launcher extends Application {
         Launcher.stage.setOnCloseRequest(e -> System.exit(0));
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
-
-    public static void closeStage() {
-        Launcher.stage.close();
-    }
-
-    public static void showStage() {
-        Launcher.stage.show();
-    }
-
     private Alert createLoadingDialog() {
         Alert loadingDialog = new Alert(Alert.AlertType.INFORMATION);
         loadingDialog.setHeaderText(null);
@@ -65,15 +75,4 @@ public class Launcher extends Application {
         loadingDialog.initStyle(StageStyle.UNDECORATED);
         return loadingDialog;
     }
-
-    /**
-     * This task is used to make a connection to the database before the program can be used by a user.
-     */
-    private Task<Boolean> task = new Task<>() {
-        @Override
-        public Boolean call() throws SQLException {
-            DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-            return databaseConnection.operate();
-        }
-    };
 }

@@ -2,8 +2,7 @@ package database.tables;
 
 import java.sql.Date;
 
-public class AirlineEmployee
-{
+public class AirlineEmployee {
     public static final String ID_COLUMN_NAME = "id";
     public static final String AIRLINE_ID_COLUMN_NAME = "airline_id";
     public static final String JOB_ID_COLUMN_NAME = "job_id";
