@@ -31,7 +31,7 @@ public class PassengerOnFlightExtractor implements ResultSetExtractor<List<Passe
 
             passengerOnFlight.setId(id);
             passengerOnFlight.setFlight_id(flight_id);
-            passengerOnFlight.setPassenger_employee_id(passenger_id);
+            passengerOnFlight.setPassenger_id(passenger_id);
 
             passengerOnFlightList.add(passengerOnFlight);
         }

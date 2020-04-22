@@ -7,7 +7,7 @@ public class PassengerOnFlight {
 
     private Integer id;
     private Integer flight_id;
-    private Integer passenger_employee_id;
+    private Integer passenger_id;
 
     public Integer getId() {
         return id;
@@ -25,11 +25,11 @@ public class PassengerOnFlight {
         this.flight_id = flight_id;
     }
 
-    public Integer getPassenger_employee_id() {
-        return passenger_employee_id;
+    public Integer getPassenger_id() {
+        return passenger_id;
     }
 
-    public void setPassenger_employee_id(Integer passenger_employee_id) {
-        this.passenger_employee_id = passenger_employee_id;
+    public void setPassenger_id(Integer passenger_id) {
+        this.passenger_id = passenger_id;
     }
 }

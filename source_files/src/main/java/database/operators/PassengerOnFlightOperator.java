@@ -6,12 +6,8 @@ import database.tables.PassengerOnFlight;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PassengerOnFlightOperator
 {
@@ -71,7 +67,7 @@ public class PassengerOnFlightOperator
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("new_flight_id", passengerOnFlight.getFlight_id());
-        parameters.addValue("new_passenger_id", passengerOnFlight.getPassenger_employee_id());
+        parameters.addValue("new_passenger_id", passengerOnFlight.getPassenger_id());
         parameters.addValue("id", id);
 
         return namedParameterJdbcTemplate.update(queryTemplate, parameters);
@@ -92,7 +88,7 @@ public class PassengerOnFlightOperator
         // Map of variable names and the values to replace with
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("flight_id", passengerOnFlight.getFlight_id());
-        parameters.addValue("passenger_id", passengerOnFlight.getPassenger_employee_id());
+        parameters.addValue("passenger_id", passengerOnFlight.getPassenger_id());
 
         // Statement to insert the row
         int rowsAffected = 0;

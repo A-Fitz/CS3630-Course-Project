@@ -51,6 +51,28 @@ public class AircraftOperator {
     }
 
     /**
+     * Selects an aircraft row, in the form of a Java object, from the aircraft table given the unique serial number.
+     *
+     * @param serialNumber value of the serial_number column for an aircraft row
+     * @return (null if no aircraft row exists with that serial_number) (an Aircraft object if row exists with that serial_number)
+     */
+    public Aircraft selectBySerialNumber(String serialNumber) {
+        AircraftExtractor extractor = new AircraftExtractor();
+
+        String queryTemplate = "SELECT * FROM aircraft WHERE " + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " = :serial_number";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("serial_number", serialNumber);
+
+        List<Aircraft> aircraftList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
+
+        if (aircraftList.size() == 0)
+            return null;
+        else
+            return aircraftList.get(0);
+    }
+
+    /**
      * Tries to update a row in the aircraft table given an id and a representative Java object.
      *
      * @param id       The value of the id column of the row to update.
