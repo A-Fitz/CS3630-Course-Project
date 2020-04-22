@@ -46,7 +46,7 @@ public class PassengerOnFlightOperator
         List<PassengerOnFlight> passengerOnFlightList = namedParameterJdbcTemplate.query(queryTemplate,
                 parameters, extractor);
 
-        if(passengerOnFlightList.size() == 0)
+        if(passengerOnFlightList == null || passengerOnFlightList.size() == 0)
             return null;
         else
             return passengerOnFlightList.get(0);

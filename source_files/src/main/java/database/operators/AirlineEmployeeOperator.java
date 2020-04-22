@@ -46,7 +46,7 @@ public class AirlineEmployeeOperator
 
         List<AirlineEmployee> airlineEmployeeList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
-        if(airlineEmployeeList.size() == 0)
+        if(airlineEmployeeList == null || airlineEmployeeList.size() == 0)
             return null;
         else
             return airlineEmployeeList.get(0);

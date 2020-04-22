@@ -29,6 +29,28 @@ public class TerminalOperator {
     }
 
     /**
+     * Selects all rows of the terminal table, in the form of a List of Java objects, that have the given airport_id.
+     *
+     * @param airport_id The value of the airport_id column for an Terminal row
+     * @return (null if no Terminal row exists with that airport_id) (a List of Terminal objects if rows exists with that airport_id)
+     */
+    public List<Terminal> selectByAirportId(int airport_id) {
+        TerminalExtractor extractor = new TerminalExtractor();
+
+        String queryTemplate = "SELECT * FROM terminal WHERE " + Terminal.AIRPORT_ID_COLUMN_NAME + " = :airport_id";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("airport_id", airport_id);
+
+        List<Terminal> terminalList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
+
+        if (terminalList == null || terminalList.size() == 0)
+            return null;
+        else
+            return terminalList;
+    }
+
+    /**
      * Selects a Terminal row, in the form of a Java object, from the terminal table given an id.
      *
      * @param id The value of the id column for an Terminal row

@@ -46,7 +46,7 @@ public class AirportEmployeeOperator
 
         List<AirportEmployee> airportEmployeeList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
-        if(airportEmployeeList.size() == 0)
+        if(airportEmployeeList == null || airportEmployeeList.size() == 0)
             return null;
         else
             return airportEmployeeList.get(0);

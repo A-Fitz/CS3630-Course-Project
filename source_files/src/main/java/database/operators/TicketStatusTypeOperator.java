@@ -50,7 +50,7 @@ public class TicketStatusTypeOperator
         List<TicketStatusType> ticketStatusTypeList = namedParameterJdbcTemplate.query(queryTemplate,
                 parameters, extractor);
 
-        if(ticketStatusTypeList.size() == 0)
+        if(ticketStatusTypeList == null || ticketStatusTypeList.size() == 0)
             return null;
         else
             return ticketStatusTypeList.get(0);

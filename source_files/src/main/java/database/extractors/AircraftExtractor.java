@@ -30,10 +30,10 @@ public class AircraftExtractor implements ResultSetExtractor<List<Aircraft>> {
                 id = null;
             airline_id = rs.getInt(Aircraft.AIRLINE_ID_COLUMN_NAME);
             serial_number = rs.getString(Aircraft.SERIAL_NUMBER_COLUMN_NAME);
-            make = rs.getString(Aircraft.SERIAL_NUMBER_COLUMN_NAME);
-            model = rs.getString(Aircraft.SERIAL_NUMBER_COLUMN_NAME);
-            year = rs.getInt(Aircraft.SERIAL_NUMBER_COLUMN_NAME);
-            capacity = rs.getInt(Aircraft.SERIAL_NUMBER_COLUMN_NAME);
+            make = rs.getString(Aircraft.MAKE_COLUMN_NAME);
+            model = rs.getString(Aircraft.MODEL_COLUMN_NAME);
+            year = rs.getInt(Aircraft.YEAR_COLUMN_NAME);
+            capacity = rs.getInt(Aircraft.CAPACITY_COLUMN_NAME);
 
             aircraft.setId(id);
             aircraft.setAirline_id(airline_id);

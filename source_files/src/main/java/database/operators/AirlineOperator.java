@@ -2,8 +2,10 @@ package database.operators;
 
 import database.DatabaseConnection;
 import database.extractors.AirlineExtractor;
+import database.extractors.FlightExtractor;
 import database.extractors.TicketExtractor;
 import database.tables.Airline;
+import database.tables.Flight;
 import database.tables.Ticket;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,6 +16,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class AirlineOperator {
     private static AirlineOperator instance = new AirlineOperator();
@@ -28,6 +31,19 @@ public class AirlineOperator {
 
     public static AirlineOperator getInstance() {
         return instance;
+    }
+
+    /**
+     * Selects all rows from the airline table. Returns them as a list of Airline objects.
+     * @return A List of objects representing the rows in the table.
+     */
+    public List<Airline> selectAll()
+    {
+        AirlineExtractor extractor = new AirlineExtractor();
+
+        String queryTemplate = "SELECT * FROM airline";
+
+        return new ArrayList<Airline>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**
@@ -46,7 +62,7 @@ public class AirlineOperator {
 
         List<Airline> airlineList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
-        if (airlineList.size() == 0)
+        if (airlineList == null || airlineList.size() == 0)
             return null;
         else
             return airlineList.get(0);

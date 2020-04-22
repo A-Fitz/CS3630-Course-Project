@@ -6,12 +6,10 @@ import database.tables.Aircraft;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class AircraftOperator {
     private static AircraftOperator instance = new AircraftOperator();
@@ -26,6 +24,23 @@ public class AircraftOperator {
 
     public static AircraftOperator getInstance() {
         return instance;
+    }
+
+    /**
+     * Selects all rows of the aircraft table, in the form of a List of Java objects, that have the given airline_id.
+     *
+     * @param airline_id The value of the airline_id column for an aircraft row
+     * @return (null if no aircraft row exists with that airline_id) (a List of Aircraft objects if rows exist with that airline_id)
+     */
+    public List<Aircraft> selectByAirlineId(int airline_id) {
+        AircraftExtractor extractor = new AircraftExtractor();
+
+        String queryTemplate = "SELECT * FROM aircraft WHERE " + Aircraft.AIRLINE_ID_COLUMN_NAME + " = :airline_id";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("airline_id", airline_id);
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor)));
     }
 
     /**
@@ -44,7 +59,7 @@ public class AircraftOperator {
 
         List<Aircraft> aircraftList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
-        if (aircraftList.size() == 0)
+        if (aircraftList == null || aircraftList.size() == 0)
             return null;
         else
             return aircraftList.get(0);
@@ -66,7 +81,7 @@ public class AircraftOperator {
 
         List<Aircraft> aircraftList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
-        if (aircraftList.size() == 0)
+        if (aircraftList == null || aircraftList.size() == 0)
             return null;
         else
             return aircraftList.get(0);

@@ -44,7 +44,7 @@ public class TicketOperator {
 
         List<Ticket> ticketList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
-        if (ticketList.size() == 0)
+        if (ticketList == null || ticketList.size() == 0)
             return null;
         else
             return ticketList.get(0);

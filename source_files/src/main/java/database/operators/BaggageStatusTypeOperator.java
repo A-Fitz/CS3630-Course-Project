@@ -44,7 +44,7 @@ public class BaggageStatusTypeOperator {
 
         List<BaggageStatusType> baggageStatusTypeList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
-        if (baggageStatusTypeList.size() == 0)
+        if (baggageStatusTypeList == null || baggageStatusTypeList.size() == 0)
             return null;
         else
             return baggageStatusTypeList.get(0);

@@ -50,7 +50,7 @@ public class SeatClassTypeOperator
         List<SeatClassType> seatClassTypeList = namedParameterJdbcTemplate.query(queryTemplate,
                 parameters, extractor);
 
-        if(seatClassTypeList.size() == 0)
+        if(seatClassTypeList == null || seatClassTypeList.size() == 0)
             return null;
         else
             return seatClassTypeList.get(0);

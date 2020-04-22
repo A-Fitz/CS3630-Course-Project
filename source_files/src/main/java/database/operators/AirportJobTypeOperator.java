@@ -44,7 +44,7 @@ public class AirportJobTypeOperator {
 
         List<AirportJobType> airportJobTypeList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
-        if (airportJobTypeList.size() == 0)
+        if (airportJobTypeList == null || airportJobTypeList.size() == 0)
             return null;
         else
             return airportJobTypeList.get(0);

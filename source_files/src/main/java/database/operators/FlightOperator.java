@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class FlightOperator
 {
@@ -29,6 +30,19 @@ public class FlightOperator
 
     public static FlightOperator getInstance() {
         return instance;
+    }
+
+    /**
+     * Selects all rows from the flight table. Returns them as a list of Flight objects.
+     * @return A List of objects representing the rows in the table.
+     */
+    public List<Flight> selectAll()
+    {
+        FlightExtractor extractor = new FlightExtractor();
+
+        String queryTemplate = "SELECT * FROM flight";
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**
@@ -50,7 +64,7 @@ public class FlightOperator
         List<Flight> flightList = namedParameterJdbcTemplate.query(queryTemplate,
                 parameters, extractor);
 
-        if(flightList.size() == 0)
+        if(flightList == null || flightList.size() == 0)
             return null;
         else
             return flightList.get(0);

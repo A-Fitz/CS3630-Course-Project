@@ -6,12 +6,8 @@ import database.tables.Gate;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GateOperator {
     private static GateOperator instance = new GateOperator();
@@ -26,6 +22,28 @@ public class GateOperator {
 
     public static GateOperator getInstance() {
         return instance;
+    }
+
+    /**
+     * Selects all rows of the gate table, in the form of a List of Java objects, that have the given terminal_id.
+     *
+     * @param terminal_id The value of the terminal_id column for a gate row
+     * @return (null if no gate row exists with that terminal_id) (a List of Gate objects if rows exist with that terminal_id)
+     */
+    public List<Gate> selectByTerminalId(int terminal_id) {
+        GateExtractor extractor = new GateExtractor();
+
+        String queryTemplate = "SELECT * FROM gate WHERE " + Gate.TERMINAL_ID_COLUMN_NAME + " = :terminal_id";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("terminal_id", terminal_id);
+
+        List<Gate> gateList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
+
+        if (gateList == null || gateList.size() == 0)
+            return null;
+        else
+            return gateList;
     }
 
     /**

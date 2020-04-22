@@ -1,7 +1,9 @@
 package database.operators;
 
 import database.DatabaseConnection;
+import database.extractors.AirlineExtractor;
 import database.extractors.AirportExtractor;
+import database.tables.Airline;
 import database.tables.Airport;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -29,6 +31,24 @@ public class AirportOperator
 
     public static AirportOperator getInstance() {
         return instance;
+    }
+
+    /**
+     * Selects all rows from the airport table. Returns them as a list of Airport objects.
+     * @return A List of objects representing the rows in the table.
+     */
+    public List<Airport> selectAll()
+    {
+        AirportExtractor extractor = new AirportExtractor();
+
+        String queryTemplate = "SELECT * FROM airport";
+
+        List<Airport> airportList = namedParameterJdbcTemplate.query(queryTemplate, extractor);
+
+        if(airportList== null || airportList.size() == 0)
+            return null;
+        else
+            return airportList;
     }
 
     /**

@@ -6,12 +6,8 @@ import database.tables.FlightStatusType;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class FlightStatusTypeOperator {
     private static FlightStatusTypeOperator instance = new FlightStatusTypeOperator();
@@ -26,6 +22,24 @@ public class FlightStatusTypeOperator {
 
     public static FlightStatusTypeOperator getInstance() {
         return instance;
+    }
+
+    /**
+     * Selects all rows from the flight_status_type table. Returns them as a list of FlightStatusType objects.
+     * @return A List of objects representing the rows in the table.
+     */
+    public List<FlightStatusType> selectAll()
+    {
+        FlightStatusTypeExtractor extractor = new FlightStatusTypeExtractor();
+
+        String queryTemplate = "SELECT * FROM flight_status_type";
+
+        List<FlightStatusType> flightStatusTypeList = namedParameterJdbcTemplate.query(queryTemplate, extractor);
+
+        if(flightStatusTypeList == null || flightStatusTypeList.size() == 0)
+            return null;
+        else
+            return flightStatusTypeList;
     }
 
     /**
