@@ -25,7 +25,7 @@ public class PassengerExtractor implements ResultSetExtractor<List<Passenger>> {
             String last_name;
             String email;
             String address;
-            Integer phone;
+            String phone;
             Date birth_date;
 
             id = rs.getInt(Passenger.ID_COLUMN_NAME);
@@ -39,7 +39,7 @@ public class PassengerExtractor implements ResultSetExtractor<List<Passenger>> {
             last_name = rs.getString(Passenger.LAST_NAME_COLUMN_NAME);
             email = rs.getString(Passenger.EMAIL_COLUMN_NAME);
             address = rs.getString(Passenger.ADDRESS_COLUMN_NAME);
-            phone = rs.getInt(Passenger.PHONE_COLUMN_NAME);
+            phone = rs.getString(Passenger.PHONE_COLUMN_NAME);
             birth_date = rs.getDate(Passenger.BIRTH_DATE_COLUMN_NAME);
 
             passenger.setId(id);

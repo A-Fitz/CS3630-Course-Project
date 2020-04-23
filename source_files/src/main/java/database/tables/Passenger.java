@@ -20,7 +20,7 @@ public class Passenger {
     private String last_name;
     private String email;
     private String address;
-    private Integer phone;
+    private String phone;
     private Date birth_date;
 
     public Integer getId() {
@@ -79,11 +79,11 @@ public class Passenger {
         this.address = address;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

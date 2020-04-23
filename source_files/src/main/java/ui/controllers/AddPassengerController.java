@@ -60,7 +60,7 @@ public class AddPassengerController {
             passenger.setLast_name(lastNameTextField.getText());
             passenger.setEmail(emailTextField.getText());
             passenger.setAddress(addressTextField.getText());
-            passenger.setPhone(Integer.valueOf(phoneTextField.getText()));
+            passenger.setPhone(phoneTextField.getText());
             passenger.setBirth_date(Date.valueOf(birthDateDatePicker.getValue()));
 
             // disable buttons until a success/failure is received

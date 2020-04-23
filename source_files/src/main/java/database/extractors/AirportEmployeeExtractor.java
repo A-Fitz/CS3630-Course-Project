@@ -26,7 +26,7 @@ public class AirportEmployeeExtractor implements ResultSetExtractor<List<Airport
             String last_name;
             String email;
             String address;
-            Integer phone;
+            String phone;
             Date birth_date;
 
             id = rs.getInt(AirportEmployee.ID_COLUMN_NAME);
@@ -39,7 +39,7 @@ public class AirportEmployeeExtractor implements ResultSetExtractor<List<Airport
             last_name = rs.getString(AirportEmployee.LAST_NAME_COLUMN_NAME);
             email = rs.getString(AirportEmployee.EMAIL_COLUMN_NAME);
             address = rs.getString(AirportEmployee.ADDRESS_COLUMN_NAME);
-            phone = rs.getInt(AirportEmployee.PHONE_COLUMN_NAME);
+            phone = rs.getString(AirportEmployee.PHONE_COLUMN_NAME);
             birth_date = rs.getDate(AirportEmployee.BIRTH_DATE_COLUMN_NAME);
 
             airportEmployee.setId(id);

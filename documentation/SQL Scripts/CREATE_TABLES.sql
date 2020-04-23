@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS airline_employee (
 	last_name TEXT NOT NULL,
 	email TEXT NOT NULL,
 	address TEXT NOT NULL,
-	phone INTEGER NOT NULL,
+	phone TEXT NOT NULL,
 	birth_date DATE NOT NULL,
 	UNIQUE(first_name, middle_name, last_name, email, address, phone, birth_date)
 );
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS airport_employee (
 	last_name TEXT NOT NULL,
 	email TEXT NOT NULL,
 	address TEXT NOT NULL,
-	phone INTEGER NOT NULL,
+	phone TEXT NOT NULL,
 	birth_date DATE NOT NULL,
 	UNIQUE(first_name, middle_name, last_name, email, address, phone, birth_date)
 );
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS passenger (
 	last_name TEXT NOT NULL,
 	email TEXT NOT NULL,
 	address TEXT NOT NULL,
-	phone INTEGER NOT NULL,
+	phone TEXT NOT NULL,
 	birth_date DATE NOT NULL,
 	UNIQUE(first_name, middle_name, last_name, email, address, phone, birth_date)
 );
