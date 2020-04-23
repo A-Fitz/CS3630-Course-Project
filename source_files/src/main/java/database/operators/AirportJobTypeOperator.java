@@ -7,7 +7,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AirportJobTypeOperator {
     private static AirportJobTypeOperator instance = new AirportJobTypeOperator();
@@ -22,6 +24,19 @@ public class AirportJobTypeOperator {
 
     public static AirportJobTypeOperator getInstance() {
         return instance;
+    }
+
+    /**
+     * Selects all rows from the airport_job_type table. Returns them as a list of AirportJobType objects.
+     *
+     * @return A List of objects representing the rows in the table.
+     */
+    public List<AirportJobType> selectAll() {
+        AirportJobTypeExtractor extractor = new AirportJobTypeExtractor();
+
+        String queryTemplate = "SELECT * FROM airport_job_type";
+
+        return new ArrayList<AirportJobType>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**
