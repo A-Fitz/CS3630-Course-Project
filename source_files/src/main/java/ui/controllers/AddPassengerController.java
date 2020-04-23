@@ -14,9 +14,6 @@ import ui.Launcher;
 import ui.Util;
 
 import java.sql.Date;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 public class AddPassengerController {
     private PassengerOperator operator = PassengerOperator.getInstance();
@@ -32,7 +29,7 @@ public class AddPassengerController {
     @FXML private TextField emailTextField;
     @FXML private TextField addressTextField;
     @FXML private TextField phoneTextField;
-    @FXML private DatePicker birthDayField;
+    @FXML private DatePicker birthDateDatePicker;
     @FXML private Label messageLabel;
 
     @FXML
@@ -43,25 +40,27 @@ public class AddPassengerController {
     }
 
     public void addPassengerButtonClicked() {
-        if (passportNumberTextField.getText()!= null ||
-                firstNameTextField.getText()!= null ||
-                middleNameTextField.getText()!= null ||
-                lastNameTextField.getText()!= null  ||
-                lastNameTextField.getText()!= null  ||
-                lastNameTextField.getText()!= null  ||
-                lastNameTextField.getText()!= null  ||
-                lastNameTextField.getText()!= null) {
+        if (firstNameTextField.getText() != null &&
+                middleNameTextField.getText() != null &&
+                lastNameTextField.getText() != null  &&
+                emailTextField.getText() != null  &&
+                addressTextField.getText() != null  &&
+                phoneTextField.getText() != null  &&
+                birthDateDatePicker.getValue() != null)
+        {
             Passenger passenger = new Passenger();
-            passenger.setPassport_number(passportNumberTextField.getText());
+
+            // passport number is allowed to be null
+            if(passportNumberTextField.getText() != null && !passportNumberTextField.getText().isEmpty())
+                passenger.setPassport_number(passportNumberTextField.getText());
+
             passenger.setFirst_name(firstNameTextField.getText());
             passenger.setMiddle_name(middleNameTextField.getText());
             passenger.setLast_name(lastNameTextField.getText());
             passenger.setEmail(emailTextField.getText());
             passenger.setAddress(addressTextField.getText());
             passenger.setPhone(Integer.valueOf(phoneTextField.getText()));
-            passenger.setBirth_date(Date.valueOf(birthDayField.getValue()));
-
-
+            passenger.setBirth_date(Date.valueOf(birthDateDatePicker.getValue()));
 
 
             // disable buttons until a success/failure is received
@@ -96,7 +95,7 @@ public class AddPassengerController {
         emailTextField.clear();
         addressTextField.clear();
         phoneTextField.clear();
-        birthDayField.setValue(null);
+        birthDateDatePicker.setValue(null);
     }
 
     /**
