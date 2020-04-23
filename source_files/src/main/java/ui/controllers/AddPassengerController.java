@@ -2,6 +2,7 @@ package ui.controllers;
 
 import database.operators.PassengerOperator;
 import database.tables.Passenger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -33,25 +34,25 @@ public class AddPassengerController {
     @FXML private Label messageLabel;
 
     @FXML
-    public void initialize()
-    {
-        backButton.setOnAction(e -> backButtonClicked());
-        addButton.setOnAction(e -> addPassengerButtonClicked());
+    public void initialize() {
+        Platform.runLater(() ->
+        {
+            backButton.getScene().getRoot().requestFocus();
+        });
     }
 
     public void addPassengerButtonClicked() {
         if (firstNameTextField.getText() != null &&
                 middleNameTextField.getText() != null &&
-                lastNameTextField.getText() != null  &&
-                emailTextField.getText() != null  &&
-                addressTextField.getText() != null  &&
-                phoneTextField.getText() != null  &&
-                birthDateDatePicker.getValue() != null)
-        {
+                lastNameTextField.getText() != null &&
+                emailTextField.getText() != null &&
+                addressTextField.getText() != null &&
+                phoneTextField.getText() != null &&
+                birthDateDatePicker.getValue() != null) {
             Passenger passenger = new Passenger();
 
             // passport number is allowed to be null
-            if(passportNumberTextField.getText() != null && !passportNumberTextField.getText().isEmpty())
+            if (passportNumberTextField.getText() != null && !passportNumberTextField.getText().isEmpty())
                 passenger.setPassport_number(passportNumberTextField.getText());
 
             passenger.setFirst_name(firstNameTextField.getText());
@@ -61,7 +62,6 @@ public class AddPassengerController {
             passenger.setAddress(addressTextField.getText());
             passenger.setPhone(Integer.valueOf(phoneTextField.getText()));
             passenger.setBirth_date(Date.valueOf(birthDateDatePicker.getValue()));
-
 
             // disable buttons until a success/failure is received
             mainGridPane.setDisable(true);
@@ -100,7 +100,6 @@ public class AddPassengerController {
 
     /**
      * Called when the back button is clicked. Replaces the current screen with the main screen.
-     *
      */
     public void backButtonClicked() {
         Stage stage = (Stage) backButton.getScene().getWindow();
