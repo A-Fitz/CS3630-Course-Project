@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 public class AddPassengerController {
-    private PassengerOperator ticketOperator = PassengerOperator.getInstance();
+    private PassengerOperator operator = PassengerOperator.getInstance();
 
     @FXML
     private GridPane mainGridPane;
@@ -39,10 +39,10 @@ public class AddPassengerController {
     public void initialize()
     {
         backButton.setOnAction(e -> backButtonClicked());
-        addButton.setOnAction(e -> addTicketButtonClicked());
+        addButton.setOnAction(e -> addPassengerButtonClicked());
     }
 
-    public void addTicketButtonClicked() {
+    public void addPassengerButtonClicked() {
         if (passportNumberTextField.getText()!= null ||
                 firstNameTextField.getText()!= null ||
                 middleNameTextField.getText()!= null ||
@@ -68,7 +68,7 @@ public class AddPassengerController {
             mainGridPane.setDisable(true);
             messageLabel.setText("Request in progress...");
 
-            int rowsAffected = ticketOperator.insert(passenger);
+            int rowsAffected = operator.insert(passenger);
 
             if (rowsAffected == 0) {
                 // Passenger not inserted (probably due to unique constraints on abbreviation or name). Display error message.
