@@ -85,7 +85,7 @@
                      </children>
                   </GridPane>
 
-                        <Button fx:id="addButton" mnemonicParsing="false"  text="Add Ticket" />
+                        <Button fx:id="addButton" mnemonicParsing="false"  text="Add Passenger" />
                     </children>
                 </VBox>
             </children>
