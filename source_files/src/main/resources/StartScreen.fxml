@@ -60,7 +60,7 @@
                         mnemonicParsing="false" onAction="#addEmployeeButtonClicked" text="Add Employee"
                         GridPane.columnIndex="3" GridPane.rowIndex="1"/>
                 <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                        mnemonicParsing="false" text=""
+                        mnemonicParsing="false" onAction="#addFlightButtonClicked" text="Add Flight"
                         GridPane.rowIndex="2"/>
                 <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                         mnemonicParsing="false" text=""

@@ -89,7 +89,7 @@
                             </children>
                         </HBox>
 
-                        <Button fx:id="addFlightButton" mnemonicParsing="false" onAction="#addFlightButtonClicked" text="Add Passenger" />
+                        <Button fx:id="addFlightButton" mnemonicParsing="false" onAction="#addFlightButtonClicked" text="Add Flight" />
                     </children>
                 </VBox>
             </children>
