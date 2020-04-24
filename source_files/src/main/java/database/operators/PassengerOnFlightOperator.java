@@ -1,13 +1,17 @@
 package database.operators;
 
 import database.DatabaseConnection;
+import database.extractors.AirlineExtractor;
 import database.extractors.PassengerOnFlightExtractor;
+import database.tables.Airline;
 import database.tables.PassengerOnFlight;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PassengerOnFlightOperator {
     private static PassengerOnFlightOperator instance = new PassengerOnFlightOperator();
@@ -24,6 +28,20 @@ public class PassengerOnFlightOperator {
     public static PassengerOnFlightOperator getInstance() {
         return instance;
     }
+
+    /**
+     * Selects all rows from the PassengerOnFlight table. Returns them as a list of PassengerOnFlight objects.
+     *
+     * @return A List of objects representing the rows in the table.
+     */
+    public List<PassengerOnFlight> selectAll() {
+        PassengerOnFlightExtractor extractor = new PassengerOnFlightExtractor();
+
+        String queryTemplate = "SELECT * FROM passenger_on_flight";
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
+    }
+
 
     /**
      * Selects a passenger_on_flight row, in the form of a Java object,

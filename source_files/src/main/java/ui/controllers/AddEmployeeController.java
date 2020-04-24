@@ -12,10 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.Launcher;
 import ui.Util;
-import ui.converters.AirlineJobTypeStringConverter;
-import ui.converters.AirlineStringConverter;
-import ui.converters.AirportJobTypeStringConverter;
-import ui.converters.AirportStringConverter;
+import ui.converters.*;
 
 import java.net.URL;
 import java.sql.Date;
@@ -25,11 +22,12 @@ import java.util.ResourceBundle;
 public class AddEmployeeController implements Initializable {
     private AirportOperator airportOperator = AirportOperator.getInstance();
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
+    private AirportEmployeeOperator airportEmployeeOperator = AirportEmployeeOperator.getInstance();
+    private AirlineEmployeeOperator airlineEmployeeOperator = AirlineEmployeeOperator.getInstance();
     private AirportJobTypeOperator airportJobTypeOperator = AirportJobTypeOperator.getInstance();
     private AirlineJobTypeOperator airlineJobTypeOperator = AirlineJobTypeOperator.getInstance();
 
-    @FXML
-    private GridPane mainGridPane;
+    @FXML private GridPane mainGridPane;
     @FXML private Button backButton;
     @FXML private ComboBox<String> regionComboBox;
     @FXML private ComboBox workPlaceComboBox;
@@ -48,14 +46,92 @@ public class AddEmployeeController implements Initializable {
         Platform.runLater(() ->
         {
             backButton.getScene().getRoot().requestFocus();
-            regionComboBox.getItems().add("Airport");
-            regionComboBox.getItems().add("Airline");
         });
     }
 
-    public void addEmployeeButtonClicked() {
-        // TODO @jason. By the way, ignore the warnings in the regionChosen method. It doesn't like that we're using ComboBoxes for two different class types.
+    public void addEmployeeButtonClicked()
+    {
+        if(regionComboBox.getValue()!=null &&
+                workPlaceComboBox.getValue()!= null &&
+                jobTypeComboBox.getValue()!= null &&
+                firstNameTextField.getText()!= null &&
+                middleNameTextField.getText()!= null &&
+                lastNameTextField.getText()!= null &&
+                emailTextField.getText()!= null &&
+                addressTextField.getText()!= null &&
+                phoneTextField.getText()!= null &&
+                birthDateDatePicker.getValue()!= null)
+        {
+            if (regionComboBox.getValue().equals("Airport"))
+            {
+                setAirportEmployee();
+            }
+            else if (regionComboBox.getValue().equals("Airline"))
+            {
+                setAirlineEmployee();
+            }
+        }
+        else
+        {
+            Util.setMessageLabel("Error. Please fill the required fields.", Color.RED, messageLabel);
+        }
     }
+
+    private void setAirportEmployee() {
+
+        AirportEmployee airportEmployee = new AirportEmployee();
+
+
+        airportEmployee.setAirport_id(((Airport) workPlaceComboBox.getValue()).getId());
+        airportEmployee.setJob_id(((AirportJobType) jobTypeComboBox.getValue()).getId());
+        airportEmployee.setFirst_name(firstNameTextField.getText());
+        airportEmployee.setMiddle_name(middleNameTextField.getText());
+        airportEmployee.setLast_name(lastNameTextField.getText());
+        airportEmployee.setEmail(emailTextField.getText());
+        airportEmployee.setAddress(addressTextField.getText());
+        airportEmployee.setPhone(phoneTextField.getText());
+        airportEmployee.setBirth_date(Date.valueOf(birthDateDatePicker.getValue()));
+        mainGridPane.setDisable(true);
+        messageLabel.setText("Request in progress...");
+        int rowsAffected = airportEmployeeOperator.insert(airportEmployee);
+
+        if (rowsAffected == 0)
+        {
+            Util.setMessageLabel("Airport Employee not added.", Color.RED, messageLabel);
+        }
+        else {
+            clearAllFields();
+            Util.setMessageLabel("Airport Employee added.", Color.GREEN, messageLabel);
+        }
+        mainGridPane.setDisable(false);
+}
+
+    private void setAirlineEmployee() {
+        AirlineEmployee airlineEmployee = new AirlineEmployee();
+        airlineEmployee.setAirline_id(((Airline) workPlaceComboBox.getValue()).getId());
+        airlineEmployee.setJob_id(((AirlineJobType) jobTypeComboBox.getValue()).getId());
+        airlineEmployee.setFirst_name(firstNameTextField.getText());
+        airlineEmployee.setMiddle_name(middleNameTextField.getText());
+        airlineEmployee.setLast_name(lastNameTextField.getText());
+        airlineEmployee.setEmail(emailTextField.getText());
+        airlineEmployee.setAddress(addressTextField.getText());
+        airlineEmployee.setPhone(phoneTextField.getText());
+        airlineEmployee.setBirth_date(Date.valueOf(birthDateDatePicker.getValue()));
+
+        mainGridPane.setDisable(true);
+        messageLabel.setText("Request in progress...");
+
+        int rowsAffected = airlineEmployeeOperator.insert(airlineEmployee);
+
+        if (rowsAffected == 0) {
+            Util.setMessageLabel("Airline Employee not added.", Color.RED, messageLabel);
+        } else {
+            clearAllFields();
+            Util.setMessageLabel("Airline Employee added.", Color.GREEN, messageLabel);
+        }
+        mainGridPane.setDisable(false);
+    }
+
 
     /**
      * Use this event to limit the choices for the workPlaceComboBox and jobTypeComboBox.

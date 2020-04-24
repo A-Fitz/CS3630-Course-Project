@@ -2,12 +2,16 @@ package database.operators;
 
 import database.DatabaseConnection;
 import database.extractors.BaggageStatusTypeExtractor;
+import database.extractors.PassengerOnFlightExtractor;
 import database.tables.BaggageStatusType;
+import database.tables.PassengerOnFlight;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BaggageStatusTypeOperator {
     private static BaggageStatusTypeOperator instance = new BaggageStatusTypeOperator();
@@ -22,6 +26,19 @@ public class BaggageStatusTypeOperator {
 
     public static BaggageStatusTypeOperator getInstance() {
         return instance;
+    }
+
+    /**
+     * Selects all rows from the BaggageStatusType table. Returns them as a list of BaggageStatusType objects.
+     *
+     * @return A List of objects representing the rows in the table.
+     */
+    public List<BaggageStatusType> selectAll() {
+        BaggageStatusTypeExtractor extractor = new BaggageStatusTypeExtractor();
+
+        String queryTemplate = "SELECT * FROM baggage_status_type";
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**
