@@ -160,8 +160,8 @@ public class AddEmployeeController implements Initializable {
      * Clears all user-operable fields on the screen.
      */
     private void clearAllFields() {
-        regionComboBox.getItems().clear();
         workPlaceComboBox.getItems().clear();
+        jobTypeComboBox.getItems().clear();
         firstNameTextField.clear();
         middleNameTextField.clear();
         lastNameTextField.clear();
