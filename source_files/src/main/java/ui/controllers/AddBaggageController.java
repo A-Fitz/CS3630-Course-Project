@@ -1,11 +1,7 @@
 package ui.controllers;
 
-import database.operators.BaggageOperator;
-import database.operators.BaggageStatusTypeOperator;
-import database.operators.PassengerOnFlightOperator;
-import database.tables.Baggage;
-import database.tables.BaggageStatusType;
-import database.tables.PassengerOnFlight;
+import database.operators.*;
+import database.tables.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,12 +13,16 @@ import ui.Launcher;
 import ui.Util;
 import ui.converters.AirlineStringConverter;
 import ui.converters.BaggageStatusTypeStringConverter;
+import ui.converters.FlightStringConverter;
 import ui.converters.PassengerOnFlightStringConverter;
 
 import java.sql.Date;
+import java.util.List;
 
 public class AddBaggageController {
     private PassengerOnFlightOperator passengerOnFlightOperator = PassengerOnFlightOperator.getInstance();
+    private FlightOperator flightOperator = FlightOperator.getInstance();
+    private PassengerOperator passengerOperator = PassengerOperator.getInstance();
     private BaggageOperator baggageOperator = BaggageOperator.getInstance();
     private BaggageStatusTypeOperator baggageStatusTypeOperator = BaggageStatusTypeOperator.getInstance();
 
@@ -30,7 +30,8 @@ public class AddBaggageController {
     private GridPane mainGridPane;
     @FXML private Button backButton;
     @FXML private Button addButton;
-    @FXML private ComboBox passportOnFlightIdField;
+    @FXML private ComboBox flightIdField;
+    @FXML private ComboBox passengerIdField;
     @FXML private TextField weightTextField;
     @FXML private ComboBox baggageStatusField;
 
@@ -40,18 +41,28 @@ public class AddBaggageController {
     public void initialize()
     {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
-        passportOnFlightIdField.setConverter(new PassengerOnFlightStringConverter());
+        flightIdField.setConverter(new FlightStringConverter());
         baggageStatusField.setConverter(new BaggageStatusTypeStringConverter());
-        passportOnFlightIdField.getItems().addAll(passengerOnFlightOperator.selectAll());
+        flightIdField.getItems().addAll(flightOperator.selectAll());
         baggageStatusField.getItems().addAll(baggageStatusTypeOperator.selectAll());
     }
 
     public void addBaggageButtonClicked(ActionEvent actionEvent) {
-        if (passportOnFlightIdField.getValue()!= null &&
+        if (flightIdField.getValue()!= null &&
+                passengerIdField.getValue() != null &&
                 weightTextField.getText()!= null &&
                 baggageStatusField.getValue()!= null ) {
             Baggage baggage = new Baggage();
-            baggage.setPassenger_on_flight_id(((PassengerOnFlight)passportOnFlightIdField.getValue()).getId());
+            List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectAll();
+            PassengerOnFlight passengerOnFlight;
+            Flight chosenFlight = (Flight) flightIdField.getValue();
+            Passenger chosenPassenger = (Passenger) passengerIdField.getValue();
+            for (PassengerOnFlight pof : passengerOnFlightObjects)
+            {
+                if (pof.getFlight_id() == chosenFlight.getId()
+                    && pof.getPassenger_id() == chosenPassenger.getId())
+                    baggage.setPassenger_on_flight_id(pof.getId());
+            }
             baggage.setWeight(Float.valueOf(weightTextField.getText()));
             baggage.setBaggage_status_id(Integer.valueOf(((BaggageStatusType)baggageStatusField.getValue()).getId()));
 
@@ -80,7 +91,8 @@ public class AddBaggageController {
      * Clears all user-operable text fields on the screen.
      */
     private void clearAllTextFields() {
-        passportOnFlightIdField.setValue(null);
+        flightIdField.setValue(null);
+        passengerIdField.setValue(null);
         weightTextField.clear();
         baggageStatusField.setValue(null);
     }
@@ -93,5 +105,17 @@ public class AddBaggageController {
         Stage stage = (Stage) backButton.getScene().getWindow();
         stage.close();
         Launcher.showStage();
+    }
+
+    public void flightChosen(ActionEvent actionEvent) {
+        Flight flightChosen = (Flight) flightIdField.getValue();
+        passengerIdField.getItems().clear();
+        passengerIdField.setValue(null);
+        List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectAll();
+        for (PassengerOnFlight pof : passengerOnFlightObjects)
+        {
+            if (pof.getFlight_id() == flightChosen.getId())
+                passengerIdField.getItems().add(passengerOperator.selectById(pof.getPassenger_id()));
+        }
     }
 }

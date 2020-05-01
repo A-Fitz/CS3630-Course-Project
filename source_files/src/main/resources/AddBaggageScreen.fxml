@@ -28,8 +28,14 @@
                     <children>
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
                             <children>
-                                <Label text="Passenger On Flight Id" />
-                                <ComboBox fx:id="passportOnFlightIdField" prefHeight="26.0" prefWidth="294.0" promptText="required" HBox.hgrow="ALWAYS" />
+                                <Label text="Flight" />
+                                <ComboBox fx:id="flightIdField" prefHeight="26.0" prefWidth="294.0" onAction="#flightChosen" promptText="required" HBox.hgrow="ALWAYS" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                            <children>
+                                <Label text="Passenger" />
+                                <ComboBox fx:id="passengerIdField" prefHeight="26.0" prefWidth="294.0" promptText="required" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
