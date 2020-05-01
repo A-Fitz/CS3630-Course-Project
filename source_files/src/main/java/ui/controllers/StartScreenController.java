@@ -82,4 +82,8 @@ public class StartScreenController implements Initializable {
     public void editAirlineButtonClicked(ActionEvent actionEvent) {
         changeScreen("/EditAirlineScreen.fxml", "Edit Airline");
     }
+
+    public void addJobTypeButtonClicked(ActionEvent actionEvent) {
+        changeScreen("/AddJobTypeScreen.fxml", "Add Job Type");
+    }
 }
