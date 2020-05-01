@@ -11,10 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.Launcher;
 import ui.Util;
-import ui.converters.AirlineStringConverter;
-import ui.converters.BaggageStatusTypeStringConverter;
-import ui.converters.FlightStringConverter;
-import ui.converters.PassengerOnFlightStringConverter;
+import ui.converters.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -42,6 +39,7 @@ public class AddBaggageController {
     {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
         flightIdField.setConverter(new FlightStringConverter());
+        passengerIdField.setConverter(new PassengerStringConverter());
         baggageStatusField.setConverter(new BaggageStatusTypeStringConverter());
         flightIdField.getItems().addAll(flightOperator.selectAll());
         baggageStatusField.getItems().addAll(baggageStatusTypeOperator.selectAll());
@@ -108,14 +106,15 @@ public class AddBaggageController {
     }
 
     public void flightChosen(ActionEvent actionEvent) {
-        Flight flightChosen = (Flight) flightIdField.getValue();
-        passengerIdField.getItems().clear();
-        passengerIdField.setValue(null);
-        List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectAll();
-        for (PassengerOnFlight pof : passengerOnFlightObjects)
-        {
-            if (pof.getFlight_id() == flightChosen.getId())
-                passengerIdField.getItems().add(passengerOperator.selectById(pof.getPassenger_id()));
+        if (flightIdField.getValue() != null) {
+            Flight flightChosen = (Flight) flightIdField.getValue();
+            passengerIdField.getItems().clear();
+            passengerIdField.setValue(null);
+            List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectAll();
+            for (PassengerOnFlight pof : passengerOnFlightObjects) {
+                if (pof.getFlight_id() == flightChosen.getId())
+                    passengerIdField.getItems().add(passengerOperator.selectById(pof.getPassenger_id()));
+            }
         }
     }
 }
