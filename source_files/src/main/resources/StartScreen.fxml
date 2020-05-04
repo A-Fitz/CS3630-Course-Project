@@ -69,10 +69,10 @@
                         mnemonicParsing="false" onAction="#addJobTypeButtonClicked" text="Add Job Type"
                         GridPane.columnIndex="2" GridPane.rowIndex="2"/>
                 <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                        mnemonicParsing="false" text=""
+                        mnemonicParsing="false" onAction="#addBaggageStatusTypeButtonClicked" text="Add Baggage Status Type"
                         GridPane.columnIndex="3" GridPane.rowIndex="2"/>
                 <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                        mnemonicParsing="false" text=""
+                        mnemonicParsing="false" onAction="#addFlightStatusTypeButtonClicked" text="Add Flight Status Type"
                         GridPane.rowIndex="3"/>
                 <Button alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                         mnemonicParsing="false" text=""
