@@ -20,36 +20,34 @@ public class AirportEmployeeStringConverter extends StringConverter<AirportEmplo
      */
     @Override
     public String toString(AirportEmployee airportEmployee) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Airport: [");
-        sb.append(airportOperator.selectById(airportEmployee.getAirport_id()).getIata_code());
-        sb.append("] ");
-        sb.append("Job: [");
-        sb.append(airportJobTypeOperator.selectById(airportEmployee.getJob_id()).getTitle());
-        sb.append("] ");
-        sb.append("First Name: [");
-        sb.append(airportEmployee.getFirst_name());
-        sb.append("] ");
-        sb.append("Middle Name: [");
-        sb.append(airportEmployee.getMiddle_name());
-        sb.append("] ");
-        sb.append("Last Name: [");
-        sb.append(airportEmployee.getLast_name());
-        sb.append("] ");
-        sb.append("Email: [");
-        sb.append(airportEmployee.getEmail());
-        sb.append("] ");
-        sb.append("Address: [");
-        sb.append(airportEmployee.getAddress());
-        sb.append("] ");
-        sb.append("Phone: [");
-        sb.append(airportEmployee.getPhone());
-        sb.append("] ");
-        sb.append("Birth Date: [");
-        sb.append(airportEmployee.getBirth_date().toString());
-        sb.append("]");
 
-        return sb.toString();
+        return "Airport: [" +
+                airportOperator.selectById(airportEmployee.getAirport_id()).getIata_code() +
+                "] " +
+                "Job: [" +
+                airportJobTypeOperator.selectById(airportEmployee.getJob_id()).getTitle() +
+                "] " +
+                "First Name: [" +
+                airportEmployee.getFirst_name() +
+                "] " +
+                "Middle Name: [" +
+                airportEmployee.getMiddle_name() +
+                "] " +
+                "Last Name: [" +
+                airportEmployee.getLast_name() +
+                "] " +
+                "Email: [" +
+                airportEmployee.getEmail() +
+                "] " +
+                "Address: [" +
+                airportEmployee.getAddress() +
+                "] " +
+                "Phone: [" +
+                airportEmployee.getPhone() +
+                "] " +
+                "Birth Date: [" +
+                airportEmployee.getBirth_date().toString() +
+                "]";
     }
 
     /**

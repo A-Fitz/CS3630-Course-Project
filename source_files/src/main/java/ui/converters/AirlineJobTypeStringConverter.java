@@ -15,12 +15,10 @@ public class AirlineJobTypeStringConverter extends StringConverter<AirlineJobTyp
      */
     @Override
     public String toString(AirlineJobType airlineJobType) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Title: [");
-        sb.append(airlineJobType.getTitle());
-        sb.append("]");
 
-        return sb.toString();
+        return "Title: [" +
+                airlineJobType.getTitle() +
+                "]";
     }
 
     /**

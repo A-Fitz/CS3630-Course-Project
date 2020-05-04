@@ -15,12 +15,10 @@ public class TicketStatusTypeStringConverter extends StringConverter<TicketStatu
      */
     @Override
     public String toString(TicketStatusType ticketStatusType) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Title: [");
-        sb.append(ticketStatusType.getTitle());
-        sb.append("]");
 
-        return sb.toString();
+        return "Title: [" +
+                ticketStatusType.getTitle() +
+                "]";
     }
 
     /**

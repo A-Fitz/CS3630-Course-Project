@@ -18,15 +18,13 @@ public class TerminalStringConverter extends StringConverter<Terminal> {
      */
     @Override
     public String toString(Terminal terminal) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Terminal Code: [");
-        sb.append(terminal.getTerminal_code());
-        sb.append("] ");
-        sb.append("Airport: [");
-        sb.append(airportOperator.selectById(terminal.getAirport_id()).getIata_code());
-        sb.append("]");
 
-        return sb.toString();
+        return "Terminal Code: [" +
+                terminal.getTerminal_code() +
+                "] " +
+                "Airport: [" +
+                airportOperator.selectById(terminal.getAirport_id()).getIata_code() +
+                "]";
     }
 
     /**

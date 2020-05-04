@@ -43,7 +43,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
                             <children>
                                 <Label text="Airline" />
-                        <ComboBox fx:id="airlineComboBox" maxWidth="1.7976931348623157E308" promptText="required" onAction="#airlineChosen" HBox.hgrow="ALWAYS" />
+                                <ComboBox fx:id="airlineComboBox" maxWidth="1.7976931348623157E308" promptText="required" onAction="#airlineChosen" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="5.0">

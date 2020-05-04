@@ -15,21 +15,19 @@ public class AirportStringConverter extends StringConverter<Airport> {
      */
     @Override
     public String toString(Airport airport) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name: [");
-        sb.append(airport.getName());
-        sb.append("] ");
-        sb.append("IATA: [");
-        sb.append(airport.getIata_code());
-        sb.append("] ");
-        sb.append("City: [");
-        sb.append(airport.getCity());
-        sb.append("] ");
-        sb.append("Country: [");
-        sb.append(airport.getCountry());
-        sb.append("]");
 
-        return sb.toString();
+        return "Name: [" +
+                airport.getName() +
+                "] " +
+                "IATA: [" +
+                airport.getIata_code() +
+                "] " +
+                "City: [" +
+                airport.getCity() +
+                "] " +
+                "Country: [" +
+                airport.getCountry() +
+                "]";
     }
 
     /**

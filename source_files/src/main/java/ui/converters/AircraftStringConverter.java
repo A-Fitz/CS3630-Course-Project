@@ -18,27 +18,25 @@ public class AircraftStringConverter extends StringConverter<Aircraft> {
      */
     @Override
     public String toString(Aircraft aircraft) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Airline: [");
-        sb.append(airlineOperator.selectById(aircraft.getAirline_id()).getName());
-        sb.append("] ");
-        sb.append("Serial #: [");
-        sb.append(aircraft.getSerial_number());
-        sb.append("] ");
-        sb.append("Make: [");
-        sb.append(aircraft.getMake());
-        sb.append("] ");
-        sb.append("Model: [");
-        sb.append(aircraft.getModel());
-        sb.append("] ");
-        sb.append("Year: [");
-        sb.append(aircraft.getYear());
-        sb.append("] ");
-        sb.append("Capacity: [");
-        sb.append(aircraft.getCapacity());
-        sb.append("]");
 
-        return sb.toString();
+        return "Airline: [" +
+                airlineOperator.selectById(aircraft.getAirline_id()).getName() +
+                "] " +
+                "Serial #: [" +
+                aircraft.getSerial_number() +
+                "] " +
+                "Make: [" +
+                aircraft.getMake() +
+                "] " +
+                "Model: [" +
+                aircraft.getModel() +
+                "] " +
+                "Year: [" +
+                aircraft.getYear() +
+                "] " +
+                "Capacity: [" +
+                aircraft.getCapacity() +
+                "]";
     }
 
     /**

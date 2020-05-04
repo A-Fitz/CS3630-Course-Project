@@ -15,12 +15,10 @@ public class FlightStatusTypeStringConverter extends StringConverter<FlightStatu
      */
     @Override
     public String toString(FlightStatusType flightStatusType) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Title: [");
-        sb.append(flightStatusType.getTitle());
-        sb.append("]");
 
-        return sb.toString();
+        return "Title: [" +
+                flightStatusType.getTitle() +
+                "]";
     }
 
     /**

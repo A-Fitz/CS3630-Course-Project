@@ -15,15 +15,13 @@ public class AirlineStringConverter extends StringConverter<Airline> {
      */
     @Override
     public String toString(Airline airline) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name: [");
-        sb.append(airline.getName());
-        sb.append("] ");
-        sb.append("Abbreviation: [");
-        sb.append(airline.getAbbreviation());
-        sb.append("]");
 
-        return sb.toString();
+        return "Name: [" +
+                airline.getName() +
+                "] " +
+                "Abbreviation: [" +
+                airline.getAbbreviation() +
+                "]";
     }
 
     /**

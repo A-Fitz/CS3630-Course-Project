@@ -15,12 +15,10 @@ public class BaggageStatusTypeStringConverter extends StringConverter<BaggageSta
      */
     @Override
     public String toString(BaggageStatusType baggageStatusType) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Title: [");
-        sb.append(baggageStatusType.getTitle());
-        sb.append("]");
 
-        return sb.toString();
+        return "Title: [" +
+                baggageStatusType.getTitle() +
+                "]";
     }
 
     /**

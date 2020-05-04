@@ -22,36 +22,33 @@ public class FlightStringConverter extends StringConverter<Flight> {
      */
     @Override
     public String toString(Flight flight) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Callsign: [");
-        sb.append(flight.getCallsign());
-        sb.append("] ");
-        sb.append("Airline: [");
-        sb.append(airlineOperator.selectById(flight.getAirline_id()).getName());
-        sb.append("] ");
-        sb.append("Departure Airport: [");
-        sb.append(airportOperator.selectById(flight.getDeparture_airport_id()).getIata_code());
-        sb.append("] ");
-        sb.append("Arrival Airport: [");
-        sb.append(airportOperator.selectById(flight.getArrival_airport_id()).getIata_code());
-        sb.append("] ");
-        sb.append("Departure Gate: [");
-        sb.append(gateOperator.selectById(flight.getDeparture_gate_id()).getGate_code());
-        sb.append("] ");
-        sb.append("Arrival Gate: [");
-        sb.append(gateOperator.selectById(flight.getArrival_gate_id()).getGate_code());
-        sb.append("] ");
-        sb.append("Aircraft: [");
-        sb.append(aircraftOperator.selectById(flight.getAircraft_id()).getSerial_number());
-        sb.append("] ");
-        sb.append("Status: [");
-        sb.append(flightStatusTypeOperator.selectById(flight.getFlight_status_id()).getTitle());
-        sb.append("] ");
-        sb.append("Boarding Date: [");
-        sb.append(flight.getBoarding_date().toString());
-        sb.append("]");
-
-        return sb.toString();
+        return "Callsign: [" +
+                flight.getCallsign() +
+                "] " +
+                "Airline: [" +
+                airlineOperator.selectById(flight.getAirline_id()).getName() +
+                "] " +
+                "Departure Airport: [" +
+                airportOperator.selectById(flight.getDeparture_airport_id()).getIata_code() +
+                "] " +
+                "Arrival Airport: [" +
+                airportOperator.selectById(flight.getArrival_airport_id()).getIata_code() +
+                "] " +
+                "Departure Gate: [" +
+                gateOperator.selectById(flight.getDeparture_gate_id()).getGate_code() +
+                "] " +
+                "Arrival Gate: [" +
+                gateOperator.selectById(flight.getArrival_gate_id()).getGate_code() +
+                "] " +
+                "Aircraft: [" +
+                aircraftOperator.selectById(flight.getAircraft_id()).getSerial_number() +
+                "] " +
+                "Status: [" +
+                flightStatusTypeOperator.selectById(flight.getFlight_status_id()).getTitle() +
+                "] " +
+                "Boarding Date: [" +
+                flight.getBoarding_date().toString() +
+                "]";
     }
 
     /**

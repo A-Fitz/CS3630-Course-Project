@@ -18,15 +18,13 @@ public class GateStringConverter extends StringConverter<Gate> {
      */
     @Override
     public String toString(Gate gate) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Gate Code: [");
-        sb.append(gate.getGate_code());
-        sb.append("] ");
-        sb.append("Terminal Code: [");
-        sb.append(terminalOperator.selectById(gate.getTerminal_id()).getTerminal_code());
-        sb.append("]");
 
-        return sb.toString();
+        return "Gate Code: [" +
+                gate.getGate_code() +
+                "] " +
+                "Terminal Code: [" +
+                terminalOperator.selectById(gate.getTerminal_id()).getTerminal_code() +
+                "]";
     }
 
     /**

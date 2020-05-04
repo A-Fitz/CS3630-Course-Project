@@ -15,12 +15,10 @@ public class SeatClassTypeStringConverter extends StringConverter<SeatClassType>
      */
     @Override
     public String toString(SeatClassType seatClassType) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Title: [");
-        sb.append(seatClassType.getTitle());
-        sb.append("]");
 
-        return sb.toString();
+        return "Title: [" +
+                seatClassType.getTitle() +
+                "]";
     }
 
     /**
