@@ -29,7 +29,7 @@ public class BaggageStatusTypeOperator {
     }
 
     /**
-     * Selects all rows from the BaggageStatusType table. Returns them as a list of BaggageStatusType objects.
+     * Selects all rows from the baggage_status_type table. Returns them as a list of BaggageStatusType objects.
      *
      * @return A List of objects representing the rows in the table.
      */

@@ -41,7 +41,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
                             <children>
                                 <Label text="Weight" />
-                                <TextField fx:id="weightTextField" promptText="required" HBox.hgrow="ALWAYS" />
+                                <TextField fx:id="weightTextField" promptText="required decimal number" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="5.0">

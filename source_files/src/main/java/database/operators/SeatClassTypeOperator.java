@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SeatClassTypeOperator {
     private static SeatClassTypeOperator instance = new SeatClassTypeOperator();
@@ -25,6 +26,19 @@ public class SeatClassTypeOperator {
 
     public static SeatClassTypeOperator getInstance() {
         return instance;
+    }
+
+    /**
+     * Selects all rows from the seat_class_type table. Returns them as a list of SeatClassStatusType objects.
+     *
+     * @return A List of objects representing the rows in the table.
+     */
+    public List<SeatClassType> selectAll() {
+        SeatClassTypeExtractor extractor = new SeatClassTypeExtractor();
+
+        String queryTemplate = "SELECT * FROM seat_class_type";
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**

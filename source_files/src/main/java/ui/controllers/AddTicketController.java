@@ -1,13 +1,7 @@
 package ui.controllers;
 
-import database.operators.FlightOperator;
-import database.operators.PassengerOnFlightOperator;
-import database.operators.PassengerOperator;
-import database.operators.TicketOperator;
-import database.tables.Flight;
-import database.tables.Passenger;
-import database.tables.PassengerOnFlight;
-import database.tables.Ticket;
+import database.operators.*;
+import database.tables.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,13 +23,14 @@ public class AddTicketController {
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private PassengerOnFlightOperator passengerOnFlightOperator = PassengerOnFlightOperator.getInstance();
     private PassengerOperator passengerOperator = PassengerOperator.getInstance();
+    private SeatClassTypeOperator seatClassTypeOperator = SeatClassTypeOperator.getInstance();
 
     @FXML private GridPane mainGridPane;
     @FXML private Button backButton;
     @FXML private Button addButton;
-    @FXML private ComboBox flightIdField;
-    @FXML private ComboBox passengerIdField;
-    @FXML private TextField seatClassTextField;
+    @FXML private ComboBox<Flight> flightComboBox;
+    @FXML private ComboBox<Passenger> passengerComboBox;
+    @FXML private ComboBox<SeatClassType> seatClassComboBox;
     @FXML private TextField seatTextField;
     @FXML private TextField priceTextField;
     @FXML private Label messageLabel;
@@ -43,41 +38,47 @@ public class AddTicketController {
     @FXML
     public void initialize() {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
-        flightIdField.setConverter(new FlightStringConverter());
-        passengerIdField.setConverter(new PassengerStringConverter());
-        flightIdField.getItems().addAll(flightOperator.selectAll());
+        flightComboBox.setConverter(new FlightStringConverter());
+        passengerComboBox.setConverter(new PassengerStringConverter());
+
+        flightComboBox.getItems().addAll(flightOperator.selectAll());
+        seatClassComboBox.getItems().addAll(seatClassTypeOperator.selectAll());
     }
 
     public void addTicketButtonClicked(ActionEvent actionEvent) {
-        if (flightIdField.getValue() != null &&
-                passengerIdField.getValue() != null &&
-                seatClassTextField.getText() != null &&
-                seatTextField.getText() != null &&
-                priceTextField.getText() != null) {
-            Flight chosenFlight = (Flight) flightIdField.getValue();
-            Passenger chosenPassenger = (Passenger) passengerIdField.getValue();
-            PassengerOnFlight pof = new PassengerOnFlight();
-            pof.setFlight_id(chosenFlight.getId());
-            pof.setPassenger_id(chosenPassenger.getId());
-            passengerOnFlightOperator.insert(pof);
-            Ticket ticket = new Ticket();
-            ticket.setPassenger_on_flight_id(pof.getId());
-            ticket.setSeat_class_id(Integer.valueOf(seatClassTextField.getText()));
-            ticket.setSeat(seatClassTextField.getText());
-            ticket.setPrice(Float.valueOf(priceTextField.getText()));
-
-
+        if (flightComboBox.getValue() != null &&
+                passengerComboBox.getValue() != null &&
+                seatClassComboBox.getValue() != null &&
+                seatTextField.getText() != null && !seatTextField.getText().isEmpty() &&
+                priceTextField.getText() != null && !seatTextField.getText().isEmpty()) {
             // disable buttons until a success/failure is received
             mainGridPane.setDisable(true);
             messageLabel.setText("Request in progress...");
 
-            int rowsAffected = ticketOperator.insert(ticket);
+            // First try to add in the passenger on flight.
+            Flight chosenFlight = flightComboBox.getValue();
+            Passenger chosenPassenger = passengerComboBox.getValue();
+            PassengerOnFlight pof = new PassengerOnFlight();
+            pof.setFlight_id(chosenFlight.getId());
+            pof.setPassenger_id(chosenPassenger.getId());
+            int rowsAffected = passengerOnFlightOperator.insert(pof);
+
+            // If passenger on flight was inserted, try to make a ticket.
+            if(rowsAffected != 0) {
+                Ticket ticket = new Ticket();
+                ticket.setPassenger_on_flight_id(pof.getId());
+                ticket.setSeat_class_id(seatClassComboBox.getValue().getId());
+                ticket.setSeat(seatTextField.getText());
+                ticket.setPrice(Float.valueOf(priceTextField.getText())); // TODO exception handling
+                rowsAffected = ticketOperator.insert(ticket);
+            }
 
             if (rowsAffected == 0) {
-                // ticket not inserted (probably due to unique constraints on abbreviation or name). Display error message.
+                // Ticket not inserted. Display error message.
+                // Could be due to PassengerOnFlight not being inserted as well.
                 ui.Util.setMessageLabel("Ticket not added.", Color.RED, messageLabel);
             } else {
-                // ticket inserted. Clear each text field and display success message.
+                // Ticket inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 ui.Util.setMessageLabel("Ticket added.", Color.GREEN, messageLabel);
             }
@@ -89,15 +90,16 @@ public class AddTicketController {
     }
 
     /**
-     * Clears all user-operable text fields on the screen.
+     * Clears all user-operable text fields on the screen. Also get rid of selected values for the ComboBoxes.
+     * Do not clear the items for the Flight or Seat Class ComboBox as those don't need to be regenerated.
      */
     private void clearAllTextFields() {
-        flightIdField.setValue(null);
-        passengerIdField.setValue(null);
-        seatClassTextField.clear();
+        flightComboBox.setValue(null);
+        passengerComboBox.getItems().clear();
+        passengerComboBox.setValue(null);
+        seatClassComboBox.setValue(null);
         seatTextField.clear();
         priceTextField.clear();
-
     }
 
     /**
@@ -109,15 +111,17 @@ public class AddTicketController {
         ui.Launcher.showStage();
     }
 
+    /**
+     * Called when the user chooses a Flight in the Flight ComboBox.
+     * @param actionEvent holds extra event information
+     */
     public void flightChosen(ActionEvent actionEvent) {
-        if (flightIdField.getValue() != null) {
-            Flight flightChosen = (Flight) flightIdField.getValue();
-            passengerIdField.getItems().clear();
-            passengerIdField.setValue(null);
-            List<PassengerOnFlight> passengerOnFlightObjects = null;
+        if (flightComboBox.getValue() != null) {
+            passengerComboBox.getItems().clear();
+            passengerComboBox.setValue(null);
+            List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectByFlightId(flightComboBox.getValue().getId());
             for (PassengerOnFlight pof : passengerOnFlightObjects) {
-                if (pof.getFlight_id() == flightChosen.getId())
-                    passengerIdField.getItems().add(passengerOperator.selectById(pof.getPassenger_id()));
+                passengerComboBox.getItems().add(passengerOperator.selectById(pof.getPassenger_id()));
             }
         }
     }

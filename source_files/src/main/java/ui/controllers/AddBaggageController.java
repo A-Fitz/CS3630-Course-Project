@@ -50,16 +50,16 @@ public class AddBaggageController {
                 passengerComboBox.getValue() != null &&
                 weightTextField.getText() != null && !weightTextField.getText().isEmpty() &&
                 baggageStatusComboBox.getValue() != null) {
+            // disable buttons until a success/failure is received
+            mainGridPane.setDisable(true);
+            messageLabel.setText("Request in progress...");
+
             PassengerOnFlight passengerOnFlight = passengerOnFlightOperator.selectByPassengerAndFlightId(passengerComboBox.getValue().getId(), flightComboBox.getValue().getId());
 
             Baggage baggage = new Baggage();
             baggage.setPassenger_on_flight_id(passengerOnFlight.getId());
-            baggage.setWeight(Float.valueOf(weightTextField.getText()));
+            baggage.setWeight(Float.valueOf(weightTextField.getText())); // TODO exception handling
             baggage.setBaggage_status_id(baggageStatusComboBox.getValue().getId());
-
-            // disable buttons until a success/failure is received
-            mainGridPane.setDisable(true);
-            messageLabel.setText("Request in progress...");
 
             int rowsAffected = baggageOperator.insert(baggage);
 
@@ -79,18 +79,19 @@ public class AddBaggageController {
     }
 
     /**
-     * Clears all user-operable text fields on the screen.
+     * Clears all user-operable text fields on the screen. Also get rid of selected values for the ComboBoxes.
+     * Do not clear the items for the Flight ComboBox as those don't need to be regenerated.
      */
     private void clearAllTextFields() {
         flightComboBox.setValue(null);
         passengerComboBox.setValue(null);
+        passengerComboBox.getItems().clear();
         weightTextField.clear();
         baggageStatusComboBox.setValue(null);
     }
 
     /**
      * Called when the back button is clicked. Replaces the current screen with the main screen.
-     *
      */
     public void backButtonClicked(ActionEvent actionEvent) {
         Stage stage = (Stage) backButton.getScene().getWindow();
@@ -98,6 +99,10 @@ public class AddBaggageController {
         Launcher.showStage();
     }
 
+    /**
+     * Called when the user chooses a Flight in the Flight ComboBox.
+     * @param actionEvent holds extra event information
+     */
     public void flightChosen(ActionEvent actionEvent) {
         if (flightComboBox.getValue() != null) {
             passengerComboBox.getItems().clear();

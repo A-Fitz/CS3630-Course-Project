@@ -36,19 +36,19 @@
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
                             <children>
                                 <Label text="Flight" />
-                                <ComboBox fx:id="flightIdField" prefHeight="26.0" prefWidth="294.0" onAction="#flightChosen" promptText="required" HBox.hgrow="ALWAYS" />
+                                <ComboBox fx:id="flightComboBox" onAction="#flightChosen" maxWidth="1.7976931348623157E308" promptText="required" HBox.hgrow="ALWAYS"  />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
                             <children>
                                 <Label text="Passenger" />
-                                <ComboBox fx:id="passengerIdField" prefHeight="26.0" prefWidth="294.0" promptText="required" HBox.hgrow="ALWAYS" />
+                                <ComboBox fx:id="passengerComboBox" maxWidth="1.7976931348623157E308" promptText="required" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
                             <children>
-                                <Label text="Seat Class Id"/>
-                                <TextField fx:id="seatClassTextField" promptText="required" HBox.hgrow="ALWAYS"/>
+                                <Label text="Seat Class" />
+                                <ComboBox fx:id="seatClassComboBox" maxWidth="1.7976931348623157E308" promptText="required" HBox.hgrow="ALWAYS" />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
