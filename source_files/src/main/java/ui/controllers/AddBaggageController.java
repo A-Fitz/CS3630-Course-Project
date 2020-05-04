@@ -13,7 +13,6 @@ import ui.Launcher;
 import ui.Util;
 import ui.converters.*;
 
-import java.sql.Date;
 import java.util.List;
 
 public class AddBaggageController {
@@ -27,10 +26,10 @@ public class AddBaggageController {
     private GridPane mainGridPane;
     @FXML private Button backButton;
     @FXML private Button addButton;
-    @FXML private ComboBox flightIdField;
-    @FXML private ComboBox passengerIdField;
+    @FXML private ComboBox<Flight> flightComboBox;
+    @FXML private ComboBox<Passenger> passengerComboBox;
     @FXML private TextField weightTextField;
-    @FXML private ComboBox baggageStatusField;
+    @FXML private ComboBox<BaggageStatusType> baggageStatusComboBox;
 
     @FXML private Label messageLabel;
 
@@ -38,31 +37,25 @@ public class AddBaggageController {
     public void initialize()
     {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
-        flightIdField.setConverter(new FlightStringConverter());
-        passengerIdField.setConverter(new PassengerStringConverter());
-        baggageStatusField.setConverter(new BaggageStatusTypeStringConverter());
-        flightIdField.getItems().addAll(flightOperator.selectAll());
-        baggageStatusField.getItems().addAll(baggageStatusTypeOperator.selectAll());
+        flightComboBox.setConverter(new FlightStringConverter());
+        passengerComboBox.setConverter(new PassengerStringConverter());
+        baggageStatusComboBox.setConverter(new BaggageStatusTypeStringConverter());
+
+        flightComboBox.getItems().addAll(flightOperator.selectAll());
+        baggageStatusComboBox.getItems().addAll(baggageStatusTypeOperator.selectAll());
     }
 
     public void addBaggageButtonClicked(ActionEvent actionEvent) {
-        if (flightIdField.getValue()!= null &&
-                passengerIdField.getValue() != null &&
-                weightTextField.getText()!= null &&
-                baggageStatusField.getValue()!= null ) {
+        if (flightComboBox.getValue() != null &&
+                passengerComboBox.getValue() != null &&
+                weightTextField.getText() != null && !weightTextField.getText().isEmpty() &&
+                baggageStatusComboBox.getValue() != null) {
+            PassengerOnFlight passengerOnFlight = passengerOnFlightOperator.selectByPassengerAndFlightId(passengerComboBox.getValue().getId(), flightComboBox.getValue().getId());
+
             Baggage baggage = new Baggage();
-            List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectAll();
-            PassengerOnFlight passengerOnFlight;
-            Flight chosenFlight = (Flight) flightIdField.getValue();
-            Passenger chosenPassenger = (Passenger) passengerIdField.getValue();
-            for (PassengerOnFlight pof : passengerOnFlightObjects)
-            {
-                if (pof.getFlight_id() == chosenFlight.getId()
-                    && pof.getPassenger_id() == chosenPassenger.getId())
-                    baggage.setPassenger_on_flight_id(pof.getId());
-            }
+            baggage.setPassenger_on_flight_id(passengerOnFlight.getId());
             baggage.setWeight(Float.valueOf(weightTextField.getText()));
-            baggage.setBaggage_status_id(Integer.valueOf(((BaggageStatusType)baggageStatusField.getValue()).getId()));
+            baggage.setBaggage_status_id(baggageStatusComboBox.getValue().getId());
 
             // disable buttons until a success/failure is received
             mainGridPane.setDisable(true);
@@ -71,7 +64,7 @@ public class AddBaggageController {
             int rowsAffected = baggageOperator.insert(baggage);
 
             if (rowsAffected == 0) {
-                // Baggage not inserted (probably due to unique constraints on abbreviation or name). Display error message.
+                // Baggage not inserted. Display error message.
                 Util.setMessageLabel("Baggage not added.", Color.RED, messageLabel);
             } else {
                 // Baggage inserted. Clear each text field and display success message.
@@ -89,10 +82,10 @@ public class AddBaggageController {
      * Clears all user-operable text fields on the screen.
      */
     private void clearAllTextFields() {
-        flightIdField.setValue(null);
-        passengerIdField.setValue(null);
+        flightComboBox.setValue(null);
+        passengerComboBox.setValue(null);
         weightTextField.clear();
-        baggageStatusField.setValue(null);
+        baggageStatusComboBox.setValue(null);
     }
 
     /**
@@ -106,14 +99,12 @@ public class AddBaggageController {
     }
 
     public void flightChosen(ActionEvent actionEvent) {
-        if (flightIdField.getValue() != null) {
-            Flight flightChosen = (Flight) flightIdField.getValue();
-            passengerIdField.getItems().clear();
-            passengerIdField.setValue(null);
-            List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectAll();
+        if (flightComboBox.getValue() != null) {
+            passengerComboBox.getItems().clear();
+            passengerComboBox.setValue(null);
+            List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectByFlightId(flightComboBox.getValue().getId());
             for (PassengerOnFlight pof : passengerOnFlightObjects) {
-                if (pof.getFlight_id() == flightChosen.getId())
-                    passengerIdField.getItems().add(passengerOperator.selectById(pof.getPassenger_id()));
+                passengerComboBox.getItems().add(passengerOperator.selectById(pof.getPassenger_id()));
             }
         }
     }

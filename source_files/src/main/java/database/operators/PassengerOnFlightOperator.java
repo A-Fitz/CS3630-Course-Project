@@ -30,18 +30,46 @@ public class PassengerOnFlightOperator {
     }
 
     /**
-     * Selects all rows from the PassengerOnFlight table. Returns them as a list of PassengerOnFlight objects.
+     * Selects a passenger_on_flight row, in the form of a Java object,
+     * from the passenger_on_flight table given a passenger_id and flight_id.
      *
-     * @return A List of objects representing the rows in the table.
+     * @param flightId The value of the flight_id column for a passenger_on_flight row
+     * @return (null if no passenger_on_flight exists with that passenger_id and flight_id) or
+     * (a java object representing that passenger_on_flight row)
      */
-    public List<PassengerOnFlight> selectAll() {
+    public PassengerOnFlight selectByPassengerAndFlightId(int passengerId, int flightId) {
         PassengerOnFlightExtractor extractor = new PassengerOnFlightExtractor();
 
-        String queryTemplate = "SELECT * FROM passenger_on_flight";
+        String queryTemplate = "SELECT * FROM passenger_on_flight WHERE " +
+                PassengerOnFlight.PASSSENGER_ID_COLUMN_NAME + " = :passenger_id AND "
+                + PassengerOnFlight.FLIGHT_ID_COLUMN_NAME + " = :flight_id";
 
-        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("passenger_id", passengerId);
+        parameters.addValue("flight_id", flightId);
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor))).get(0);
     }
 
+    /**
+     * Selects all passenger_on_flight rows, in the form of a list of Java objects,
+     * from the passenger_on_flight table given a flight_id.
+     *
+     * @param flightId The value of the flight_id column for a passenger_on_flight row
+     * @return (null if no passenger_on_flight exists with that flight_id) or
+     * (A List of objects representing the rows in the table)
+     */
+    public List<PassengerOnFlight> selectByFlightId(int flightId) {
+        PassengerOnFlightExtractor extractor = new PassengerOnFlightExtractor();
+
+        String queryTemplate = "SELECT * FROM passenger_on_flight WHERE " +
+                PassengerOnFlight.FLIGHT_ID_COLUMN_NAME + " = :flight_id";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("flight_id", flightId);
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor)));
+    }
 
     /**
      * Selects a passenger_on_flight row, in the form of a Java object,

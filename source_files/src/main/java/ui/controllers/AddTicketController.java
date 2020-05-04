@@ -114,7 +114,7 @@ public class AddTicketController {
             Flight flightChosen = (Flight) flightIdField.getValue();
             passengerIdField.getItems().clear();
             passengerIdField.setValue(null);
-            List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectAll();
+            List<PassengerOnFlight> passengerOnFlightObjects = null;
             for (PassengerOnFlight pof : passengerOnFlightObjects) {
                 if (pof.getFlight_id() == flightChosen.getId())
                     passengerIdField.getItems().add(passengerOperator.selectById(pof.getPassenger_id()));
