@@ -2,12 +2,16 @@ package database.operators;
 
 import database.DatabaseConnection;
 import database.extractors.AirlineEmployeeExtractor;
+import database.extractors.FlightExtractor;
 import database.tables.AirlineEmployee;
+import database.tables.Flight;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AirlineEmployeeOperator {
     private static AirlineEmployeeOperator instance = new AirlineEmployeeOperator();
@@ -44,6 +48,19 @@ public class AirlineEmployeeOperator {
             return null;
         else
             return airlineEmployeeList.get(0);
+    }
+
+    /**
+     * Selects all rows from the flight table. Returns them as a list of Flight objects.
+     *
+     * @return A List of objects representing the rows in the table.
+     */
+    public List<AirlineEmployee> selectAll() {
+        AirlineEmployeeExtractor extractor = new AirlineEmployeeExtractor();
+
+        String queryTemplate = "SELECT * FROM airline_employee";
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**

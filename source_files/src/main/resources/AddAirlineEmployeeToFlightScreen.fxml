@@ -34,7 +34,7 @@
                             <children>
                                 <Label text="Flight"/>
                                 <ComboBox fx:id="flightComboBox" maxWidth="1.7976931348623157E308"
-                                          onAction="#flightChosen" promptText="required" HBox.hgrow="ALWAYS"/>
+                                          promptText="required" HBox.hgrow="ALWAYS"/>
                             </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
