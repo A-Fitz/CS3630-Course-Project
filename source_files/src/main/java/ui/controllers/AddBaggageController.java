@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import ui.formatters.FloatTextFormatter;
 import ui.Launcher;
 import ui.Util;
 import ui.converters.*;
@@ -37,9 +38,12 @@ public class AddBaggageController {
     public void initialize()
     {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
+
         flightComboBox.setConverter(new FlightStringConverter());
         passengerComboBox.setConverter(new PassengerStringConverter());
         baggageStatusComboBox.setConverter(new BaggageStatusTypeStringConverter());
+
+        weightTextField.setTextFormatter(new FloatTextFormatter());
 
         flightComboBox.getItems().addAll(flightOperator.selectAll());
         baggageStatusComboBox.getItems().addAll(baggageStatusTypeOperator.selectAll());
@@ -49,7 +53,8 @@ public class AddBaggageController {
         if (flightComboBox.getValue() != null &&
                 passengerComboBox.getValue() != null &&
                 weightTextField.getText() != null && !weightTextField.getText().isEmpty() &&
-                baggageStatusComboBox.getValue() != null) {
+                baggageStatusComboBox.getValue() != null)
+        {
             // disable buttons until a success/failure is received
             mainGridPane.setDisable(true);
             messageLabel.setText("Request in progress...");
@@ -58,14 +63,14 @@ public class AddBaggageController {
 
             Baggage baggage = new Baggage();
             baggage.setPassenger_on_flight_id(passengerOnFlight.getId());
-            baggage.setWeight(Float.valueOf(weightTextField.getText())); // TODO exception handling
+            baggage.setWeight(Float.parseFloat(weightTextField.getText()));
             baggage.setBaggage_status_id(baggageStatusComboBox.getValue().getId());
 
             int rowsAffected = baggageOperator.insert(baggage);
 
             if (rowsAffected == 0) {
                 // Baggage not inserted. Display error message.
-                Util.setMessageLabel("Baggage not added.", Color.RED, messageLabel);
+                Util.setMessageLabel("Baggage not added.", Color.RED, messageLabel); //TODO: why?
             } else {
                 // Baggage inserted. Clear each text field and display success message.
                 clearAllTextFields();

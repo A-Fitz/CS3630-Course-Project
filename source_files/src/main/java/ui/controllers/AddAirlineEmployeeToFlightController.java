@@ -78,7 +78,7 @@ public class AddAirlineEmployeeToFlightController implements Initializable {
             int rowsAffected = airlineEmployeeOnFlightOperator.insert(airlineEmployeeOnFlight);
 
             if (rowsAffected == 0)
-                Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel);
+                Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel); //TODO : what went wrong?
             else {
                 clearAllFields();
                 Util.setMessageLabel("Airline employee was added to flight.", Color.GREEN, messageLabel);

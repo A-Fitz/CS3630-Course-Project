@@ -12,8 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import ui.formatters.FloatTextFormatter;
 import ui.converters.FlightStringConverter;
-import ui.converters.PassengerOnFlightStringConverter;
 import ui.converters.PassengerStringConverter;
 
 import java.util.List;
@@ -40,6 +40,8 @@ public class AddTicketController {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
         flightComboBox.setConverter(new FlightStringConverter());
         passengerComboBox.setConverter(new PassengerStringConverter());
+
+        priceTextField.setTextFormatter(new FloatTextFormatter());
 
         flightComboBox.getItems().addAll(flightOperator.selectAll());
         seatClassComboBox.getItems().addAll(seatClassTypeOperator.selectAll());
@@ -69,14 +71,14 @@ public class AddTicketController {
                 ticket.setPassenger_on_flight_id(pof.getId());
                 ticket.setSeat_class_id(seatClassComboBox.getValue().getId());
                 ticket.setSeat(seatTextField.getText());
-                ticket.setPrice(Float.valueOf(priceTextField.getText())); // TODO exception handling
+                ticket.setPrice(Float.parseFloat(priceTextField.getText()));
                 rowsAffected = ticketOperator.insert(ticket);
             }
 
             if (rowsAffected == 0) {
                 // Ticket not inserted. Display error message.
                 // Could be due to PassengerOnFlight not being inserted as well.
-                ui.Util.setMessageLabel("Ticket not added.", Color.RED, messageLabel);
+                ui.Util.setMessageLabel("Ticket not added.", Color.RED, messageLabel); //TODO: why?
             } else {
                 // Ticket inserted. Clear each text field and display success message.
                 clearAllTextFields();
