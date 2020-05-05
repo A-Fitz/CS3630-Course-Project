@@ -1,7 +1,7 @@
 package ui.controllers;
 
-import database.operators.SeatClassTypeOperator;
-import database.tables.SeatClassType;
+import database.operators.TicketStatusTypeOperator;
+import database.tables.TicketStatusType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,8 +22,8 @@ import java.util.ResourceBundle;
 /**
  * Class representing an example controller for others to use. Is related to the resources/ExampleScreen.fxml FXML file for the UI.
  */
-public class AddSeatClassTypeController implements Initializable {
-    SeatClassTypeOperator seatClassTypeOperator = SeatClassTypeOperator.getInstance();
+public class AddTicketStatusTypeController implements Initializable {
+    TicketStatusTypeOperator ticketStatusTypeOperator = TicketStatusTypeOperator.getInstance();
 
     // Put your JavaFX components here. Buttons, Labels, TextFields, etc. The name of this variable will be the fx:id of the component in FXML.
     // Follow camelCase naming with the component type as the last phrase in the word (i.e. 'Button' is the last phrase).
@@ -47,27 +47,27 @@ public class AddSeatClassTypeController implements Initializable {
      *
      * @param actionEvent Event representing the action of the button firing, holds extra information.
      */
-    public void addSeatClassTypeButtonClicked(ActionEvent actionEvent) {
+    public void addTicketStatusTypeButtonClicked(ActionEvent actionEvent) {
 
         if (titleTextField.getText() != null) {
             // Disable interacting with components while the operator is running. Must be done for multithreaded environment.
             mainGridPane.setDisable(true);
             messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
 
-            SeatClassType seatClassType = new SeatClassType();
-            seatClassType.setTitle(titleTextField.getText());
+            TicketStatusType ticketStatusType = new TicketStatusType();
+            ticketStatusType.setTitle(titleTextField.getText());
 
-            int rowsAffected = seatClassTypeOperator.insert(seatClassType);
+            int rowsAffected = ticketStatusTypeOperator.insert(ticketStatusType);
 
             if (rowsAffected == 0)
                 Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel);
             else {
                 clearAllFields();
-                Util.setMessageLabel("Seat class type added.", Color.GREEN, messageLabel);
+                Util.setMessageLabel("Ticket status type added.", Color.GREEN, messageLabel);
             }
 
         } else {
-            Util.setMessageLabel("Seat class type not added. Please fill all fields.", Color.RED, messageLabel);
+            Util.setMessageLabel("Ticket status type not added. Please fill all fields.", Color.RED, messageLabel);
         }
         mainGridPane.setDisable(false);
     }

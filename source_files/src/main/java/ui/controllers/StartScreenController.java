@@ -102,4 +102,8 @@ public class StartScreenController implements Initializable {
     public void addSeatClassTypeButtonClicked(ActionEvent actionEvent) {
         changeScreen("/AddSeatClassTypeScreen.fxml", "Add Seat Class Type");
     }
+
+    public void addTicketStatusTypeButtonClicked(ActionEvent actionEvent) {
+        changeScreen("/AddTicketStatusTypeScreen.fxml", "Add Ticket Status Type");
+    }
 }
