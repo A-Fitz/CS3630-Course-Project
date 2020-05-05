@@ -1,7 +1,7 @@
 package ui.converters;
 
 import database.operators.TerminalOperator;
-import database.tables.Gate;
+import database.tables.base.Gate;
 import javafx.util.StringConverter;
 
 /**

@@ -1,6 +1,6 @@
 package ui.converters;
 
-import database.tables.FlightStatusType;
+import database.tables.base.FlightStatusType;
 import javafx.util.StringConverter;
 
 /**

@@ -1,6 +1,6 @@
 package ui.converters;
 
-import database.tables.BaggageStatusType;
+import database.tables.base.BaggageStatusType;
 import javafx.util.StringConverter;
 
 /**

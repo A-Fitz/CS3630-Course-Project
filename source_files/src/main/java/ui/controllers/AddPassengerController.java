@@ -1,7 +1,7 @@
 package ui.controllers;
 
 import database.operators.PassengerOperator;
-import database.tables.Passenger;
+import database.tables.base.Passenger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

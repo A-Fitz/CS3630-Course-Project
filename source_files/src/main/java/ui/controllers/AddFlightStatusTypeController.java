@@ -1,7 +1,7 @@
 package ui.controllers;
 
 import database.operators.FlightStatusTypeOperator;
-import database.tables.FlightStatusType;
+import database.tables.base.FlightStatusType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,7 +1,7 @@
 package ui.controllers;
 
 import database.operators.*;
-import database.tables.*;
+import database.tables.base.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +16,6 @@ import ui.converters.*;
 
 import java.net.URL;
 import java.sql.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddEmployeeController implements Initializable {

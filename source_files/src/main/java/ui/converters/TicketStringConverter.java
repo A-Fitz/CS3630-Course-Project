@@ -1,7 +1,7 @@
 package ui.converters;
 
 import database.operators.*;
-import database.tables.Ticket;
+import database.tables.base.Ticket;
 import javafx.util.StringConverter;
 
 /**

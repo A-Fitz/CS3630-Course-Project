@@ -2,8 +2,8 @@ package ui.controllers;
 
 import database.operators.AircraftOperator;
 import database.operators.AirlineOperator;
-import database.tables.Aircraft;
-import database.tables.Airline;
+import database.tables.base.Aircraft;
+import database.tables.base.Airline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

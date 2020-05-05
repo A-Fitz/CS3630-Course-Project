@@ -1,8 +1,8 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.extractors.SeatClassTypeExtractor;
-import database.tables.SeatClassType;
+import database.extractors.base.SeatClassTypeExtractor;
+import database.tables.base.SeatClassType;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

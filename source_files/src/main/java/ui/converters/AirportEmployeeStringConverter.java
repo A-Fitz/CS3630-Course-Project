@@ -2,7 +2,7 @@ package ui.converters;
 
 import database.operators.AirportJobTypeOperator;
 import database.operators.AirportOperator;
-import database.tables.AirportEmployee;
+import database.tables.base.AirportEmployee;
 import javafx.util.StringConverter;
 
 /**

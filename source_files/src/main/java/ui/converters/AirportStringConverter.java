@@ -1,6 +1,6 @@
 package ui.converters;
 
-import database.tables.Airport;
+import database.tables.base.Airport;
 import javafx.util.StringConverter;
 
 /**

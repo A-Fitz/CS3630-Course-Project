@@ -1,6 +1,6 @@
 package ui.converters;
 
-import database.tables.SeatClassType;
+import database.tables.base.SeatClassType;
 import javafx.util.StringConverter;
 
 /**

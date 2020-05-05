@@ -1,7 +1,7 @@
 package ui.controllers;
 
 import database.operators.*;
-import database.tables.*;
+import database.tables.base.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

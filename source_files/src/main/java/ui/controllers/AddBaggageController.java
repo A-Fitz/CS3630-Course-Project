@@ -1,7 +1,8 @@
 package ui.controllers;
 
 import database.operators.*;
-import database.tables.*;
+import database.tables.base.*;
+import database.tables.information.FlightInformation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +28,7 @@ public class AddBaggageController {
     private GridPane mainGridPane;
     @FXML private Button backButton;
     @FXML private Button addButton;
-    @FXML private ComboBox<Flight> flightComboBox;
+    @FXML private ComboBox<FlightInformation> flightComboBox;
     @FXML private ComboBox<Passenger> passengerComboBox;
     @FXML private TextField weightTextField;
     @FXML private ComboBox<BaggageStatusType> baggageStatusComboBox;
@@ -39,13 +40,12 @@ public class AddBaggageController {
     {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
 
-        flightComboBox.setConverter(new FlightStringConverter());
         passengerComboBox.setConverter(new PassengerStringConverter());
         baggageStatusComboBox.setConverter(new BaggageStatusTypeStringConverter());
 
         weightTextField.setTextFormatter(new FloatTextFormatter());
 
-        flightComboBox.getItems().addAll(flightOperator.selectAll());
+        flightComboBox.getItems().addAll(flightOperator.getInformationForAll());
         baggageStatusComboBox.getItems().addAll(baggageStatusTypeOperator.selectAll());
     }
 

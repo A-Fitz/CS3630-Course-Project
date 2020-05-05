@@ -4,7 +4,7 @@ import database.operators.BaggageStatusTypeOperator;
 import database.operators.FlightOperator;
 import database.operators.PassengerOnFlightOperator;
 import database.operators.PassengerOperator;
-import database.tables.Baggage;
+import database.tables.base.Baggage;
 import javafx.util.StringConverter;
 
 /**

@@ -1,9 +1,7 @@
 package ui.controllers;
 
-import database.operators.AirlineOperator;
 import database.operators.BaggageStatusTypeOperator;
-import database.tables.Airline;
-import database.tables.BaggageStatusType;
+import database.tables.base.BaggageStatusType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

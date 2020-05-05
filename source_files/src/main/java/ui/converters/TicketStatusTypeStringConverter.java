@@ -1,6 +1,6 @@
 package ui.converters;
 
-import database.tables.TicketStatusType;
+import database.tables.base.TicketStatusType;
 import javafx.util.StringConverter;
 
 /**

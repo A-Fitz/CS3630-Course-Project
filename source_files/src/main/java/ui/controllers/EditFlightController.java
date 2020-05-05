@@ -1,7 +1,8 @@
 package ui.controllers;
 
 import database.operators.*;
-import database.tables.*;
+import database.tables.base.*;
+import database.tables.information.FlightInformation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,7 +36,7 @@ public class EditFlightController implements Initializable {
     @FXML private GridPane mainGridPane;
     @FXML private Button backButton;
     @FXML private Label messageLabel;
-    @FXML private ComboBox<Flight> flightChoiceComboBox;
+    @FXML private ComboBox<FlightInformation> flightChoiceComboBox;
     @FXML private TextField callsignTextField;
     @FXML private ComboBox<Airline> airlineComboBox;
     @FXML private ComboBox<Airport> departureAirportComboBox;
@@ -52,7 +53,6 @@ public class EditFlightController implements Initializable {
         {
             backButton.getScene().getRoot().requestFocus();
 
-            flightChoiceComboBox.setConverter(new FlightStringConverter());
             airlineComboBox.setConverter(new AirlineStringConverter());
             departureAirportComboBox.setConverter(new AirportStringConverter());
             arrivalAirportComboBox.setConverter(new AirportStringConverter());
@@ -63,7 +63,7 @@ public class EditFlightController implements Initializable {
         });
 
         // Fill Flight Choice ComboBox.
-        flightChoiceComboBox.getItems().addAll(flightOperator.selectAll());
+        flightChoiceComboBox.getItems().addAll(flightOperator.getInformationForAll());
     }
 
     /**
@@ -73,7 +73,7 @@ public class EditFlightController implements Initializable {
      * @param actionEvent Event representing the action of the combobox choice being chosen, holds extra information.
      */
     public void flightChosen(ActionEvent actionEvent) {
-        Flight flightChosen = flightChoiceComboBox.getValue();
+        Flight flightChosen = flightOperator.selectById(flightChoiceComboBox.getValue().getId());
 
         callsignTextField.setText(flightChosen.getCallsign());
 

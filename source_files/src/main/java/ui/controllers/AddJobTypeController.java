@@ -1,7 +1,8 @@
 package ui.controllers;
 
 import database.operators.*;
-import database.tables.*;
+import database.tables.base.AirlineJobType;
+import database.tables.base.AirportJobType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +14,6 @@ import ui.Launcher;
 import ui.Util;
 
 import java.net.URL;
-import java.sql.Date;
 import java.util.ResourceBundle;
 
 public class AddJobTypeController {

@@ -1,6 +1,6 @@
 package ui.converters;
 
-import database.tables.AirlineJobType;
+import database.tables.base.AirlineJobType;
 import javafx.util.StringConverter;
 
 /**

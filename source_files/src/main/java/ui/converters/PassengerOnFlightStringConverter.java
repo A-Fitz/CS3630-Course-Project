@@ -1,7 +1,6 @@
 package ui.converters;
 
-import database.tables.Passenger;
-import database.tables.PassengerOnFlight;
+import database.tables.base.PassengerOnFlight;
 import javafx.util.StringConverter;
 
 public class PassengerOnFlightStringConverter extends StringConverter<PassengerOnFlight> {

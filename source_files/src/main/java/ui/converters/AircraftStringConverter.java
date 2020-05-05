@@ -1,7 +1,7 @@
 package ui.converters;
 
 import database.operators.AirlineOperator;
-import database.tables.Aircraft;
+import database.tables.base.Aircraft;
 import javafx.util.StringConverter;
 
 /**

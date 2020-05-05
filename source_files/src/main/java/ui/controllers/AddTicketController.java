@@ -1,7 +1,8 @@
 package ui.controllers;
 
 import database.operators.*;
-import database.tables.*;
+import database.tables.base.*;
+import database.tables.information.FlightInformation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.formatters.FloatTextFormatter;
-import ui.converters.FlightStringConverter;
 import ui.converters.PassengerStringConverter;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class AddTicketController {
     @FXML private GridPane mainGridPane;
     @FXML private Button backButton;
     @FXML private Button addButton;
-    @FXML private ComboBox<Flight> flightComboBox;
+    @FXML private ComboBox<FlightInformation> flightComboBox;
     @FXML private ComboBox<Passenger> passengerComboBox;
     @FXML private ComboBox<SeatClassType> seatClassComboBox;
     @FXML private TextField seatTextField;
@@ -38,12 +38,11 @@ public class AddTicketController {
     @FXML
     public void initialize() {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
-        flightComboBox.setConverter(new FlightStringConverter());
         passengerComboBox.setConverter(new PassengerStringConverter());
 
         priceTextField.setTextFormatter(new FloatTextFormatter());
 
-        flightComboBox.getItems().addAll(flightOperator.selectAll());
+        flightComboBox.getItems().addAll(flightOperator.getInformationForAll());
         seatClassComboBox.getItems().addAll(seatClassTypeOperator.selectAll());
     }
 
@@ -58,7 +57,7 @@ public class AddTicketController {
             messageLabel.setText("Request in progress...");
 
             // First try to add in the passenger on flight.
-            Flight chosenFlight = flightComboBox.getValue();
+            Flight chosenFlight = flightOperator.selectById(flightComboBox.getValue().getId());
             Passenger chosenPassenger = passengerComboBox.getValue();
             PassengerOnFlight pof = new PassengerOnFlight();
             pof.setFlight_id(chosenFlight.getId());
