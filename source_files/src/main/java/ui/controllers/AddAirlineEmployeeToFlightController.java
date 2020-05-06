@@ -66,10 +66,10 @@ public class AddAirlineEmployeeToFlightController implements Initializable {
             mainGridPane.setDisable(true);
             messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
 
-            AirlineEmployee airlineEmployee = airlineEmployeeOperator.selectById(employeeComboBox.getValue().getId());
             Flight flight = flightOperator.selectById(flightComboBox.getValue().getId());
+
             AirlineEmployeeOnFlight airlineEmployeeOnFlight = new AirlineEmployeeOnFlight();
-            airlineEmployeeOnFlight.setAirline_employee_id(airlineEmployee.getId());
+            airlineEmployeeOnFlight.setAirline_employee_id(employeeComboBox.getValue().getId());
             airlineEmployeeOnFlight.setFlight_id(flight.getId());
 
             int rowsAffected = airlineEmployeeOnFlightOperator.insert(airlineEmployeeOnFlight);

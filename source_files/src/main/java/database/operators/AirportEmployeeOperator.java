@@ -2,12 +2,18 @@ package database.operators;
 
 import database.DatabaseConnection;
 import database.extractors.base.AirportEmployeeExtractor;
-import database.tables.base.AirportEmployee;
+import database.extractors.information.AirlineEmployeeInformationExtractor;
+import database.extractors.information.AirportEmployeeInformationExtractor;
+import database.tables.base.*;
+import database.tables.information.AirlineEmployeeInformation;
+import database.tables.information.AirportEmployeeInformation;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AirportEmployeeOperator {
     private static AirportEmployeeOperator instance = new AirportEmployeeOperator();
@@ -22,6 +28,90 @@ public class AirportEmployeeOperator {
 
     public static AirportEmployeeOperator getInstance() {
         return instance;
+    }
+
+    public AirportEmployeeInformation getInformationFromId(int airportEmployeeId)
+    {
+        AirportEmployeeInformationExtractor extractor = new AirportEmployeeInformationExtractor();
+
+        String queryTemplate = "SELECT airport_employee." + AirportEmployee.ID_COLUMN_NAME + ", "
+                + "airport." + Airport.NAME_COLUMN_NAME + " AS " + AirportEmployeeInformation.AIRPORT_NAME_COLUMN_NAME + ", "
+                + "airport_job_type." + AirportJobType.ID_COLUMN_NAME + " AS " + AirportEmployeeInformation.JOB_TITLE_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.FIRST_NAME_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.MIDDLE_NAME_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.LAST_NAME_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.EMAIL_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.ADDRESS_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.PHONE_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.BIRTH_DATE_COLUMN_NAME + " "
+                + "FROM airport_employee "
+                + "INNER JOIN airport ON (airport." + Airport.ID_COLUMN_NAME + " = airport_employee." + AirportEmployee.AIRPORT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN airport_job_type ON (airport_job_type." + AirportJobType.ID_COLUMN_NAME + " = airport_employee." + AirportEmployee.JOB_ID_COLUMN_NAME + ") "
+                + "WHERE airport_employee." + AirportEmployee.ID_COLUMN_NAME + " = :airportEmployeeId";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("airportEmployeeId", airportEmployeeId);
+
+        List<AirportEmployeeInformation> airportEmployeeInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (airportEmployeeInformationList == null || airportEmployeeInformationList.size() == 0)
+            return null;
+        else
+            return airportEmployeeInformationList.get(0);
+    }
+
+    public List<AirportEmployeeInformation> getInformationFromListOfIds(List<Integer> airportEmployeeIds)
+    {
+        AirportEmployeeInformationExtractor extractor = new AirportEmployeeInformationExtractor();
+
+        String queryTemplate = "SELECT airport_employee." + AirportEmployee.ID_COLUMN_NAME + ", "
+                + "airport." + Airport.NAME_COLUMN_NAME + " AS " + AirportEmployeeInformation.AIRPORT_NAME_COLUMN_NAME + ", "
+                + "airport_job_type." + AirportJobType.ID_COLUMN_NAME + " AS " + AirportEmployeeInformation.JOB_TITLE_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.FIRST_NAME_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.MIDDLE_NAME_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.LAST_NAME_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.EMAIL_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.ADDRESS_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.PHONE_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.BIRTH_DATE_COLUMN_NAME + " "
+                + "FROM airport_employee "
+                + "INNER JOIN airport ON (airport." + Airport.ID_COLUMN_NAME + " = airport_employee." + AirportEmployee.AIRPORT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN airport_job_type ON (airport_job_type." + AirportJobType.ID_COLUMN_NAME + " = airport_employee." + AirportEmployee.JOB_ID_COLUMN_NAME + ") "
+                + "WHERE airport_employee." + AirportEmployee.ID_COLUMN_NAME + " IN :airportEmployeeIds";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("airportEmployeeIds", airportEmployeeIds);
+
+        List<AirportEmployeeInformation> airportEmployeeInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (airportEmployeeInformationList == null || airportEmployeeInformationList.size() == 0)
+            return null;
+        else
+            return airportEmployeeInformationList;
+    }
+
+    public List<AirportEmployeeInformation> getInformationForAll()
+    {
+        AirportEmployeeInformationExtractor extractor = new AirportEmployeeInformationExtractor();
+
+        String queryTemplate = "SELECT airport_employee." + AirportEmployee.ID_COLUMN_NAME + ", "
+                + "airport." + Airport.NAME_COLUMN_NAME + " AS " + AirportEmployeeInformation.AIRPORT_NAME_COLUMN_NAME + ", "
+                + "airport_job_type." + AirportJobType.ID_COLUMN_NAME + " AS " + AirportEmployeeInformation.JOB_TITLE_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.FIRST_NAME_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.MIDDLE_NAME_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.LAST_NAME_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.EMAIL_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.ADDRESS_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.PHONE_COLUMN_NAME + ", "
+                + "airport_employee." + AirportEmployee.BIRTH_DATE_COLUMN_NAME + " "
+                + "FROM airport_employee "
+                + "INNER JOIN airport ON (airport." + Airport.ID_COLUMN_NAME + " = airport_employee." + AirportEmployee.AIRPORT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN airport_job_type ON (airport_job_type." + AirportJobType.ID_COLUMN_NAME + " = airport_employee." + AirportEmployee.JOB_ID_COLUMN_NAME + ")";
+
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**

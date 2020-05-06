@@ -2,12 +2,18 @@ package database.operators;
 
 import database.DatabaseConnection;
 import database.extractors.base.GateExtractor;
-import database.tables.base.Gate;
+import database.extractors.information.FlightInformationExtractor;
+import database.extractors.information.GateInformationExtractor;
+import database.tables.base.*;
+import database.tables.information.FlightInformation;
+import database.tables.information.GateInformation;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GateOperator {
     private static GateOperator instance = new GateOperator();
@@ -24,26 +30,87 @@ public class GateOperator {
         return instance;
     }
 
-    /**
-     * Selects all rows of the gate table, in the form of a List of Java objects, that have the given terminal_id.
-     *
-     * @param terminal_id The value of the terminal_id column for a gate row
-     * @return (null if no gate row exists with that terminal_id) (a List of Gate objects if rows exist with that terminal_id)
-     */
-    public List<Gate> selectByTerminalId(int terminal_id) {
-        GateExtractor extractor = new GateExtractor();
+    public GateInformation getInformationFromId(int gateId)
+    {
+        GateInformationExtractor extractor = new GateInformationExtractor();
 
-        String queryTemplate = "SELECT * FROM gate WHERE " + Gate.TERMINAL_ID_COLUMN_NAME + " = :terminal_id";
+        String queryTemplate = "SELECT gate." + Flight.ID_COLUMN_NAME + ", "
+                + "gate." + Gate.GATE_CODE_COLUMN_NAME + ", "
+                + "terminal." + Terminal.TERMINAL_CODE_COLUMN_NAME + " "
+                + "FROM gate "
+                + "INNER JOIN terminal ON (terminal." + Terminal.ID_COLUMN_NAME + " = gate." + Gate.TERMINAL_ID_COLUMN_NAME + ") "
+                + "WHERE gate." + Gate.ID_COLUMN_NAME + " = :gateId";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("terminal_id", terminal_id);
+        parameters.addValue("gateId", gateId);
 
-        List<Gate> gateList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
+        List<GateInformation> gateInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
 
-        if (gateList == null || gateList.size() == 0)
+        if (gateInformationList == null || gateInformationList.size() == 0)
             return null;
         else
-            return gateList;
+            return gateInformationList.get(0);
+    }
+
+    public List<GateInformation> getInformationFromAirportId(int airportId)
+    {
+        GateInformationExtractor extractor = new GateInformationExtractor();
+
+        String queryTemplate = "SELECT gate." + Flight.ID_COLUMN_NAME + ", "
+                + "gate." + Gate.GATE_CODE_COLUMN_NAME + ", "
+                + "terminal." + Terminal.TERMINAL_CODE_COLUMN_NAME + " "
+                + "FROM gate "
+                + "INNER JOIN terminal ON (terminal." + Terminal.ID_COLUMN_NAME + " = gate." + Gate.TERMINAL_ID_COLUMN_NAME + ") "
+                + "INNER JOIN airport ON (airport." + Airport.ID_COLUMN_NAME + " = terminal." + Terminal.AIRPORT_ID_COLUMN_NAME + ") "
+                + "WHERE airport." + Airport.ID_COLUMN_NAME + " = :airportId";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("airportId", airportId);
+
+        List<GateInformation> gateInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (gateInformationList == null || gateInformationList.size() == 0)
+            return null;
+        else
+            return gateInformationList;
+    }
+
+    public List<GateInformation> getInformationFromListOfId(List<Integer> gateIds)
+    {
+        GateInformationExtractor extractor = new GateInformationExtractor();
+
+        String queryTemplate = "SELECT gate." + Flight.ID_COLUMN_NAME + ", "
+                + "gate." + Gate.GATE_CODE_COLUMN_NAME + ", "
+                + "terminal." + Terminal.TERMINAL_CODE_COLUMN_NAME + " "
+                + "FROM gate "
+                + "INNER JOIN terminal ON (terminal." + Terminal.ID_COLUMN_NAME + " = gate." + Gate.TERMINAL_ID_COLUMN_NAME + ") "
+                + "WHERE gate." + Gate.ID_COLUMN_NAME + " IN :gateIds";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("gateIds", gateIds);
+
+        List<GateInformation> gateInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (gateInformationList == null || gateInformationList.size() == 0)
+            return null;
+        else
+            return gateInformationList;
+    }
+
+    public List<GateInformation> getInformationFromAll()
+    {
+        GateInformationExtractor extractor = new GateInformationExtractor();
+
+        String queryTemplate = "SELECT gate." + Flight.ID_COLUMN_NAME + ", "
+                + "gate." + Gate.GATE_CODE_COLUMN_NAME + ", "
+                + "terminal." + Terminal.TERMINAL_CODE_COLUMN_NAME + " "
+                + "FROM gate "
+                + "INNER JOIN terminal ON (terminal." + Terminal.ID_COLUMN_NAME + " = gate." + Gate.TERMINAL_ID_COLUMN_NAME + ")";
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**

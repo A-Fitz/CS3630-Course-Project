@@ -3,6 +3,7 @@ package ui.controllers;
 import database.operators.*;
 import database.tables.base.*;
 import database.tables.information.FlightInformation;
+import database.tables.information.GateInformation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,8 +42,8 @@ public class EditFlightController implements Initializable {
     @FXML private ComboBox<Airline> airlineComboBox;
     @FXML private ComboBox<Airport> departureAirportComboBox;
     @FXML private ComboBox<Airport> arrivalAirportComboBox;
-    @FXML private ComboBox<Gate> departureGateComboBox;
-    @FXML private ComboBox<Gate> arrivalGateComboBox;
+    @FXML private ComboBox<GateInformation> departureGateComboBox;
+    @FXML private ComboBox<GateInformation> arrivalGateComboBox;
     @FXML private ComboBox<Aircraft> aircraftComboBox;
     @FXML private ComboBox<FlightStatusType> flightStatusComboBox;
     @FXML private DatePicker boardingDateDatePicker;
@@ -56,8 +57,6 @@ public class EditFlightController implements Initializable {
             airlineComboBox.setConverter(new AirlineStringConverter());
             departureAirportComboBox.setConverter(new AirportStringConverter());
             arrivalAirportComboBox.setConverter(new AirportStringConverter());
-            departureGateComboBox.setConverter(new GateStringConverter());
-            arrivalGateComboBox.setConverter(new GateStringConverter());
             aircraftComboBox.setConverter(new AircraftStringConverter());
             flightStatusComboBox.setConverter(new FlightStatusTypeStringConverter());
         });
@@ -89,9 +88,9 @@ public class EditFlightController implements Initializable {
         arrivalAirportComboBox.getItems().addAll(airportOperator.selectAll());
         arrivalAirportComboBox.setValue(airportOperator.selectById(flightChosen.getArrival_airport_id()));
 
-        departureGateComboBox.setValue(gateOperator.selectById(flightChosen.getDeparture_gate_id()));
+        departureGateComboBox.setValue(gateOperator.getInformationFromId(flightChosen.getDeparture_gate_id()));
 
-        arrivalGateComboBox.setValue(gateOperator.selectById(flightChosen.getArrival_gate_id()));
+        arrivalGateComboBox.setValue(gateOperator.getInformationFromId(flightChosen.getArrival_gate_id()));
 
         aircraftComboBox.getItems().clear();
         aircraftComboBox.getItems().addAll(aircraftOperator.selectByAirlineId(flightChosen.getAirline_id()));
@@ -127,9 +126,7 @@ public class EditFlightController implements Initializable {
         Airport arrivalAirportChosen = arrivalAirportComboBox.getValue();
         arrivalGateComboBox.getItems().clear();
         arrivalGateComboBox.setValue(null);
-        List<Terminal> arrivalTerminals = terminalOperator.selectByAirportId(arrivalAirportChosen.getId());
-        for (Terminal t : arrivalTerminals)
-            arrivalGateComboBox.getItems().addAll(gateOperator.selectByTerminalId(t.getId()));
+        arrivalGateComboBox.getItems().addAll(gateOperator.getInformationFromAirportId(arrivalAirportChosen.getId()));
     }
 
 
@@ -143,9 +140,7 @@ public class EditFlightController implements Initializable {
         Airport departureAirportChosen = departureAirportComboBox.getValue();
         departureGateComboBox.getItems().clear();
         departureGateComboBox.setValue(null);
-        List<Terminal> departureTerminals = terminalOperator.selectByAirportId(departureAirportChosen.getId());
-        for (Terminal t : departureTerminals)
-            departureGateComboBox.getItems().addAll(gateOperator.selectByTerminalId(t.getId()));
+        departureGateComboBox.getItems().addAll(gateOperator.getInformationFromAirportId(departureAirportChosen.getId()));
     }
 
     /**

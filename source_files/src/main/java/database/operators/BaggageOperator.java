@@ -2,12 +2,18 @@ package database.operators;
 
 import database.DatabaseConnection;
 import database.extractors.base.BaggageExtractor;
-import database.tables.base.Baggage;
+import database.extractors.information.AirlineEmployeeInformationExtractor;
+import database.extractors.information.BaggageInformationExtractor;
+import database.tables.base.*;
+import database.tables.information.AirlineEmployeeInformation;
+import database.tables.information.BaggageInformation;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BaggageOperator {
     private static BaggageOperator instance = new BaggageOperator();
@@ -22,6 +28,92 @@ public class BaggageOperator {
 
     public static BaggageOperator getInstance() {
         return instance;
+    }
+
+    public BaggageInformation getInformationFromId(int baggageId)
+    {
+        BaggageInformationExtractor extractor = new BaggageInformationExtractor();
+
+        String queryTemplate = "SELECT baggage." + Baggage.ID_COLUMN_NAME + ", "
+                + "flight." + Flight.CALLSIGN_COLUMN_NAME + " AS " + BaggageInformation.FLIGHT_CALLSIGN_COLUMN_NAME + ", "
+                + "passenger." + Passenger.PASSPORT_NUMBER_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_PASSPORT_NUMBER_COLUMN_NAME + ", "
+                + "passenger." + Passenger.FIRST_NAME_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_FIRST_NAME_COLUMN_NAME + ", "
+                + "passenger." + Passenger.MIDDLE_NAME_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_MIDDLE_NAME_COLUMN_NAME + ", "
+                + "passenger." + Passenger.LAST_NAME_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_LAST_NAME_COLUMN_NAME + ", "
+                + "passenger." + Passenger.BIRTH_DATE_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_BIRTH_DATE_COLUMN_NAME + ", "
+                + "baggage." + Baggage.WEIGHT_COLUMN_NAME + ", "
+                + "baggage_status_type." + BaggageStatusType.TITLE_COLUMN_NAME + " AS " + BaggageInformation.BAGGAGE_STATUS_TITLE_COLUMN_NAME + " "
+                + "FROM baggage "
+                + "INNER JOIN passenger_on_flight ON (passenger_on_flight." + PassengerOnFlight.ID_COLUMN_NAME + " = baggage." + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN flight ON (flight." + Flight.ID_COLUMN_NAME + " = passenger_on_flight." + PassengerOnFlight.FLIGHT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN passenger ON (passenger." + Passenger.ID_COLUMN_NAME + " = passenger_on_flight." + PassengerOnFlight.PASSSENGER_ID_COLUMN_NAME + ") "
+                + "INNER JOIN baggage_status_type ON (baggage_status_type." + BaggageStatusType.ID_COLUMN_NAME + " = baggage." + Baggage.BAGGAGE_STATUS_ID_COLUMN_NAME + ") "
+                + "WHERE baggage." + Baggage.ID_COLUMN_NAME + " = :baggageId";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("baggageId", baggageId);
+
+        List<BaggageInformation> baggageInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (baggageInformationList == null || baggageInformationList.size() == 0)
+            return null;
+        else
+            return baggageInformationList.get(0);
+    }
+
+    public List<BaggageInformation> getInformationFromIdList(List<Integer> baggageIds)
+    {
+        BaggageInformationExtractor extractor = new BaggageInformationExtractor();
+
+        String queryTemplate = "SELECT baggage." + Baggage.ID_COLUMN_NAME + ", "
+                + "flight." + Flight.CALLSIGN_COLUMN_NAME + " AS " + BaggageInformation.FLIGHT_CALLSIGN_COLUMN_NAME + ", "
+                + "passenger." + Passenger.PASSPORT_NUMBER_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_PASSPORT_NUMBER_COLUMN_NAME + ", "
+                + "passenger." + Passenger.FIRST_NAME_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_FIRST_NAME_COLUMN_NAME + ", "
+                + "passenger." + Passenger.MIDDLE_NAME_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_MIDDLE_NAME_COLUMN_NAME + ", "
+                + "passenger." + Passenger.LAST_NAME_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_LAST_NAME_COLUMN_NAME + ", "
+                + "passenger." + Passenger.BIRTH_DATE_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_BIRTH_DATE_COLUMN_NAME + ", "
+                + "baggage." + Baggage.WEIGHT_COLUMN_NAME + ", "
+                + "baggage_status_type." + BaggageStatusType.TITLE_COLUMN_NAME + " AS " + BaggageInformation.BAGGAGE_STATUS_TITLE_COLUMN_NAME + " "
+                + "FROM baggage "
+                + "INNER JOIN passenger_on_flight ON (passenger_on_flight." + PassengerOnFlight.ID_COLUMN_NAME + " = baggage." + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN flight ON (flight." + Flight.ID_COLUMN_NAME + " = passenger_on_flight." + PassengerOnFlight.FLIGHT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN passenger ON (passenger." + Passenger.ID_COLUMN_NAME + " = passenger_on_flight." + PassengerOnFlight.PASSSENGER_ID_COLUMN_NAME + ") "
+                + "INNER JOIN baggage_status_type ON (baggage_status_type." + BaggageStatusType.ID_COLUMN_NAME + " = baggage." + Baggage.BAGGAGE_STATUS_ID_COLUMN_NAME + ") "
+                + "WHERE baggage." + Baggage.ID_COLUMN_NAME + " IN :baggageIds";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("baggageIds", baggageIds);
+
+        List<BaggageInformation> baggageInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (baggageInformationList == null || baggageInformationList.size() == 0)
+            return null;
+        else
+            return baggageInformationList;
+    }
+
+    public List<BaggageInformation> getInformationFromAll()
+    {
+        BaggageInformationExtractor extractor = new BaggageInformationExtractor();
+
+        String queryTemplate = "SELECT baggage." + Baggage.ID_COLUMN_NAME + ", "
+                + "flight." + Flight.CALLSIGN_COLUMN_NAME + " AS " + BaggageInformation.FLIGHT_CALLSIGN_COLUMN_NAME + ", "
+                + "passenger." + Passenger.PASSPORT_NUMBER_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_PASSPORT_NUMBER_COLUMN_NAME + ", "
+                + "passenger." + Passenger.FIRST_NAME_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_FIRST_NAME_COLUMN_NAME + ", "
+                + "passenger." + Passenger.MIDDLE_NAME_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_MIDDLE_NAME_COLUMN_NAME + ", "
+                + "passenger." + Passenger.LAST_NAME_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_LAST_NAME_COLUMN_NAME + ", "
+                + "passenger." + Passenger.BIRTH_DATE_COLUMN_NAME + " AS " + BaggageInformation.PASSENGER_BIRTH_DATE_COLUMN_NAME + ", "
+                + "baggage." + Baggage.WEIGHT_COLUMN_NAME + ", "
+                + "baggage_status_type." + BaggageStatusType.TITLE_COLUMN_NAME + " AS " + BaggageInformation.BAGGAGE_STATUS_TITLE_COLUMN_NAME + " "
+                + "FROM baggage "
+                + "INNER JOIN passenger_on_flight ON (passenger_on_flight." + PassengerOnFlight.ID_COLUMN_NAME + " = baggage." + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN flight ON (flight." + Flight.ID_COLUMN_NAME + " = passenger_on_flight." + PassengerOnFlight.FLIGHT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN passenger ON (passenger." + Passenger.ID_COLUMN_NAME + " = passenger_on_flight." + PassengerOnFlight.PASSSENGER_ID_COLUMN_NAME + ") "
+                + "INNER JOIN baggage_status_type ON (baggage_status_type." + BaggageStatusType.ID_COLUMN_NAME + " = baggage." + Baggage.BAGGAGE_STATUS_ID_COLUMN_NAME + ")";
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**

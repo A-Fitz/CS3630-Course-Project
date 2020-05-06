@@ -120,7 +120,7 @@ public class AirlineEmployeeOperator {
      * @param id The value of the id column for a airline_employee row
      * @return (null if no airline_employee exists with that id) (a AirlineEmployee object if row exists with that id)
      */
-    public AirlineEmployee selectById(int id) {
+    private AirlineEmployee selectById(int id) {
         AirlineEmployeeExtractor extractor = new AirlineEmployeeExtractor();
 
         String queryTemplate = "SELECT * FROM airline_employee WHERE id = :id";

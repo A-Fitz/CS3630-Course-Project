@@ -2,6 +2,7 @@ package ui.controllers;
 
 import database.operators.*;
 import database.tables.base.*;
+import database.tables.information.GateInformation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,8 +37,8 @@ public class AddFlightController implements Initializable {
     @FXML private ComboBox<Airline> airlineComboBox;
     @FXML private ComboBox<Airport> departureAirportComboBox;
     @FXML private ComboBox<Airport> arrivalAirportComboBox;
-    @FXML private ComboBox<Gate> departureGateComboBox;
-    @FXML private ComboBox<Gate> arrivalGateComboBox;
+    @FXML private ComboBox<GateInformation> departureGateComboBox;
+    @FXML private ComboBox<GateInformation> arrivalGateComboBox;
     @FXML private ComboBox<Aircraft> aircraftComboBox;
     @FXML private ComboBox<FlightStatusType> flightStatusComboBox;
     @FXML private DatePicker boardingDateDatePicker;
@@ -51,8 +52,6 @@ public class AddFlightController implements Initializable {
             airlineComboBox.setConverter(new AirlineStringConverter());
             departureAirportComboBox.setConverter(new AirportStringConverter());
             arrivalAirportComboBox.setConverter(new AirportStringConverter());
-            departureGateComboBox.setConverter(new GateStringConverter());
-            arrivalGateComboBox.setConverter(new GateStringConverter());
             aircraftComboBox.setConverter(new AircraftStringConverter());
             flightStatusComboBox.setConverter(new FlightStatusTypeStringConverter());
         });
@@ -94,16 +93,7 @@ public class AddFlightController implements Initializable {
         Airport departureAirportChosen = departureAirportComboBox.getValue();
         departureGateComboBox.getItems().clear();
         departureGateComboBox.setValue(null);
-        List<Terminal> departureTerminals;
-        if (terminalOperator.selectByAirportId(departureAirportChosen.getId()) != null) {
-            departureTerminals = terminalOperator.selectByAirportId(departureAirportChosen.getId());
-            for (Terminal t : departureTerminals)
-                departureGateComboBox.getItems().addAll(gateOperator.selectByTerminalId(t.getId()));
-        }
-        else
-        {
-            Util.setMessageLabel("Departure airport does not have available gates.", Color.RED, messageLabel);
-        }
+        departureGateComboBox.getItems().addAll(gateOperator.getInformationFromAirportId(departureAirportChosen.getId()));
     }
 
     /**
@@ -116,16 +106,7 @@ public class AddFlightController implements Initializable {
         Airport arrivalAirportChosen = arrivalAirportComboBox.getValue();
         arrivalGateComboBox.getItems().clear();
         arrivalGateComboBox.setValue(null);
-        List<Terminal> arrivalTerminals;
-        if (terminalOperator.selectByAirportId(arrivalAirportChosen.getId()) != null) {
-            arrivalTerminals = terminalOperator.selectByAirportId(arrivalAirportChosen.getId());
-            for (Terminal t : arrivalTerminals)
-                arrivalGateComboBox.getItems().addAll(gateOperator.selectByTerminalId(t.getId()));
-        }
-        else
-        {
-            Util.setMessageLabel("Arrival airport does not have available gates.", Color.RED, messageLabel);
-        }
+        arrivalGateComboBox.getItems().addAll(gateOperator.getInformationFromAirportId(arrivalAirportChosen.getId()));
     }
 
     /**
