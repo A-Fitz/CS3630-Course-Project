@@ -2,7 +2,11 @@ package database.operators;
 
 import database.DatabaseConnection;
 import database.extractors.base.AirlineEmployeeExtractor;
-import database.tables.base.AirlineEmployee;
+import database.extractors.information.AirlineEmployeeInformationExtractor;
+import database.extractors.information.FlightInformationExtractor;
+import database.tables.base.*;
+import database.tables.information.AirlineEmployeeInformation;
+import database.tables.information.FlightInformation;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -26,6 +30,90 @@ public class AirlineEmployeeOperator {
         return instance;
     }
 
+    public AirlineEmployeeInformation getInformationFromId(int airlineEmployeeId)
+    {
+        AirlineEmployeeInformationExtractor extractor = new AirlineEmployeeInformationExtractor();
+
+        String queryTemplate = "SELECT airline_employee." + AirlineEmployee.ID_COLUMN_NAME + ", "
+                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AirlineEmployeeInformation.AIRLINE_NAME_COLUMN_NAME + ", "
+                + "airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " AS " + AirlineEmployeeInformation.JOB_TITLE_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.FIRST_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.MIDDLE_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.LAST_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.EMAIL_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.ADDRESS_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.PHONE_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.BIRTH_DATE_COLUMN_NAME + " "
+                + "FROM airline_employee "
+                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ") "
+                + "INNER JOIN airline_job_type ON (airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.JOB_ID_COLUMN_NAME + ") "
+                + "WHERE airline_employee." + AirlineEmployee.ID_COLUMN_NAME + " = :airlineEmployeeId";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("airlineEmployeeId", airlineEmployeeId);
+
+        List<AirlineEmployeeInformation> airlineEmployeeInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (airlineEmployeeInformationList == null || airlineEmployeeInformationList.size() == 0)
+            return null;
+        else
+            return airlineEmployeeInformationList.get(0);
+    }
+
+    public List<AirlineEmployeeInformation> getInformationFromListOfIds(List<Integer> airlineEmployeeIds)
+    {
+        AirlineEmployeeInformationExtractor extractor = new AirlineEmployeeInformationExtractor();
+
+        String queryTemplate = "SELECT airline_employee." + AirlineEmployee.ID_COLUMN_NAME + ", "
+                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AirlineEmployeeInformation.AIRLINE_NAME_COLUMN_NAME + ", "
+                + "airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " AS " + AirlineEmployeeInformation.JOB_TITLE_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.FIRST_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.MIDDLE_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.LAST_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.EMAIL_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.ADDRESS_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.PHONE_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.BIRTH_DATE_COLUMN_NAME + " "
+                + "FROM airline_employee "
+                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ") "
+                + "INNER JOIN airline_job_type ON (airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.JOB_ID_COLUMN_NAME + ") "
+                + "WHERE airline_employee." + AirlineEmployee.ID_COLUMN_NAME + " IN :airlineEmployeeIds";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("airlineEmployeeIds", airlineEmployeeIds);
+
+        List<AirlineEmployeeInformation> airlineEmployeeInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (airlineEmployeeInformationList == null || airlineEmployeeInformationList.size() == 0)
+            return null;
+        else
+            return airlineEmployeeInformationList;
+    }
+
+    public List<AirlineEmployeeInformation> getInformationForAll()
+    {
+        AirlineEmployeeInformationExtractor extractor = new AirlineEmployeeInformationExtractor();
+
+        String queryTemplate = "SELECT airline_employee." + AirlineEmployee.ID_COLUMN_NAME + ", "
+                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AirlineEmployeeInformation.AIRLINE_NAME_COLUMN_NAME + ", "
+                + "airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " AS " + AirlineEmployeeInformation.JOB_TITLE_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.FIRST_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.MIDDLE_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.LAST_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.EMAIL_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.ADDRESS_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.PHONE_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.BIRTH_DATE_COLUMN_NAME + " "
+                + "FROM airline_employee "
+                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ") "
+                + "INNER JOIN airline_job_type ON (airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.JOB_ID_COLUMN_NAME + ")";
+
+
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
+    }
+
     /**
      * Selects a airline_employee row, in the form of a Java object, from the airline_employee table given an id.
      *
@@ -46,19 +134,6 @@ public class AirlineEmployeeOperator {
             return null;
         else
             return airlineEmployeeList.get(0);
-    }
-
-    /**
-     * Selects all rows from the flight table. Returns them as a list of Flight objects.
-     *
-     * @return A List of objects representing the rows in the table.
-     */
-    public List<AirlineEmployee> selectAll() {
-        AirlineEmployeeExtractor extractor = new AirlineEmployeeExtractor();
-
-        String queryTemplate = "SELECT * FROM airline_employee";
-
-        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**

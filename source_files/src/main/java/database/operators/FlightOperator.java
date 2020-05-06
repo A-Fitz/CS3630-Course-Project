@@ -43,7 +43,7 @@ public class FlightOperator {
                 + "arrival_gate." + Gate.GATE_CODE_COLUMN_NAME + " AS " + FlightInformation.ARRIVAL_GATE_CODE_COLUMN_NAME + ", "
                 + "aircraft." + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " AS " + FlightInformation.AIRCRAFT_SERIAL_NUMBER_COLUMN_NAME + ", "
                 + "flight_status_type." + FlightStatusType.TITLE_COLUMN_NAME + " AS " + FlightInformation.FLIGHT_STATUS_TITLE_COLUMN_NAME + ", "
-                + "flight.boarding_date "
+                + "flight." + Flight.BOARDING_DATE_COLUMN_NAME + " "
                 + "FROM flight "
                 + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = flight." + Flight.AIRLINE_ID_COLUMN_NAME + ") "
                 + "INNER JOIN airport AS departure_airport ON (departure_airport." + Airport.ID_COLUMN_NAME + " = flight." + Flight.DEPARTURE_AIRPORT_ID_COLUMN_NAME + ") "
@@ -66,6 +66,42 @@ public class FlightOperator {
             return flightInformationList.get(0);
     }
 
+    public List<FlightInformation> getInformationFromListOfIds(List<Integer> flightIds)
+    {
+        FlightInformationExtractor extractor = new FlightInformationExtractor();
+
+        String queryTemplate = "SELECT flight." + Flight.ID_COLUMN_NAME + ", "
+                + "flight." + Flight.CALLSIGN_COLUMN_NAME + ", "
+                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + FlightInformation.AIRLINE_NAME_COLUMN_NAME + ", "
+                + "departure_airport." + Airport.NAME_COLUMN_NAME + " AS " + FlightInformation.DEPARTURE_AIRPORT_NAME_COLUMN_NAME + ", "
+                + "arrival_airport." + Airport.NAME_COLUMN_NAME + " AS " + FlightInformation.ARRIVAL_AIRPORT_NAME_COLUMN_NAME + ", "
+                + "departure_gate." + Gate.GATE_CODE_COLUMN_NAME + " AS " + FlightInformation.DEPARTURE_GATE_CODE_COLUMN_NAME + ", "
+                + "arrival_gate." + Gate.GATE_CODE_COLUMN_NAME + " AS " + FlightInformation.ARRIVAL_GATE_CODE_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " AS " + FlightInformation.AIRCRAFT_SERIAL_NUMBER_COLUMN_NAME + ", "
+                + "flight_status_type." + FlightStatusType.TITLE_COLUMN_NAME + " AS " + FlightInformation.FLIGHT_STATUS_TITLE_COLUMN_NAME + ", "
+                + "flight." + Flight.BOARDING_DATE_COLUMN_NAME + " "
+                + "FROM flight "
+                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = flight." + Flight.AIRLINE_ID_COLUMN_NAME + ") "
+                + "INNER JOIN airport AS departure_airport ON (departure_airport." + Airport.ID_COLUMN_NAME + " = flight." + Flight.DEPARTURE_AIRPORT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN airport AS arrival_airport ON (arrival_airport." + Airport.ID_COLUMN_NAME + " = flight." + Flight.ARRIVAL_AIRPORT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN gate AS departure_gate ON (departure_gate." + Airport.ID_COLUMN_NAME + " = flight." + Flight.DEPARTURE_GATE_ID_COLUMN_NAME + ") "
+                + "INNER JOIN gate AS arrival_gate ON (arrival_gate." + Airport.ID_COLUMN_NAME + " = flight." + Flight.ARRIVAL_GATE_ID_COLUMN_NAME + ") "
+                + "INNER JOIN aircraft ON (aircraft." + Aircraft.ID_COLUMN_NAME + " = flight." + Flight.AIRCRAFT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN flight_status_type ON (flight_status_type." + FlightStatusType.ID_COLUMN_NAME + " = flight." + Flight.FLIGHT_STATUS_ID_COLUMN_NAME + ") "
+                + "WHERE flight." + Flight.ID_COLUMN_NAME + " IN :flightIds";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("flightIds", flightIds);
+
+        List<FlightInformation> flightInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (flightInformationList == null || flightInformationList.size() == 0)
+            return null;
+        else
+            return flightInformationList;
+    }
+
     public List<FlightInformation> getInformationForAll()
     {
         FlightInformationExtractor extractor = new FlightInformationExtractor();
@@ -79,7 +115,7 @@ public class FlightOperator {
                 + "arrival_gate." + Gate.GATE_CODE_COLUMN_NAME + " AS " + FlightInformation.ARRIVAL_GATE_CODE_COLUMN_NAME + ", "
                 + "aircraft." + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " AS " + FlightInformation.AIRCRAFT_SERIAL_NUMBER_COLUMN_NAME + ", "
                 + "flight_status_type." + FlightStatusType.TITLE_COLUMN_NAME + " AS " + FlightInformation.FLIGHT_STATUS_TITLE_COLUMN_NAME + ", "
-                + "flight.boarding_date "
+                + "flight." + Flight.BOARDING_DATE_COLUMN_NAME + " "
                 + "FROM flight "
                 + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = flight." + Flight.AIRLINE_ID_COLUMN_NAME + ") "
                 + "INNER JOIN airport AS departure_airport ON (departure_airport." + Airport.ID_COLUMN_NAME + " = flight." + Flight.DEPARTURE_AIRPORT_ID_COLUMN_NAME + ") "

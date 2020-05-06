@@ -6,6 +6,7 @@ import database.operators.FlightOperator;
 import database.tables.base.AirlineEmployee;
 import database.tables.base.AirlineEmployeeOnFlight;
 import database.tables.base.Flight;
+import database.tables.information.AirlineEmployeeInformation;
 import database.tables.information.FlightInformation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -20,7 +21,6 @@ import javafx.stage.Stage;
 import ui.Launcher;
 import ui.UIConstants;
 import ui.Util;
-import ui.converters.AirlineEmployeeStringConverter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,16 +41,14 @@ public class AddAirlineEmployeeToFlightController implements Initializable {
     @FXML private Label messageLabel;
 
     // The following are example components.
-    @FXML private ComboBox<AirlineEmployee> employeeComboBox;
+    @FXML private ComboBox<AirlineEmployeeInformation> employeeComboBox;
     @FXML private ComboBox<FlightInformation> flightComboBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus()); // Do this to stop text fields from getting auto focus (annoying).
 
-        employeeComboBox.setConverter(new AirlineEmployeeStringConverter());
-
-        employeeComboBox.getItems().addAll(airlineEmployeeOperator.selectAll());
+        employeeComboBox.getItems().addAll(airlineEmployeeOperator.getInformationForAll());
         flightComboBox.getItems().addAll(flightOperator.getInformationForAll());
     }
 
@@ -68,7 +66,7 @@ public class AddAirlineEmployeeToFlightController implements Initializable {
             mainGridPane.setDisable(true);
             messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
 
-            AirlineEmployee airlineEmployee = employeeComboBox.getValue();
+            AirlineEmployee airlineEmployee = airlineEmployeeOperator.selectById(employeeComboBox.getValue().getId());
             Flight flight = flightOperator.selectById(flightComboBox.getValue().getId());
             AirlineEmployeeOnFlight airlineEmployeeOnFlight = new AirlineEmployeeOnFlight();
             airlineEmployeeOnFlight.setAirline_employee_id(airlineEmployee.getId());
