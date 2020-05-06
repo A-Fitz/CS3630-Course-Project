@@ -57,7 +57,8 @@ CREATE TABLE IF NOT EXISTS airline_employee (
 CREATE TABLE IF NOT EXISTS airline_employee_on_flight (
 	id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	flight_id INTEGER NOT NULL,
-	airline_employee_id INTEGER NOT NULL
+	airline_employee_id INTEGER NOT NULL,
+	UNIQUE(flight_id, airline_employee_id)
 );
 
 CREATE TABLE IF NOT EXISTS airline_job_type (
@@ -145,7 +146,8 @@ CREATE TABLE IF NOT EXISTS passenger (
 CREATE TABLE IF NOT EXISTS passenger_on_flight (
 	id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	flight_id INTEGER NOT NULL,
-	passenger_id INTEGER NOT NULL
+	passenger_id INTEGER NOT NULL,
+	UNIQUE(flight_id, passenger_id)
 );
 
 CREATE TABLE IF NOT EXISTS seat_class_type (
