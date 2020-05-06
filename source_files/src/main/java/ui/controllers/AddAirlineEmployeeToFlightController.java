@@ -3,9 +3,7 @@ package ui.controllers;
 import database.operators.AirlineEmployeeOnFlightOperator;
 import database.operators.AirlineEmployeeOperator;
 import database.operators.FlightOperator;
-import database.tables.base.AirlineEmployee;
 import database.tables.base.AirlineEmployeeOnFlight;
-import database.tables.base.Flight;
 import database.tables.information.AirlineEmployeeInformation;
 import database.tables.information.FlightInformation;
 import javafx.application.Platform;
@@ -66,11 +64,9 @@ public class AddAirlineEmployeeToFlightController implements Initializable {
             mainGridPane.setDisable(true);
             messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
 
-            Flight flight = flightOperator.selectById(flightComboBox.getValue().getId());
-
             AirlineEmployeeOnFlight airlineEmployeeOnFlight = new AirlineEmployeeOnFlight();
             airlineEmployeeOnFlight.setAirline_employee_id(employeeComboBox.getValue().getId());
-            airlineEmployeeOnFlight.setFlight_id(flight.getId());
+            airlineEmployeeOnFlight.setFlight_id(flightComboBox.getValue().getId());
 
             int rowsAffected = airlineEmployeeOnFlightOperator.insert(airlineEmployeeOnFlight);
 

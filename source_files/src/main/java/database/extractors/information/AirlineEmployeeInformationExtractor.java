@@ -1,9 +1,7 @@
 package database.extractors.information;
 
 import database.tables.base.AirlineEmployee;
-import database.tables.base.Flight;
 import database.tables.information.AirlineEmployeeInformation;
-import database.tables.information.FlightInformation;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 

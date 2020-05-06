@@ -2,9 +2,7 @@ package database.operators;
 
 import database.DatabaseConnection;
 import database.extractors.base.AirlineExtractor;
-import database.extractors.information.FlightInformationExtractor;
 import database.tables.base.*;
-import database.tables.information.FlightInformation;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -38,7 +36,7 @@ public class AirlineOperator {
 
         String queryTemplate = "SELECT * FROM airline";
 
-        return new ArrayList<Airline>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**

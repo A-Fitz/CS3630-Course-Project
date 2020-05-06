@@ -2,10 +2,8 @@ package database.operators;
 
 import database.DatabaseConnection;
 import database.extractors.base.BaggageExtractor;
-import database.extractors.information.AirlineEmployeeInformationExtractor;
 import database.extractors.information.BaggageInformationExtractor;
 import database.tables.base.*;
-import database.tables.information.AirlineEmployeeInformation;
 import database.tables.information.BaggageInformation;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

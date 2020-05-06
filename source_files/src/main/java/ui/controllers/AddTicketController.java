@@ -57,11 +57,9 @@ public class AddTicketController {
             messageLabel.setText("Request in progress...");
 
             // First try to add in the passenger on flight.
-            Flight chosenFlight = flightOperator.selectById(flightComboBox.getValue().getId());
-            Passenger chosenPassenger = passengerComboBox.getValue();
             PassengerOnFlight pof = new PassengerOnFlight();
-            pof.setFlight_id(chosenFlight.getId());
-            pof.setPassenger_id(chosenPassenger.getId());
+            pof.setFlight_id(flightComboBox.getValue().getId());
+            pof.setPassenger_id(passengerComboBox.getValue().getId());
             int rowsAffected = passengerOnFlightOperator.insert(pof);
 
             // If passenger on flight was inserted, try to make a ticket.

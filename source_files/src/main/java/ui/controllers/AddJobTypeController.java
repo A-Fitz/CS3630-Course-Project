@@ -30,9 +30,7 @@ public class AddJobTypeController {
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() ->
-        {
-            backButton.getScene().getRoot().requestFocus();
-        });
+                backButton.getScene().getRoot().requestFocus());
     }
 
     public void addJobTitleButtonClicked()
@@ -89,24 +87,6 @@ public class AddJobTypeController {
             Util.setMessageLabel("Airline Job Title added.", Color.GREEN, messageLabel);
         }
         mainGridPane.setDisable(false);
-    }
-
-
-    /**
-     * Use this event to limit the choices for the workPlaceComboBox and jobTypeComboBox.
-     * @param actionEvent Event representing the action of the ComboBox item being clicked, holds extra information.
-     */
-    public void regionChosen(ActionEvent actionEvent) {
-        clearAllFields();
-
-        if(regionComboBox.getValue().equals("Airport"))
-        {
-
-        }
-        else if(regionComboBox.getValue().equals("Airline"))
-        {
-
-        }
     }
 
     /**

@@ -2,10 +2,8 @@ package database.operators;
 
 import database.DatabaseConnection;
 import database.extractors.base.GateExtractor;
-import database.extractors.information.FlightInformationExtractor;
 import database.extractors.information.GateInformationExtractor;
 import database.tables.base.*;
-import database.tables.information.FlightInformation;
 import database.tables.information.GateInformation;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

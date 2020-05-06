@@ -2,6 +2,7 @@ package ui.controllers;
 
 import database.operators.*;
 import database.tables.base.*;
+import database.tables.information.AircraftInformation;
 import database.tables.information.GateInformation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,7 +19,6 @@ import ui.converters.*;
 
 import java.net.URL;
 import java.sql.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddFlightController implements Initializable {
@@ -39,7 +39,7 @@ public class AddFlightController implements Initializable {
     @FXML private ComboBox<Airport> arrivalAirportComboBox;
     @FXML private ComboBox<GateInformation> departureGateComboBox;
     @FXML private ComboBox<GateInformation> arrivalGateComboBox;
-    @FXML private ComboBox<Aircraft> aircraftComboBox;
+    @FXML private ComboBox<AircraftInformation> aircraftComboBox;
     @FXML private ComboBox<FlightStatusType> flightStatusComboBox;
     @FXML private DatePicker boardingDateDatePicker;
 
@@ -52,7 +52,6 @@ public class AddFlightController implements Initializable {
             airlineComboBox.setConverter(new AirlineStringConverter());
             departureAirportComboBox.setConverter(new AirportStringConverter());
             arrivalAirportComboBox.setConverter(new AirportStringConverter());
-            aircraftComboBox.setConverter(new AircraftStringConverter());
             flightStatusComboBox.setConverter(new FlightStatusTypeStringConverter());
         });
 
@@ -80,7 +79,7 @@ public class AddFlightController implements Initializable {
         Airline airlineChosen = airlineComboBox.getValue();
         aircraftComboBox.getItems().clear();
         aircraftComboBox.setValue(null);
-        aircraftComboBox.getItems().addAll(aircraftOperator.selectByAirlineId(airlineChosen.getId()));
+        aircraftComboBox.getItems().addAll(aircraftOperator.getInformationFromAirlineId(airlineChosen.getId()));
     }
 
     /**

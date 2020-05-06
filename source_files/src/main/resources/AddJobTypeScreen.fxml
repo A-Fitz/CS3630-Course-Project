@@ -33,7 +33,7 @@
                       <HBox alignment="CENTER_LEFT" spacing="5.0">
                           <children>
                               <Label text="Job Region" />
-                              <ComboBox fx:id="regionComboBox" maxWidth="1.7976931348623157E308" onAction="#regionChosen" promptText="required" HBox.hgrow="ALWAYS">
+                              <ComboBox fx:id="regionComboBox" maxWidth="1.7976931348623157E308"promptText="required" HBox.hgrow="ALWAYS">
                                   <items>
                                       <FXCollections fx:factory="observableArrayList">
                                           <String fx:value="Airport" />

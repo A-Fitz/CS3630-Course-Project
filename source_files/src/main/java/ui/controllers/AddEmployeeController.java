@@ -43,9 +43,7 @@ public class AddEmployeeController implements Initializable {
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() ->
-        {
-            backButton.getScene().getRoot().requestFocus();
-        });
+                backButton.getScene().getRoot().requestFocus());
     }
 
     public void addEmployeeButtonClicked()

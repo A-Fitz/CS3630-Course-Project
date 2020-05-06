@@ -1,15 +1,14 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.extractors.base.AircraftExtractor;
-import database.tables.base.Aircraft;
+import database.extractors.information.AircraftInformationExtractor;
+import database.tables.base.*;
+import database.tables.information.AircraftInformation;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class AircraftOperator {
     private static AircraftOperator instance = new AircraftOperator();
@@ -26,65 +25,112 @@ public class AircraftOperator {
         return instance;
     }
 
-    /**
-     * Selects all rows of the aircraft table, in the form of a List of Java objects, that have the given airline_id.
-     *
-     * @param airline_id The value of the airline_id column for an aircraft row
-     * @return (null if no aircraft row exists with that airline_id) (a List of Aircraft objects if rows exist with that airline_id)
-     */
-    public List<Aircraft> selectByAirlineId(int airline_id) {
-        AircraftExtractor extractor = new AircraftExtractor();
+    public AircraftInformation getInformationFromId(int aircraftId)
+    {
+        AircraftInformationExtractor extractor = new AircraftInformationExtractor();
 
-        String queryTemplate = "SELECT * FROM aircraft WHERE " + Aircraft.AIRLINE_ID_COLUMN_NAME + " = :airline_id";
-
-        MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("airline_id", airline_id);
-
-        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor)));
-    }
-
-    /**
-     * Selects an aircraft row, in the form of a Java object, from the aircraft table given an id.
-     *
-     * @param id The value of the id column for an aircraft row
-     * @return (null if no aircraft row exists with that id) (an Aircraft object if row exists with that id)
-     */
-    public Aircraft selectById(int id) {
-        AircraftExtractor extractor = new AircraftExtractor();
-
-        String queryTemplate = "SELECT * FROM aircraft WHERE id = :id";
+        String queryTemplate = "SELECT aircraft." + Aircraft.ID_COLUMN_NAME + ", "
+                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AircraftInformation.AIRLINE_NAME_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.SERIAL_NUMBER_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.MAKE_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.MODEL_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.YEAR_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.CAPACITY_COLUMN_NAME + " "
+                + "FROM aircraft "
+                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = aircraft." + Aircraft.AIRLINE_ID_COLUMN_NAME + ") "
+                + "WHERE aircraft." + Aircraft.ID_COLUMN_NAME + " = :aircraftId";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("id", id);
+        parameters.addValue("aircraftId", aircraftId);
 
-        List<Aircraft> aircraftList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
+        List<AircraftInformation> aircraftInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
 
-        if (aircraftList == null || aircraftList.size() == 0)
+        if (aircraftInformationList == null || aircraftInformationList.size() == 0)
             return null;
         else
-            return aircraftList.get(0);
+            return aircraftInformationList.get(0);
     }
 
-    /**
-     * Selects an aircraft row, in the form of a Java object, from the aircraft table given the unique serial number.
-     *
-     * @param serialNumber value of the serial_number column for an aircraft row
-     * @return (null if no aircraft row exists with that serial_number) (an Aircraft object if row exists with that serial_number)
-     */
-    public Aircraft selectBySerialNumber(String serialNumber) {
-        AircraftExtractor extractor = new AircraftExtractor();
+    public AircraftInformation getInformationFromSerialNumber(String serialNumber)
+    {
+        AircraftInformationExtractor extractor = new AircraftInformationExtractor();
 
-        String queryTemplate = "SELECT * FROM aircraft WHERE " + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " = :serial_number";
+        String queryTemplate = "SELECT aircraft." + Aircraft.ID_COLUMN_NAME + ", "
+                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AircraftInformation.AIRLINE_NAME_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.SERIAL_NUMBER_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.MAKE_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.MODEL_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.YEAR_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.CAPACITY_COLUMN_NAME + " "
+                + "FROM aircraft "
+                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = aircraft." + Aircraft.AIRLINE_ID_COLUMN_NAME + ") "
+                + "WHERE aircraft." + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " = :serialNumber";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("serial_number", serialNumber);
+        parameters.addValue("serialNumber", serialNumber);
 
-        List<Aircraft> aircraftList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
+        List<AircraftInformation> aircraftInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
 
-        if (aircraftList == null || aircraftList.size() == 0)
+        if (aircraftInformationList == null || aircraftInformationList.size() == 0)
             return null;
         else
-            return aircraftList.get(0);
+            return aircraftInformationList.get(0);
+    }
+
+    public List<AircraftInformation> getInformationFromAirlineId(int airlineId)
+    {
+        AircraftInformationExtractor extractor = new AircraftInformationExtractor();
+
+        String queryTemplate = "SELECT aircraft." + Aircraft.ID_COLUMN_NAME + ", "
+                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AircraftInformation.AIRLINE_NAME_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.SERIAL_NUMBER_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.MAKE_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.MODEL_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.YEAR_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.CAPACITY_COLUMN_NAME + " "
+                + "FROM aircraft "
+                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = :airlineId)";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("airlineId", airlineId);
+
+        List<AircraftInformation> aircraftInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (aircraftInformationList == null || aircraftInformationList.size() == 0)
+            return null;
+        else
+            return aircraftInformationList;
+    }
+
+    public List<AircraftInformation> getInformationFromFlightId(int flightId)
+    {
+        AircraftInformationExtractor extractor = new AircraftInformationExtractor();
+
+        String queryTemplate = "SELECT aircraft." + Aircraft.ID_COLUMN_NAME + ", "
+                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AircraftInformation.AIRLINE_NAME_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.SERIAL_NUMBER_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.MAKE_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.MODEL_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.YEAR_COLUMN_NAME + ", "
+                + "aircraft." + Aircraft.CAPACITY_COLUMN_NAME + " "
+                + "FROM aircraft "
+                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = aircraft." + Aircraft.AIRLINE_ID_COLUMN_NAME + ") "
+                + "INNER JOIN flight ON (flight." + Flight.AIRLINE_ID_COLUMN_NAME + " = airline." + Airline.ID_COLUMN_NAME + ") "
+                + "WHERE flight." + Flight.ID_COLUMN_NAME + " = :flightId";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("flightId", flightId);
+
+        List<AircraftInformation> aircraftInformationList = namedParameterJdbcTemplate.query(queryTemplate,
+                parameters, extractor);
+
+        if (aircraftInformationList == null || aircraftInformationList.size() == 0)
+            return null;
+        else
+            return aircraftInformationList;
     }
 
     /**

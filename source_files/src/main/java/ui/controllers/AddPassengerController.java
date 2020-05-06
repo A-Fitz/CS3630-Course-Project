@@ -36,9 +36,7 @@ public class AddPassengerController {
     @FXML
     public void initialize() {
         Platform.runLater(() ->
-        {
-            backButton.getScene().getRoot().requestFocus();
-        });
+                backButton.getScene().getRoot().requestFocus());
     }
 
     public void addPassengerButtonClicked() {

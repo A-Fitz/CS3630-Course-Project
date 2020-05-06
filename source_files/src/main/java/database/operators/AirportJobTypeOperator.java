@@ -36,7 +36,7 @@ public class AirportJobTypeOperator {
 
         String queryTemplate = "SELECT * FROM airport_job_type";
 
-        return new ArrayList<AirportJobType>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
+        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
     }
 
     /**
