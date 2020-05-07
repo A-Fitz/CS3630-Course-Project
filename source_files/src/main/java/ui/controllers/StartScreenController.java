@@ -110,4 +110,8 @@ public class StartScreenController implements Initializable {
     public void deleteBaggageButtonClicked(ActionEvent actionEvent) {
         changeScreen("/DeleteBaggageScreen.fxml", "Delete Baggage");
     }
+
+    public void deletePassengerOnFlightButtonClicked(ActionEvent actionEvent) {
+        changeScreen("/DeletePassengerOnFlightScreen.fxml", "Delete Passenger On FLight");
+    }
 }
