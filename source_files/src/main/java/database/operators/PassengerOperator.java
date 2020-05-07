@@ -1,15 +1,17 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.extractors.base.PassengerExtractor;
-import database.tables.base.Passenger;
+import database.OperatorInterface;
+import database.extractors.PassengerExtractor;
+import database.tables.Passenger;
+import database.tables.PassengerOnFlight;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class PassengerOperator {
+public class PassengerOperator implements OperatorInterface<Passenger> {
     private static PassengerOperator instance = new PassengerOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 
@@ -24,12 +26,32 @@ public class PassengerOperator {
         return instance;
     }
 
-    /**
-     * Selects a passenger row, in the form of a Java object, from the passenger table given an id.
-     *
-     * @param id The value of the id column for a passenger row
-     * @return (null if no passenger row exists with that id) (a Passenger object if row exists with that id)
-     */
+    public List<Passenger> selectManyByFlightId(int flightId)
+    {
+        PassengerExtractor extractor = new PassengerExtractor();
+
+        String queryTemplate = "SELECT * " +
+                "FROM passenger " +
+                "INNER JOIN passenger_on_flight ON (" + PassengerOnFlight.FLIGHT_ID_COLUMN_NAME + " = :flightId) " +
+                "WHERE passenger." + Passenger.ID_COLUMN_NAME + " = passenger_on_flight." + PassengerOnFlight.PASSSENGER_ID_COLUMN_NAME;
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("flightId", flightId);
+
+        return namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
+    }
+
+    @Override
+    public List<Passenger> selectAll()
+    {
+        PassengerExtractor extractor = new PassengerExtractor();
+
+        String queryTemplate = "SELECT * FROM passenger";
+
+        return namedParameterJdbcTemplate.query(queryTemplate, extractor);
+    }
+
+    @Override
     public Passenger selectById(int id) {
         PassengerExtractor extractor = new PassengerExtractor();
 
@@ -46,13 +68,7 @@ public class PassengerOperator {
             return passengerList.get(0);
     }
 
-    /**
-     * Tries to update a row in the passenger table given an id and a representative Java object.
-     *
-     * @param id        The value of the id column of the row to update.
-     * @param passenger A java object representing the new values for the row.
-     * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
-     */
+    @Override
     public int updateById(int id, Passenger passenger) {
         String queryTemplate = "UPDATE passenger SET "
                 + Passenger.PASSPORT_NUMBER_COLUMN_NAME + " = :new_passport_number, "
@@ -79,12 +95,7 @@ public class PassengerOperator {
         return namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
-    /**
-     * Tries to insert a new row into the passenger table given a representative Java object.
-     *
-     * @param passenger The Passenger object which holds the data to insert into columns
-     * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
-     */
+    @Override
     public int insert(Passenger passenger) {
         String queryTemplate = "INSERT INTO passenger ("
                 + Passenger.PASSPORT_NUMBER_COLUMN_NAME + ", "
@@ -119,12 +130,7 @@ public class PassengerOperator {
         return rowsAffected;
     }
 
-    /**
-     * Tries to delete a row in the passenger table given an id.
-     *
-     * @param id The value of the id column of the row to delete.
-     * @return (0 if the delete failed, the id did not exist in the table) (1 if the row was successfully deleted)
-     */
+    @Override
     public int deleteById(int id) {
         String queryTemplate = "DELETE FROM passenger "
                 + " WHERE " + Passenger.ID_COLUMN_NAME + " = :id";

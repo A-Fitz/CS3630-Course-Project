@@ -1,7 +1,7 @@
 package ui.controllers;
 
 import database.operators.AirlineOperator;
-import database.tables.base.Airline;
+import database.tables.Airline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

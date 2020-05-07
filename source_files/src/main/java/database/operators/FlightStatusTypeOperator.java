@@ -1,20 +1,21 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.extractors.base.FlightStatusTypeExtractor;
-import database.tables.base.FlightStatusType;
+import database.OperatorInterface;
+import database.extractors.FlightStatusTypeExtractor;
+import database.tables.FlightStatusType;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class FlightStatusTypeOperator {
+public class FlightStatusTypeOperator implements OperatorInterface<FlightStatusType> {
     private static FlightStatusTypeOperator instance = new FlightStatusTypeOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 
     /**
-     * Do not allow instantiation of a FightStatusTypeOperator object. This is a Singleton.
+     * Do not allow instantiation of a FlightStatusTypeOperator object. This is a Singleton.
      */
     private FlightStatusTypeOperator() {
 
@@ -24,30 +25,16 @@ public class FlightStatusTypeOperator {
         return instance;
     }
 
-    /**
-     * Selects all rows from the flight_status_type table. Returns them as a list of FlightStatusType objects.
-     *
-     * @return A List of objects representing the rows in the table.
-     */
+    @Override
     public List<FlightStatusType> selectAll() {
         FlightStatusTypeExtractor extractor = new FlightStatusTypeExtractor();
 
         String queryTemplate = "SELECT * FROM flight_status_type";
 
-        List<FlightStatusType> flightStatusTypeList = namedParameterJdbcTemplate.query(queryTemplate, extractor);
-
-        if (flightStatusTypeList == null || flightStatusTypeList.size() == 0)
-            return null;
-        else
-            return flightStatusTypeList;
+        return namedParameterJdbcTemplate.query(queryTemplate, extractor);
     }
 
-    /**
-     * Selects a FlightStatusType row, in the form of a Java object, from the FlightStatusType table given an id.
-     *
-     * @param id The value of the id column for an FlightStatusType row
-     * @return (null if no FlightStatusType row exists with that id) (an FlightStatusType object if row exists with that id)
-     */
+    @Override
     public FlightStatusType selectById(int id) {
         FlightStatusTypeExtractor extractor = new FlightStatusTypeExtractor();
 
@@ -58,37 +45,26 @@ public class FlightStatusTypeOperator {
 
         List<FlightStatusType> flightStatusTypeList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
-        if (flightStatusTypeList.size() == 0)
+        if (flightStatusTypeList == null || flightStatusTypeList.size() == 0)
             return null;
         else
             return flightStatusTypeList.get(0);
     }
 
-    /**
-     * Tries to update a row in the FlightStatusType table given an id and a representative Java object.
-     *
-     * @param id               The value of the id column of the row to update.
-     * @param flightStatusType A java object representing the new values for the row.
-     * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
-     */
-    public int updateById(int id, FlightStatusType flightStatusType) {
+    @Override
+    public int updateById(int id, FlightStatusType flightStatusTypeList) {
         String queryTemplate = "UPDATE flight_status_type SET "
                 + FlightStatusType.TITLE_COLUMN_NAME + " = :title"
                 + " WHERE " + FlightStatusType.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("title", flightStatusType.getTitle());
+        parameters.addValue("title", flightStatusTypeList.getTitle());
         parameters.addValue("id", id);
 
         return namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
-    /**
-     * Tries to insert a new row into the flightStatusType table given a representative Java object.
-     *
-     * @param flightStatusType The FlightStatusType object which holds the data to insert into columns
-     * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
-     */
+    @Override
     public int insert(FlightStatusType flightStatusType) {
         String queryTemplate = "INSERT INTO flight_status_type ("
                 + FlightStatusType.TITLE_COLUMN_NAME + ") "
@@ -109,12 +85,7 @@ public class FlightStatusTypeOperator {
         return rowsAffected;
     }
 
-    /**
-     * Tries to delete a row in the FlightStatusType table given an id.
-     *
-     * @param id The value of the id column of the row to delete.
-     * @return (0 if the delete failed, the id did not exist in the table) (1 if the row was successfully deleted)
-     */
+    @Override
     public int deleteById(int id) {
         String queryTemplate = "DELETE FROM flight_status_type "
                 + " WHERE " + FlightStatusType.ID_COLUMN_NAME + " = :id";

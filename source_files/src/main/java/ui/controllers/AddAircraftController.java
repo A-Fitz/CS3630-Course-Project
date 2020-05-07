@@ -2,8 +2,8 @@ package ui.controllers;
 
 import database.operators.AircraftOperator;
 import database.operators.AirlineOperator;
-import database.tables.base.Aircraft;
-import database.tables.base.Airline;
+import database.tables.Aircraft;
+import database.tables.Airline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +13,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.*;
-import ui.converters.AirlineStringConverter;
 import ui.exceptions.IncorrectInputException;
 import ui.formatters.IntegerTextFormatter;
 
@@ -40,10 +39,7 @@ public class AddAircraftController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() ->
-        {
-            backButton.getScene().getRoot().requestFocus();
-            airlineChoiceComboBox.setConverter(new AirlineStringConverter());
-        });
+                backButton.getScene().getRoot().requestFocus());
 
         airlineChoiceComboBox.getItems().addAll(airlineOperator.selectAll());
 

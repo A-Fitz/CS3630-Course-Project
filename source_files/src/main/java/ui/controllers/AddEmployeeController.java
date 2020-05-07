@@ -1,7 +1,8 @@
 package ui.controllers;
 
+import database.DatabaseObject;
 import database.operators.*;
-import database.tables.base.*;
+import database.tables.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.Launcher;
 import ui.Util;
-import ui.converters.*;
 
 import java.net.URL;
 import java.sql.Date;
@@ -29,8 +29,8 @@ public class AddEmployeeController implements Initializable {
     @FXML private GridPane mainGridPane;
     @FXML private Button backButton;
     @FXML private ComboBox<String> regionComboBox;
-    @FXML private ComboBox workPlaceComboBox;
-    @FXML private ComboBox jobTypeComboBox;
+    @FXML private ComboBox<DatabaseObject> workPlaceComboBox;
+    @FXML private ComboBox<DatabaseObject> jobTypeComboBox;
     @FXML private TextField firstNameTextField;
     @FXML private TextField middleNameTextField;
     @FXML private TextField lastNameTextField;
@@ -79,8 +79,8 @@ public class AddEmployeeController implements Initializable {
         AirportEmployee airportEmployee = new AirportEmployee();
 
 
-        airportEmployee.setAirport_id(((Airport) workPlaceComboBox.getValue()).getId());
-        airportEmployee.setJob_id(((AirportJobType) jobTypeComboBox.getValue()).getId());
+        airportEmployee.setAirport_id(workPlaceComboBox.getValue().getId());
+        airportEmployee.setJob_id(jobTypeComboBox.getValue().getId());
         airportEmployee.setFirst_name(firstNameTextField.getText());
         airportEmployee.setMiddle_name(middleNameTextField.getText());
         airportEmployee.setLast_name(lastNameTextField.getText());
@@ -105,8 +105,8 @@ public class AddEmployeeController implements Initializable {
 
     private void setAirlineEmployee() {
         AirlineEmployee airlineEmployee = new AirlineEmployee();
-        airlineEmployee.setAirline_id(((Airline) workPlaceComboBox.getValue()).getId());
-        airlineEmployee.setJob_id(((AirlineJobType) jobTypeComboBox.getValue()).getId());
+        airlineEmployee.setAirline_id(workPlaceComboBox.getValue().getId());
+        airlineEmployee.setJob_id(jobTypeComboBox.getValue().getId());
         airlineEmployee.setFirst_name(firstNameTextField.getText());
         airlineEmployee.setMiddle_name(middleNameTextField.getText());
         airlineEmployee.setLast_name(lastNameTextField.getText());
@@ -140,16 +140,12 @@ public class AddEmployeeController implements Initializable {
         if(regionComboBox.getValue().equals("Airport"))
         {
             workPlaceComboBox.getItems().addAll(airportOperator.selectAll());
-            workPlaceComboBox.setConverter(new AirportStringConverter());
             jobTypeComboBox.getItems().addAll(airportJobTypeOperator.selectAll());
-            jobTypeComboBox.setConverter(new AirportJobTypeStringConverter());
         }
         else if(regionComboBox.getValue().equals("Airline"))
         {
             workPlaceComboBox.getItems().addAll(airlineOperator.selectAll());
-            workPlaceComboBox.setConverter(new AirlineStringConverter());
             jobTypeComboBox.getItems().addAll(airlineJobTypeOperator.selectAll());
-            jobTypeComboBox.setConverter(new AirlineJobTypeStringConverter());
         }
     }
 

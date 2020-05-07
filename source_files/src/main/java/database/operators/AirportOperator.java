@@ -1,15 +1,16 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.extractors.base.AirportExtractor;
-import database.tables.base.Airport;
+import database.OperatorInterface;
+import database.extractors.AirportExtractor;
+import database.tables.Airport;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class AirportOperator {
+public class AirportOperator implements OperatorInterface<Airport> {
     private static AirportOperator instance = new AirportOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate =
             DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
@@ -25,32 +26,15 @@ public class AirportOperator {
         return instance;
     }
 
-    /**
-     * Selects all rows from the airport table. Returns them as a list of Airport objects.
-     *
-     * @return A List of objects representing the rows in the table.
-     */
+    @Override
     public List<Airport> selectAll() {
         AirportExtractor extractor = new AirportExtractor();
 
         String queryTemplate = "SELECT * FROM airport";
 
-        List<Airport> airportList = namedParameterJdbcTemplate.query(queryTemplate, extractor);
+        return namedParameterJdbcTemplate.query(queryTemplate, extractor);    }
 
-        if (airportList == null || airportList.size() == 0)
-            return null;
-        else
-            return airportList;
-    }
-
-    /**
-     * Selects an airport row, in the form of a Java object,
-     * from the airport table given an id.
-     *
-     * @param id The value of the id column for an airport row
-     * @return (null if no airport exists with that id)
-     * (an Airport object if row exists with that id)
-     */
+    @Override
     public Airport selectById(int id) {
         AirportExtractor extractor = new AirportExtractor();
 
@@ -62,19 +46,13 @@ public class AirportOperator {
         List<Airport> airportList = namedParameterJdbcTemplate.query(queryTemplate,
                 parameters, extractor);
 
-        if (airportList.size() == 0)
+        if (airportList == null || airportList.size() == 0)
             return null;
         else
             return airportList.get(0);
     }
 
-    /**
-     * Tries to update a row in the airport table given an id and a representative Java object.
-     *
-     * @param id      The value of the id column of the row to update.
-     * @param airport A java object representing the new values for the row.
-     * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
-     */
+    @Override
     public int updateById(int id, Airport airport) {
         String queryTemplate = "UPDATE airport SET "
                 + Airport.NAME_COLUMN_NAME + " = :new_name, "
@@ -93,12 +71,7 @@ public class AirportOperator {
         return namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
-    /**
-     * Tries to insert a new row into the airport table given a representative Java object.
-     *
-     * @param airport The Airport object which holds the data to insert into columns
-     * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
-     */
+    @Override
     public int insert(Airport airport) {
         String queryTemplate = "INSERT INTO airport ("
                 + Airport.NAME_COLUMN_NAME + ", "
@@ -125,12 +98,7 @@ public class AirportOperator {
         return rowsAffected;
     }
 
-    /**
-     * Tries to delete a row in the airport table given an id.
-     *
-     * @param id The value of the id column of the row to delete.
-     * @return (0 if the delete failed, the id did not exist in the table) (1 if the row was successfully deleted)
-     */
+    @Override
     public int deleteById(int id) {
         String queryTemplate = "DELETE FROM airport "
                 + " WHERE " + Airport.ID_COLUMN_NAME + " = :id";

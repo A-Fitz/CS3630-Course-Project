@@ -1,15 +1,16 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.extractors.base.TicketExtractor;
-import database.tables.base.Ticket;
+import database.OperatorInterface;
+import database.extractors.TicketExtractor;
+import database.tables.Ticket;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class TicketOperator {
+public class TicketOperator implements OperatorInterface<Ticket> {
     private static TicketOperator instance = new TicketOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 
@@ -24,12 +25,17 @@ public class TicketOperator {
         return instance;
     }
 
-    /**
-     * Selects a ticket row, in the form of a Java object, from the ticket table given an id.
-     *
-     * @param id The value of the id column for an ticket row
-     * @return (null if no ticket row exists with that id) (an ticket object if row exists with that id)
-     */
+    @Override
+    public List<Ticket> selectAll()
+    {
+        TicketExtractor extractor = new TicketExtractor();
+
+        String queryTemplate = "SELECT * FROM ticket";
+
+        return namedParameterJdbcTemplate.query(queryTemplate, extractor);
+    }
+
+    @Override
     public Ticket selectById(int id) {
         TicketExtractor extractor = new TicketExtractor();
 
@@ -46,13 +52,7 @@ public class TicketOperator {
             return ticketList.get(0);
     }
 
-    /**
-     * Tries to update a row in the ticket table given an id and a representative Java object.
-     *
-     * @param id     The value of the id column of the row to update.
-     * @param ticket A java object representing the new values for the row.
-     * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
-     */
+    @Override
     public int updateById(int id, Ticket ticket) {
         String queryTemplate = "UPDATE ticket SET "
                 + Ticket.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + " = :new_passenger_on_flight_id,"
@@ -75,12 +75,7 @@ public class TicketOperator {
         return namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
-    /**
-     * Tries to insert a new row into the ticket table given a representative Java object.
-     *
-     * @param ticket The Ticket object which holds the data to insert into columns
-     * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
-     */
+    @Override
     public int insert(Ticket ticket) {
         String queryTemplate = "INSERT INTO ticket ("
                 + Ticket.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + ", "
@@ -112,12 +107,7 @@ public class TicketOperator {
         return rowsAffected;
     }
 
-    /**
-     * Tries to delete a row in the ticket table given an id.
-     *
-     * @param id The value of the id column of the row to delete.
-     * @return (0 if the delete failed, the id did not exist in the table) (1 if the row was successfully deleted)
-     */
+    @Override
     public int deleteById(int id) {
         String queryTemplate = "DELETE FROM ticket "
                 + " WHERE " + Ticket.ID_COLUMN_NAME + " = :id";

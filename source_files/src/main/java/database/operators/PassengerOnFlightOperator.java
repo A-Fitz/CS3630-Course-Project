@@ -1,8 +1,9 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.extractors.base.PassengerOnFlightExtractor;
-import database.tables.base.PassengerOnFlight;
+import database.OperatorInterface;
+import database.extractors.PassengerOnFlightExtractor;
+import database.tables.PassengerOnFlight;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class PassengerOnFlightOperator {
+public class PassengerOnFlightOperator implements OperatorInterface<PassengerOnFlight> {
     private static PassengerOnFlightOperator instance = new PassengerOnFlightOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate =
             DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
@@ -69,14 +70,16 @@ public class PassengerOnFlightOperator {
         return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor)));
     }
 
-    /**
-     * Selects a passenger_on_flight row, in the form of a Java object,
-     * from the passenger_on_flight table given an id.
-     *
-     * @param id The value of the id column for a passenger_on_flight row
-     * @return (null if no passenger_on_flight exists with that id)
-     * (an PassengerOnFlight object if row exists with that id)
-     */
+    @Override
+    public List<PassengerOnFlight> selectAll() {
+        PassengerOnFlightExtractor extractor = new PassengerOnFlightExtractor();
+
+        String queryTemplate = "SELECT * FROM passenger_on_flight";
+
+        return namedParameterJdbcTemplate.query(queryTemplate, extractor);
+    }
+
+    @Override
     public PassengerOnFlight selectById(int id) {
         PassengerOnFlightExtractor extractor = new PassengerOnFlightExtractor();
 
@@ -94,13 +97,7 @@ public class PassengerOnFlightOperator {
             return passengerOnFlightList.get(0);
     }
 
-    /**
-     * Tries to update a row in the passenger_on_flight table given an id and a representative Java object.
-     *
-     * @param id                The value of the id column of the row to update.
-     * @param passengerOnFlight A java object representing the new values for the row.
-     * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
-     */
+    @Override
     public int updateById(int id, PassengerOnFlight passengerOnFlight) {
         String queryTemplate = "UPDATE passenger_on_flight SET "
                 + PassengerOnFlight.FLIGHT_ID_COLUMN_NAME + " = :new_flight_id, "
@@ -115,12 +112,7 @@ public class PassengerOnFlightOperator {
         return namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
-    /**
-     * Tries to insert a new row into the passenger_on_flight table given a representative Java object.
-     *
-     * @param passengerOnFlight The PassengerOnFlight object which holds the data to insert into columns
-     * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
-     */
+    @Override
     public int insert(PassengerOnFlight passengerOnFlight) {
         String queryTemplate = "INSERT INTO passenger_on_flight ("
                 + PassengerOnFlight.FLIGHT_ID_COLUMN_NAME + ", "
@@ -143,12 +135,7 @@ public class PassengerOnFlightOperator {
         return rowsAffected;
     }
 
-    /**
-     * Tries to delete a row in the passenger_on_flight table given an id.
-     *
-     * @param id The value of the id column of the row to delete.
-     * @return (0 if the delete failed, the id did not exist in the table) (1 if the row was successfully deleted)
-     */
+    @Override
     public int deleteById(int id) {
         String queryTemplate = "DELETE FROM passenger_on_flight "
                 + " WHERE " + PassengerOnFlight.ID_COLUMN_NAME + " = :id";

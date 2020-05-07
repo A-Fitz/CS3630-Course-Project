@@ -1,8 +1,7 @@
 package ui.controllers;
 
 import database.operators.*;
-import database.tables.base.*;
-import database.tables.information.FlightInformation;
+import database.tables.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,9 +13,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.formatters.FloatTextFormatter;
-import ui.converters.PassengerStringConverter;
-
-import java.util.List;
 
 public class AddTicketController {
     private TicketOperator ticketOperator = TicketOperator.getInstance();
@@ -28,7 +24,7 @@ public class AddTicketController {
     @FXML private GridPane mainGridPane;
     @FXML private Button backButton;
     @FXML private Button addButton;
-    @FXML private ComboBox<FlightInformation> flightComboBox;
+    @FXML private ComboBox<Flight> flightComboBox;
     @FXML private ComboBox<Passenger> passengerComboBox;
     @FXML private ComboBox<SeatClassType> seatClassComboBox;
     @FXML private TextField seatTextField;
@@ -38,11 +34,10 @@ public class AddTicketController {
     @FXML
     public void initialize() {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
-        passengerComboBox.setConverter(new PassengerStringConverter());
 
         priceTextField.setTextFormatter(new FloatTextFormatter());
 
-        flightComboBox.getItems().addAll(flightOperator.getInformationForAll());
+        flightComboBox.getItems().addAll(flightOperator.selectAll());
         seatClassComboBox.getItems().addAll(seatClassTypeOperator.selectAll());
     }
 
@@ -111,17 +106,14 @@ public class AddTicketController {
     }
 
     /**
-     * Called when the user chooses a Flight in the Flight ComboBox.
+     * Called when the user chooses a Flight in the Flight ComboBox. Fills passenger combo box.
      * @param actionEvent holds extra event information
      */
     public void flightChosen(ActionEvent actionEvent) {
         if (flightComboBox.getValue() != null) {
             passengerComboBox.getItems().clear();
             passengerComboBox.setValue(null);
-            List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectByFlightId(flightComboBox.getValue().getId());
-            for (PassengerOnFlight pof : passengerOnFlightObjects) {
-                passengerComboBox.getItems().add(passengerOperator.selectById(pof.getPassenger_id()));
-            }
+            passengerComboBox.getItems().addAll(passengerOperator.selectManyByFlightId(flightComboBox.getValue().getId()));
         }
     }
 }

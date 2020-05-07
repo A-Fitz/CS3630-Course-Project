@@ -1,7 +1,7 @@
 package ui.controllers;
 
 import database.operators.TicketStatusTypeOperator;
-import database.tables.base.TicketStatusType;
+import database.tables.TicketStatusType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

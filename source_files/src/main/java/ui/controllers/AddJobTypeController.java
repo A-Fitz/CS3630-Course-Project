@@ -1,10 +1,9 @@
 package ui.controllers;
 
 import database.operators.*;
-import database.tables.base.AirlineJobType;
-import database.tables.base.AirportJobType;
+import database.tables.AirlineJobType;
+import database.tables.AirportJobType;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;

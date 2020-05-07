@@ -1,7 +1,7 @@
 package ui.controllers;
 
 import database.operators.SeatClassTypeOperator;
-import database.tables.base.SeatClassType;
+import database.tables.SeatClassType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

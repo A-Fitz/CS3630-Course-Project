@@ -1,19 +1,18 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.extractors.base.AirlineEmployeeExtractor;
-import database.extractors.information.AirlineEmployeeInformationExtractor;
-import database.tables.base.*;
-import database.tables.information.AirlineEmployeeInformation;
+import database.OperatorInterface;
+import database.extractors.AirlineEmployeeExtractor;
+import database.tables.Airline;
+import database.tables.AirlineEmployee;
+import database.tables.AirlineJobType;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class AirlineEmployeeOperator {
+public class AirlineEmployeeOperator implements OperatorInterface<AirlineEmployee> {
     private static AirlineEmployeeOperator instance = new AirlineEmployeeOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 
@@ -28,103 +27,52 @@ public class AirlineEmployeeOperator {
         return instance;
     }
 
-    public AirlineEmployeeInformation getInformationFromId(int airlineEmployeeId)
-    {
-        AirlineEmployeeInformationExtractor extractor = new AirlineEmployeeInformationExtractor();
+    @Override
+    public List<AirlineEmployee> selectAll() {
+        AirlineEmployeeExtractor extractor = new AirlineEmployeeExtractor();
 
         String queryTemplate = "SELECT airline_employee." + AirlineEmployee.ID_COLUMN_NAME + ", "
-                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AirlineEmployeeInformation.AIRLINE_NAME_COLUMN_NAME + ", "
-                + "airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " AS " + AirlineEmployeeInformation.JOB_TITLE_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.JOB_ID_COLUMN_NAME + ", "
                 + "airline_employee." + AirlineEmployee.FIRST_NAME_COLUMN_NAME + ", "
                 + "airline_employee." + AirlineEmployee.MIDDLE_NAME_COLUMN_NAME + ", "
                 + "airline_employee." + AirlineEmployee.LAST_NAME_COLUMN_NAME + ", "
                 + "airline_employee." + AirlineEmployee.EMAIL_COLUMN_NAME + ", "
                 + "airline_employee." + AirlineEmployee.ADDRESS_COLUMN_NAME + ", "
                 + "airline_employee." + AirlineEmployee.PHONE_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.BIRTH_DATE_COLUMN_NAME + " "
+                + "airline_employee." + AirlineEmployee.BIRTH_DATE_COLUMN_NAME + ", "
+                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AirlineEmployee.AIRLINE_NAME_COLUMN_NAME + ", "
+                + "airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " AS " + AirlineEmployee.JOB_TITLE_COLUMN_NAME + " "
+                + "FROM airline_employee "
+                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ") "
+                + "INNER JOIN airline_job_type ON (airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.JOB_ID_COLUMN_NAME + ")";
+
+        return namedParameterJdbcTemplate.query(queryTemplate, extractor);
+    }
+
+    @Override
+    public AirlineEmployee selectById(int id) {
+        AirlineEmployeeExtractor extractor = new AirlineEmployeeExtractor();
+
+        String queryTemplate = "SELECT airline_employee." + AirlineEmployee.ID_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.JOB_ID_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.FIRST_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.MIDDLE_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.LAST_NAME_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.EMAIL_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.ADDRESS_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.PHONE_COLUMN_NAME + ", "
+                + "airline_employee." + AirlineEmployee.BIRTH_DATE_COLUMN_NAME + ", "
+                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AirlineEmployee.AIRLINE_NAME_COLUMN_NAME + ", "
+                + "airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " AS " + AirlineEmployee.JOB_TITLE_COLUMN_NAME + " "
                 + "FROM airline_employee "
                 + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ") "
                 + "INNER JOIN airline_job_type ON (airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.JOB_ID_COLUMN_NAME + ") "
                 + "WHERE airline_employee." + AirlineEmployee.ID_COLUMN_NAME + " = :airlineEmployeeId";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("airlineEmployeeId", airlineEmployeeId);
-
-        List<AirlineEmployeeInformation> airlineEmployeeInformationList = namedParameterJdbcTemplate.query(queryTemplate,
-                parameters, extractor);
-
-        if (airlineEmployeeInformationList == null || airlineEmployeeInformationList.size() == 0)
-            return null;
-        else
-            return airlineEmployeeInformationList.get(0);
-    }
-
-    public List<AirlineEmployeeInformation> getInformationFromListOfIds(List<Integer> airlineEmployeeIds)
-    {
-        AirlineEmployeeInformationExtractor extractor = new AirlineEmployeeInformationExtractor();
-
-        String queryTemplate = "SELECT airline_employee." + AirlineEmployee.ID_COLUMN_NAME + ", "
-                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AirlineEmployeeInformation.AIRLINE_NAME_COLUMN_NAME + ", "
-                + "airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " AS " + AirlineEmployeeInformation.JOB_TITLE_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.FIRST_NAME_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.MIDDLE_NAME_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.LAST_NAME_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.EMAIL_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.ADDRESS_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.PHONE_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.BIRTH_DATE_COLUMN_NAME + " "
-                + "FROM airline_employee "
-                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ") "
-                + "INNER JOIN airline_job_type ON (airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.JOB_ID_COLUMN_NAME + ") "
-                + "WHERE airline_employee." + AirlineEmployee.ID_COLUMN_NAME + " IN :airlineEmployeeIds";
-
-        MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("airlineEmployeeIds", airlineEmployeeIds);
-
-        List<AirlineEmployeeInformation> airlineEmployeeInformationList = namedParameterJdbcTemplate.query(queryTemplate,
-                parameters, extractor);
-
-        if (airlineEmployeeInformationList == null || airlineEmployeeInformationList.size() == 0)
-            return null;
-        else
-            return airlineEmployeeInformationList;
-    }
-
-    public List<AirlineEmployeeInformation> getInformationForAll()
-    {
-        AirlineEmployeeInformationExtractor extractor = new AirlineEmployeeInformationExtractor();
-
-        String queryTemplate = "SELECT airline_employee." + AirlineEmployee.ID_COLUMN_NAME + ", "
-                + "airline." + Airline.NAME_COLUMN_NAME + " AS " + AirlineEmployeeInformation.AIRLINE_NAME_COLUMN_NAME + ", "
-                + "airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " AS " + AirlineEmployeeInformation.JOB_TITLE_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.FIRST_NAME_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.MIDDLE_NAME_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.LAST_NAME_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.EMAIL_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.ADDRESS_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.PHONE_COLUMN_NAME + ", "
-                + "airline_employee." + AirlineEmployee.BIRTH_DATE_COLUMN_NAME + " "
-                + "FROM airline_employee "
-                + "INNER JOIN airline ON (airline." + Airline.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ") "
-                + "INNER JOIN airline_job_type ON (airline_job_type." + AirlineJobType.ID_COLUMN_NAME + " = airline_employee." + AirlineEmployee.JOB_ID_COLUMN_NAME + ")";
-
-
-        return new ArrayList<>(Objects.requireNonNull(namedParameterJdbcTemplate.query(queryTemplate, extractor)));
-    }
-
-    /**
-     * Selects a airline_employee row, in the form of a Java object, from the airline_employee table given an id.
-     *
-     * @param id The value of the id column for a airline_employee row
-     * @return (null if no airline_employee exists with that id) (a AirlineEmployee object if row exists with that id)
-     */
-    private AirlineEmployee selectById(int id) {
-        AirlineEmployeeExtractor extractor = new AirlineEmployeeExtractor();
-
-        String queryTemplate = "SELECT * FROM airline_employee WHERE id = :id";
-
-        MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("id", id);
+        parameters.addValue("airlineEmployeeId", id);
 
         List<AirlineEmployee> airlineEmployeeList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
 
@@ -134,13 +82,7 @@ public class AirlineEmployeeOperator {
             return airlineEmployeeList.get(0);
     }
 
-    /**
-     * Tries to update a row in the airline_employee table given an id and a representative Java object.
-     *
-     * @param id              The value of the id column of the row to update.
-     * @param airlineEmployee A java object representing the new values for the row.
-     * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
-     */
+    @Override
     public int updateById(int id, AirlineEmployee airlineEmployee) {
         String queryTemplate = "UPDATE airline_employee SET "
                 + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id, "
@@ -169,12 +111,7 @@ public class AirlineEmployeeOperator {
         return namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
-    /**
-     * Tries to insert a new row into the airline_employee table given a representative Java object.
-     *
-     * @param airlineEmployee The AirlineEmployee object which holds the data to insert into columns
-     * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
-     */
+    @Override
     public int insert(AirlineEmployee airlineEmployee) {
         String queryTemplate = "INSERT INTO airline_employee ("
                 + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ", "
@@ -211,12 +148,7 @@ public class AirlineEmployeeOperator {
         return rowsAffected;
     }
 
-    /**
-     * Tries to delete a row in the airline_employee table given an id.
-     *
-     * @param id The value of the id column of the row to delete.
-     * @return (0 if the delete failed, the id did not exist in the table) (1 if the row was successfully deleted)
-     */
+    @Override
     public int deleteById(int id) {
         String queryTemplate = "DELETE FROM airline_employee "
                 + " WHERE " + AirlineEmployee.ID_COLUMN_NAME + " = :id";

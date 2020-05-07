@@ -38,7 +38,7 @@
                 <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <children>
                         <Label text="Choose Airline To Edit" />
-                        <ComboBox fx:id="airlineChoiceComboBox" maxWidth="1.7976931348623157E308"/>
+                        <ComboBox fx:id="airlineChoiceComboBox" maxWidth="1.7976931348623157E308" onAction="#airlineChosen"/>
                     </children>
                     <padding>
                         <Insets left="15.0" right="15.0" />

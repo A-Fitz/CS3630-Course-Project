@@ -3,9 +3,9 @@ package ui.controllers;
 import database.operators.AirlineEmployeeOnFlightOperator;
 import database.operators.AirlineEmployeeOperator;
 import database.operators.FlightOperator;
-import database.tables.base.AirlineEmployeeOnFlight;
-import database.tables.information.AirlineEmployeeInformation;
-import database.tables.information.FlightInformation;
+import database.tables.AirlineEmployee;
+import database.tables.AirlineEmployeeOnFlight;
+import database.tables.Flight;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,15 +39,15 @@ public class AddAirlineEmployeeToFlightController implements Initializable {
     @FXML private Label messageLabel;
 
     // The following are example components.
-    @FXML private ComboBox<AirlineEmployeeInformation> employeeComboBox;
-    @FXML private ComboBox<FlightInformation> flightComboBox;
+    @FXML private ComboBox<AirlineEmployee> employeeComboBox;
+    @FXML private ComboBox<Flight> flightComboBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus()); // Do this to stop text fields from getting auto focus (annoying).
 
-        employeeComboBox.getItems().addAll(airlineEmployeeOperator.getInformationForAll());
-        flightComboBox.getItems().addAll(flightOperator.getInformationForAll());
+        employeeComboBox.getItems().addAll(airlineEmployeeOperator.selectAll());
+        flightComboBox.getItems().addAll(flightOperator.selectAll());
     }
 
     /**

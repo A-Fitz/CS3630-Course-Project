@@ -2,7 +2,9 @@ package ui.controllers;
 
 import database.operators.AirlineOperator;
 import database.tables.Airline;
+import database.tables.Flight;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -11,15 +13,13 @@ import javafx.stage.Stage;
 import ui.Launcher;
 import ui.UIConstants;
 import ui.Util;
-import ui.converters.AirlineStringConverter;
-import ui.converters.AirportStringConverter;
 
 public class EditAirlineController {
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
 
     @FXML private GridPane mainGridPane;
     @FXML private Button backButton;
-    @FXML private ComboBox airlineChoiceComboBox;
+    @FXML private ComboBox<Airline> airlineChoiceComboBox;
     @FXML private TextField nameTextField;
     @FXML private TextField abbreviationTextField;
     @FXML private Label messageLabel;
@@ -28,7 +28,7 @@ public class EditAirlineController {
         Platform.runLater(() ->
         {
             backButton.getScene().getRoot().requestFocus();
-            updateAirlineChoiceComboBox();
+            updateAirlineComboBox();
         });
     }
 
@@ -38,7 +38,7 @@ public class EditAirlineController {
                 nameTextField.getText()!= null &&
                 abbreviationTextField.getText()!= null)
         {
-            Airline airlineChosen = (Airline)airlineChoiceComboBox.getValue();
+            Airline airlineChosen = airlineChoiceComboBox.getValue();
             Airline newAirline=new Airline();
             newAirline.setAbbreviation(abbreviationTextField.getText());
             newAirline.setName(nameTextField.getText());
@@ -52,10 +52,10 @@ public class EditAirlineController {
                 Util.setMessageLabel("Airline not updated. Both the abbreviation and name fields are unique to an airline.", Color.RED, messageLabel);
             } else {
                 clearAllFields();
+                updateAirlineComboBox();
                 Util.setMessageLabel("Airline updated.", Color.GREEN, messageLabel);
             }
             mainGridPane.setDisable(false);
-            updateAirlineChoiceComboBox();
         }
         else
         {
@@ -63,10 +63,20 @@ public class EditAirlineController {
         }
     }
 
-    private void updateAirlineChoiceComboBox()
+    private void updateAirlineComboBox()
     {
-        airlineChoiceComboBox.setConverter(new AirlineStringConverter());
         airlineChoiceComboBox.getItems().addAll(airlineOperator.selectAll());
+    }
+
+    /**
+     * Called when the airline which is to be edited is chosen. Should fill the values of the TextFields and ComboBoxes
+     * with what the airline currently has.
+     *
+     * @param actionEvent Event representing the action of the combobox choice being chosen, holds extra information.
+     */
+    public void airlineChosen(ActionEvent actionEvent) {
+        nameTextField.setText(airlineChoiceComboBox.getValue().getName());
+        abbreviationTextField.setText(airlineChoiceComboBox.getValue().getAbbreviation());
     }
 
     /**
@@ -74,6 +84,7 @@ public class EditAirlineController {
      */
     private void clearAllFields() {
         airlineChoiceComboBox.getItems().clear();
+        airlineChoiceComboBox.setValue(null);
         nameTextField.clear();
         abbreviationTextField.clear();
     }
