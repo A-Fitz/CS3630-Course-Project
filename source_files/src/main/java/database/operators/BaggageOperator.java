@@ -25,6 +25,28 @@ public class BaggageOperator implements OperatorInterface<Baggage> {
         return instance;
     }
 
+    public List<Baggage> selectByPassengerId(int passengerId) {
+        BaggageExtractor extractor = new BaggageExtractor();
+
+        String queryTemplate = "SELECT baggage." + Baggage.ID_COLUMN_NAME + ", "
+                + "baggage." + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + ", "
+                + "baggage." + Baggage.WEIGHT_COLUMN_NAME + ", "
+                + "baggage." + Baggage.BAGGAGE_STATUS_ID_COLUMN_NAME + ", "
+                + "flight." + Flight.CALLSIGN_COLUMN_NAME + " AS " + Baggage.FLIGHT_CALLSIGN_COLUMN_NAME + ", "
+                + "baggage_status_type." + BaggageStatusType.TITLE_COLUMN_NAME + " AS " + Baggage.BAGGAGE_STATUS_TITLE_COLUMN_NAME + " "
+                + "FROM baggage "
+                + "INNER JOIN passenger_on_flight ON (passenger_on_flight." + PassengerOnFlight.ID_COLUMN_NAME + " = baggage." + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN flight ON (flight." + Flight.ID_COLUMN_NAME + " = passenger_on_flight." + PassengerOnFlight.FLIGHT_ID_COLUMN_NAME + ") "
+                + "INNER JOIN passenger ON (passenger." + Passenger.ID_COLUMN_NAME + " = passenger_on_flight." + PassengerOnFlight.PASSSENGER_ID_COLUMN_NAME + ") "
+                + "INNER JOIN baggage_status_type ON (baggage_status_type." + BaggageStatusType.ID_COLUMN_NAME + " = baggage." + Baggage.BAGGAGE_STATUS_ID_COLUMN_NAME + ") "
+                + "WHERE passenger." + Passenger.ID_COLUMN_NAME + " = :passengerId";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("passengerId", passengerId);
+
+        return namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
+    }
+
     @Override
     public List<Baggage> selectAll() {
         BaggageExtractor extractor = new BaggageExtractor();
@@ -34,11 +56,6 @@ public class BaggageOperator implements OperatorInterface<Baggage> {
                 + "baggage." + Baggage.WEIGHT_COLUMN_NAME + ", "
                 + "baggage." + Baggage.BAGGAGE_STATUS_ID_COLUMN_NAME + ", "
                 + "flight." + Flight.CALLSIGN_COLUMN_NAME + " AS " + Baggage.FLIGHT_CALLSIGN_COLUMN_NAME + ", "
-                + "passenger." + Passenger.PASSPORT_NUMBER_COLUMN_NAME + " AS " + Baggage.PASSENGER_PASSPORT_NUMBER_COLUMN_NAME + ", "
-                + "passenger." + Passenger.FIRST_NAME_COLUMN_NAME + " AS " + Baggage.PASSENGER_FIRST_NAME_COLUMN_NAME + ", "
-                + "passenger." + Passenger.MIDDLE_NAME_COLUMN_NAME + " AS " + Baggage.PASSENGER_MIDDLE_NAME_COLUMN_NAME + ", "
-                + "passenger." + Passenger.LAST_NAME_COLUMN_NAME + " AS " + Baggage.PASSENGER_LAST_NAME_COLUMN_NAME + ", "
-                + "passenger." + Passenger.BIRTH_DATE_COLUMN_NAME + " AS " + Baggage.PASSENGER_BIRTH_DATE_COLUMN_NAME + ", "
                 + "baggage_status_type." + BaggageStatusType.TITLE_COLUMN_NAME + " AS " + Baggage.BAGGAGE_STATUS_TITLE_COLUMN_NAME + " "
                 + "FROM baggage "
                 + "INNER JOIN passenger_on_flight ON (passenger_on_flight." + PassengerOnFlight.ID_COLUMN_NAME + " = baggage." + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + ") "
@@ -58,11 +75,6 @@ public class BaggageOperator implements OperatorInterface<Baggage> {
                 + "baggage." + Baggage.WEIGHT_COLUMN_NAME + ", "
                 + "baggage." + Baggage.BAGGAGE_STATUS_ID_COLUMN_NAME + ", "
                 + "flight." + Flight.CALLSIGN_COLUMN_NAME + " AS " + Baggage.FLIGHT_CALLSIGN_COLUMN_NAME + ", "
-                + "passenger." + Passenger.PASSPORT_NUMBER_COLUMN_NAME + " AS " + Baggage.PASSENGER_PASSPORT_NUMBER_COLUMN_NAME + ", "
-                + "passenger." + Passenger.FIRST_NAME_COLUMN_NAME + " AS " + Baggage.PASSENGER_FIRST_NAME_COLUMN_NAME + ", "
-                + "passenger." + Passenger.MIDDLE_NAME_COLUMN_NAME + " AS " + Baggage.PASSENGER_MIDDLE_NAME_COLUMN_NAME + ", "
-                + "passenger." + Passenger.LAST_NAME_COLUMN_NAME + " AS " + Baggage.PASSENGER_LAST_NAME_COLUMN_NAME + ", "
-                + "passenger." + Passenger.BIRTH_DATE_COLUMN_NAME + " AS " + Baggage.PASSENGER_BIRTH_DATE_COLUMN_NAME + ", "
                 + "baggage_status_type." + BaggageStatusType.TITLE_COLUMN_NAME + " AS " + Baggage.BAGGAGE_STATUS_TITLE_COLUMN_NAME + " "
                 + "FROM baggage "
                 + "INNER JOIN passenger_on_flight ON (passenger_on_flight." + PassengerOnFlight.ID_COLUMN_NAME + " = baggage." + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + ") "

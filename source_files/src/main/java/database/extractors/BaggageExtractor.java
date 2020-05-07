@@ -24,11 +24,6 @@ public class BaggageExtractor implements ResultSetExtractor<List<Baggage>> {
             Integer baggage_status_id;
 
             String flight_callsign;
-            String passenger_passport_number;
-            String passenger_first_name;
-            String passenger_middle_name;
-            String passenger_last_name;
-            Date passenger_birthdate;
             String baggage_status_title;
 
             id = rs.getInt(Baggage.ID_COLUMN_NAME);
@@ -39,13 +34,6 @@ public class BaggageExtractor implements ResultSetExtractor<List<Baggage>> {
             baggage_status_id = rs.getInt(Baggage.BAGGAGE_STATUS_ID_COLUMN_NAME);
 
             flight_callsign = rs.getString(Baggage.FLIGHT_CALLSIGN_COLUMN_NAME);
-            passenger_passport_number = rs.getString(Baggage.PASSENGER_PASSPORT_NUMBER_COLUMN_NAME);
-            if (rs.wasNull())
-                passenger_passport_number = null;
-            passenger_first_name = rs.getString(Baggage.PASSENGER_FIRST_NAME_COLUMN_NAME);
-            passenger_middle_name = rs.getString(Baggage.PASSENGER_MIDDLE_NAME_COLUMN_NAME);
-            passenger_last_name = rs.getString(Baggage.PASSENGER_LAST_NAME_COLUMN_NAME);
-            passenger_birthdate = rs.getDate(Baggage.PASSENGER_BIRTH_DATE_COLUMN_NAME);
             baggage_status_title = rs.getString(Baggage.BAGGAGE_STATUS_TITLE_COLUMN_NAME);
 
             baggage.setId(id);
@@ -54,11 +42,6 @@ public class BaggageExtractor implements ResultSetExtractor<List<Baggage>> {
             baggage.setBaggage_status_id(baggage_status_id);
 
             baggage.setFlight_callsign(flight_callsign);
-            baggage.setPassenger_passport_number(passenger_passport_number);
-            baggage.setPassenger_first_name(passenger_first_name);
-            baggage.setPassenger_middle_name(passenger_middle_name);
-            baggage.setPassenger_last_name(passenger_last_name);
-            baggage.setPassenger_birthdate(passenger_birthdate);
             baggage.setWeight(weight);
             baggage.setBaggage_status_title(baggage_status_title);
 
