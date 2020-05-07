@@ -1,7 +1,7 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.OperatorInterface;
+import database.DatabaseOperator;
 import database.extractors.GateExtractor;
 import database.tables.Airport;
 import database.tables.Gate;
@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class GateOperator implements OperatorInterface<Gate> {
+public class GateOperator implements DatabaseOperator<Gate> {
     private static GateOperator instance = new GateOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 

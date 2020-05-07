@@ -1,7 +1,7 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.OperatorInterface;
+import database.DatabaseOperator;
 import database.extractors.PassengerOnFlightExtractor;
 import database.tables.PassengerOnFlight;
 import org.springframework.dao.DuplicateKeyException;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class PassengerOnFlightOperator implements OperatorInterface<PassengerOnFlight> {
+public class PassengerOnFlightOperator implements DatabaseOperator<PassengerOnFlight> {
     private static PassengerOnFlightOperator instance = new PassengerOnFlightOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate =
             DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();

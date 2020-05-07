@@ -1,7 +1,7 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.OperatorInterface;
+import database.DatabaseOperator;
 import database.extractors.SeatClassTypeExtractor;
 import database.tables.SeatClassType;
 import org.springframework.dao.DuplicateKeyException;
@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class SeatClassTypeOperator implements OperatorInterface<SeatClassType> {
+public class SeatClassTypeOperator implements DatabaseOperator<SeatClassType> {
     private static SeatClassTypeOperator instance = new SeatClassTypeOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 

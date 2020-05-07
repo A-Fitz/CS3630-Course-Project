@@ -8,7 +8,7 @@ import java.util.List;
  * @param <DatabaseObject> A given DatabaseObject class. Yes this is just a generic name, but that is because
  *                            Java does not play nice when trying to use abstract classes in interfaces.
  */
-public interface OperatorInterface<DatabaseObject>
+public interface DatabaseOperator<DatabaseObject>
 {
     /**
      * Selects a row from the database table which aligns with the DatabaseObject type and all of its applicable

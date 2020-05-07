@@ -2,9 +2,7 @@ package database.tables;
 
 import database.DatabaseObject;
 
-import java.sql.Date;
-
-public class Baggage extends DatabaseObject {
+public class Baggage implements DatabaseObject {
     /* Basic information */
     public static final String ID_COLUMN_NAME = "id";
     public static final String PASSENGER_ON_FLIGHT_ID_COLUMN_NAME = "passenger_on_flight_id";
@@ -23,10 +21,12 @@ public class Baggage extends DatabaseObject {
     private String flight_callsign;
     private String baggage_status_title;
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }

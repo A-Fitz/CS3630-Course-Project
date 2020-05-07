@@ -1,7 +1,7 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.OperatorInterface;
+import database.DatabaseOperator;
 import database.extractors.TerminalExtractor;
 import database.tables.Airport;
 import database.tables.Terminal;
@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class TerminalOperator implements OperatorInterface<Terminal> {
+public class TerminalOperator implements DatabaseOperator<Terminal> {
     private static TerminalOperator instance = new TerminalOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 

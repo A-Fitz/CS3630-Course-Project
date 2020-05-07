@@ -1,7 +1,7 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.OperatorInterface;
+import database.DatabaseOperator;
 import database.extractors.TicketExtractor;
 import database.tables.Ticket;
 import org.springframework.dao.DuplicateKeyException;
@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class TicketOperator implements OperatorInterface<Ticket> {
+public class TicketOperator implements DatabaseOperator<Ticket> {
     private static TicketOperator instance = new TicketOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 

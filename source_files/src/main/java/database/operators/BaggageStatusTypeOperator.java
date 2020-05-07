@@ -1,7 +1,7 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.OperatorInterface;
+import database.DatabaseOperator;
 import database.extractors.BaggageStatusTypeExtractor;
 import database.tables.BaggageStatusType;
 import org.springframework.dao.DuplicateKeyException;
@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class BaggageStatusTypeOperator implements OperatorInterface<BaggageStatusType> {
+public class BaggageStatusTypeOperator implements DatabaseOperator<BaggageStatusType> {
     private static BaggageStatusTypeOperator instance = new BaggageStatusTypeOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 

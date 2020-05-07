@@ -1,7 +1,7 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.OperatorInterface;
+import database.DatabaseOperator;
 import database.extractors.AirportEmployeeExtractor;
 import database.tables.Airport;
 import database.tables.AirportEmployee;
@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class AirportEmployeeOperator implements OperatorInterface<AirportEmployee> {
+public class AirportEmployeeOperator implements DatabaseOperator<AirportEmployee> {
     private static AirportEmployeeOperator instance = new AirportEmployeeOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 

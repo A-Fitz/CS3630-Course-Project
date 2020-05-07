@@ -1,7 +1,7 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.OperatorInterface;
+import database.DatabaseOperator;
 import database.extractors.AirlineExtractor;
 import database.tables.Airline;
 import database.tables.Ticket;
@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class AirlineOperator implements OperatorInterface<Airline> {
+public class AirlineOperator implements DatabaseOperator<Airline> {
     private static AirlineOperator instance = new AirlineOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 

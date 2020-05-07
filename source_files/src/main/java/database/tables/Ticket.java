@@ -4,7 +4,7 @@ import database.DatabaseObject;
 
 import java.sql.Timestamp;
 
-public class Ticket extends DatabaseObject {
+public class Ticket implements DatabaseObject {
     /* Basic information */
     public static final String ID_COLUMN_NAME = "id";
     public static final String PASSENGER_ON_FLIGHT_ID_COLUMN_NAME = "passenger_on_flight_id";
@@ -22,10 +22,12 @@ public class Ticket extends DatabaseObject {
     private Integer ticket_status_id;
     private Timestamp purchase_timestamp;
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }

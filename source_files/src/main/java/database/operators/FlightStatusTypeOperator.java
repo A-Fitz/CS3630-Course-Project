@@ -1,7 +1,7 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.OperatorInterface;
+import database.DatabaseOperator;
 import database.extractors.FlightStatusTypeExtractor;
 import database.tables.FlightStatusType;
 import org.springframework.dao.DuplicateKeyException;
@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class FlightStatusTypeOperator implements OperatorInterface<FlightStatusType> {
+public class FlightStatusTypeOperator implements DatabaseOperator<FlightStatusType> {
     private static FlightStatusTypeOperator instance = new FlightStatusTypeOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 

@@ -2,7 +2,7 @@ package database.tables;
 
 import database.DatabaseObject;
 
-public class Airport extends DatabaseObject {
+public class Airport implements DatabaseObject {
     /* Basic information */
     public static final String ID_COLUMN_NAME = "id";
     public static final String NAME_COLUMN_NAME = "name";
@@ -16,10 +16,12 @@ public class Airport extends DatabaseObject {
     private String city;
     private String country;
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }

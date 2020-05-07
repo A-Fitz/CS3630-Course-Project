@@ -1,7 +1,7 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.OperatorInterface;
+import database.DatabaseOperator;
 import database.extractors.AirportJobTypeExtractor;
 import database.tables.AirportJobType;
 import org.springframework.dao.DuplicateKeyException;
@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class AirportJobTypeOperator implements OperatorInterface<AirportJobType> {
+public class AirportJobTypeOperator implements DatabaseOperator<AirportJobType> {
     private static AirportJobTypeOperator instance = new AirportJobTypeOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 

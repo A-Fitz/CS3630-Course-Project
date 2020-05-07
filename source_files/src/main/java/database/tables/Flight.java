@@ -4,7 +4,7 @@ import database.DatabaseObject;
 
 import java.sql.Date;
 
-public class Flight extends DatabaseObject {
+public class Flight implements DatabaseObject {
     /* Basic information */
     public static final String ID_COLUMN_NAME = "id";
     public static final String CALLSIGN_COLUMN_NAME = "callsign";
@@ -45,10 +45,12 @@ public class Flight extends DatabaseObject {
     private String aircraft_serial_number;
     private String flight_status_title;
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }

@@ -2,7 +2,7 @@ package database.tables;
 
 import database.DatabaseObject;
 
-public class Gate extends DatabaseObject {
+public class Gate implements DatabaseObject {
     /* Basic information */
     public static final String ID_COLUMN_NAME = "id";
     public static final String TERMINAL_ID_COLUMN_NAME = "terminal_id";
@@ -15,10 +15,12 @@ public class Gate extends DatabaseObject {
     /* User readable information */
     private String terminal_code;
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
