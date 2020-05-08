@@ -1,36 +1,28 @@
 package ui.controllers;
 
-import database.operators.AirlineOperator;
 import database.operators.BaggageOperator;
 import database.operators.PassengerOperator;
-import database.tables.Airline;
 import database.tables.Baggage;
 import database.tables.Passenger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import ui.Launcher;
-import ui.UIConstants;
 import ui.Util;
 
-public class DeleteBaggageController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class DeleteBaggageController extends ThreeColumnController {
     private PassengerOperator passengerOperator = PassengerOperator.getInstance();
     private BaggageOperator baggageOperator = BaggageOperator.getInstance();
 
-    @FXML private GridPane mainGridPane;
-    @FXML private Button backButton;
     @FXML private ComboBox<Passenger> passengerComboBox;
     @FXML private ComboBox<Baggage> baggageComboBox;
-    @FXML private Label messageLabel;
 
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() ->
         {
             backButton.getScene().getRoot().requestFocus();
@@ -38,12 +30,9 @@ public class DeleteBaggageController {
         passengerComboBox.getItems().addAll(passengerOperator.selectAll());
     }
 
-    public void deleteBaggageButtonClicked()
-    {
-        if(passengerComboBox.getValue() != null && baggageComboBox.getValue() != null)
-        {
-            mainGridPane.setDisable(true);
-            messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
+    public void deleteBaggageButtonClicked() {
+        if (passengerComboBox.getValue() != null && baggageComboBox.getValue() != null) {
+            disable();
 
             int rowsAffected = baggageOperator.deleteById(baggageComboBox.getValue().getId());
 
@@ -53,10 +42,8 @@ public class DeleteBaggageController {
                 updateBaggageComboBox();
                 Util.setMessageLabel("Baggage deleted.", Color.GREEN, messageLabel);
             }
-            mainGridPane.setDisable(false);
-        }
-        else
-        {
+            enable();
+        } else {
             Util.setMessageLabel("Error. Please fill the required fields.", Color.RED, messageLabel);
         }
     }
@@ -70,8 +57,7 @@ public class DeleteBaggageController {
         updateBaggageComboBox();
     }
 
-    private void updateBaggageComboBox()
-    {
+    private void updateBaggageComboBox() {
         clearAllFields();
         baggageComboBox.getItems().addAll(baggageOperator.selectByPassengerId(passengerComboBox.getValue().getId()));
     }
@@ -82,14 +68,5 @@ public class DeleteBaggageController {
     private void clearAllFields() {
         baggageComboBox.setValue(null);
         baggageComboBox.getItems().clear();
-    }
-
-    /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     */
-    public void backButtonClicked() {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        Launcher.showStage();
     }
 }

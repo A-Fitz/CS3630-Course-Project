@@ -1,7 +1,5 @@
 package database.tables;
 
-import database.DatabaseObject;
-
 public class Baggage implements DatabaseObject {
     /* Basic information */
     public static final String ID_COLUMN_NAME = "id";

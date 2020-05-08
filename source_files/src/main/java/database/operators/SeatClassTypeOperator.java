@@ -1,7 +1,6 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.DatabaseOperator;
 import database.extractors.SeatClassTypeExtractor;
 import database.tables.SeatClassType;
 import org.springframework.dao.DuplicateKeyException;

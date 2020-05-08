@@ -5,15 +5,8 @@ import database.tables.FlightStatusType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import ui.Launcher;
-import ui.UIConstants;
 import ui.Util;
 
 import java.net.URL;
@@ -22,11 +15,9 @@ import java.util.ResourceBundle;
 /**
  * Controls the "Add Flight Status Type" screen. Will allow for inserting a flight status type into the database given valid input.
  */
-public class AddFlightStatusTypeController implements Initializable {
+public class AddFlightStatusTypeController extends ThreeColumnController {
     private FlightStatusTypeOperator flightStatusTypeOperator = FlightStatusTypeOperator.getInstance();
-    @FXML private GridPane mainGridPane;
-    @FXML private Button backButton;
-    @FXML private Label messageLabel;
+
     @FXML private TextField flightStatusTypeTextField;
 
     @Override
@@ -42,12 +33,11 @@ public class AddFlightStatusTypeController implements Initializable {
      */
     public void addFlightStatusTypeButtonClicked(ActionEvent actionEvent) {
         if (flightStatusTypeTextField.getText() != null && !flightStatusTypeTextField.getText().isEmpty()) {
+            // disable buttons until a success/failure is received
+            disable();
+
             FlightStatusType flightStatusType = new FlightStatusType();
             flightStatusType.setTitle(flightStatusTypeTextField.getText());
-
-            // disable buttons until a success/failure is received
-            mainGridPane.setDisable(true);
-            messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
 
             int rowsAffected = flightStatusTypeOperator.insert(flightStatusType);
 
@@ -59,7 +49,7 @@ public class AddFlightStatusTypeController implements Initializable {
                 clearAllTextFields();
                 Util.setMessageLabel("Flight status type added.", Color.GREEN, messageLabel);
             }
-            mainGridPane.setDisable(false);
+            enable();
         } else {
             // All fields must not be null. Display error message.
             Util.setMessageLabel("Flight status type not added. Please fill the required fields.", Color.RED, messageLabel);
@@ -73,14 +63,5 @@ public class AddFlightStatusTypeController implements Initializable {
         flightStatusTypeTextField.clear();
     }
 
-    /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     *
-     * @param actionEvent Event representing the action of the button firing, holds extra information.
-     */
-    public void backButtonClicked(ActionEvent actionEvent) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        Launcher.showStage();
-    }
+
 }

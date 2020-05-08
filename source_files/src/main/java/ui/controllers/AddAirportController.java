@@ -5,15 +5,8 @@ import database.tables.Airport;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import ui.Launcher;
-import ui.UIConstants;
 import ui.Util;
 
 import java.net.URL;
@@ -22,11 +15,9 @@ import java.util.ResourceBundle;
 /**
  * Controls the "Add Airport" screen. Will allow for inserting an Airport into the database given valid input.
  */
-public class AddAirportController implements Initializable {
+public class AddAirportController extends ThreeColumnController {
     private AirportOperator airportOperator = AirportOperator.getInstance();
-    @FXML private GridPane mainGridPane;
-    @FXML private Button backButton;
-    @FXML private Label messageLabel;
+
     @FXML private TextField nameTextField;
     @FXML private TextField iataCodeTextField;
     @FXML private TextField cityTextField;
@@ -48,15 +39,14 @@ public class AddAirportController implements Initializable {
                 && iataCodeTextField.getText() != null && !iataCodeTextField.getText().isEmpty()
                 && cityTextField.getText() != null && !cityTextField.getText().isEmpty()
                 && countryTextField.getText() != null && !countryTextField.getText().isEmpty()) {
+            // disable buttons until a success/failure is received
+            disable();
+
             Airport airport = new Airport();
             airport.setName(nameTextField.getText());
             airport.setIata_code(iataCodeTextField.getText());
             airport.setCity(cityTextField.getText());
             airport.setCountry(countryTextField.getText());
-
-            // disable buttons until a success/failure is received
-            mainGridPane.setDisable(true);
-            messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
 
             int rowsAffected = airportOperator.insert(airport);
 
@@ -68,7 +58,7 @@ public class AddAirportController implements Initializable {
                 clearAllTextFields();
                 Util.setMessageLabel("Airport added.", Color.GREEN, messageLabel);
             }
-            mainGridPane.setDisable(false);
+            enable();
         } else {
             // All fields must not be empty. Display error message.
             Util.setMessageLabel("Airport not added. Please fill the required fields.", Color.RED, messageLabel);
@@ -85,14 +75,5 @@ public class AddAirportController implements Initializable {
         countryTextField.clear();
     }
 
-    /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     *
-     * @param actionEvent Event representing the action of the button firing, holds extra information.
-     */
-    public void backButtonClicked(ActionEvent actionEvent) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        Launcher.showStage();
-    }
+
 }

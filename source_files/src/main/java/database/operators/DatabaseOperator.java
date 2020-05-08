@@ -1,4 +1,4 @@
-package database;
+package database.operators;
 
 import java.util.List;
 

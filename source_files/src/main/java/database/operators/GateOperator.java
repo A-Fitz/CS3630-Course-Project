@@ -1,7 +1,6 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.DatabaseOperator;
 import database.extractors.GateExtractor;
 import database.tables.Airport;
 import database.tables.Gate;

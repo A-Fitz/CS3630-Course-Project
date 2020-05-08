@@ -5,15 +5,8 @@ import database.tables.Airline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import ui.Launcher;
-import ui.UIConstants;
 import ui.Util;
 
 import java.net.URL;
@@ -22,13 +15,12 @@ import java.util.ResourceBundle;
 /**
  * Controls the "Add Airline" screen. Will allow for inserting an Airline into the database given valid input.
  */
-public class AddAirlineController implements Initializable {
+public class AddAirlineController extends ThreeColumnController {
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
-    @FXML private GridPane mainGridPane;
-    @FXML private Button backButton;
+
     @FXML private TextField abbreviationTextField;
     @FXML private TextField nameTextField;
-    @FXML private Label messageLabel;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -49,8 +41,7 @@ public class AddAirlineController implements Initializable {
             airline.setName(nameTextField.getText());
 
             // disable buttons until a success/failure is received
-            mainGridPane.setDisable(true);
-            messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
+            disable();
 
             int rowsAffected = airlineOperator.insert(airline);
 
@@ -62,7 +53,7 @@ public class AddAirlineController implements Initializable {
                 clearAllTextFields();
                 Util.setMessageLabel("Airline added.", Color.GREEN, messageLabel);
             }
-            mainGridPane.setDisable(false);
+            enable();
         } else {
             // All fields must not be null. Display error message.
             Util.setMessageLabel("Airline not added. Please fill the required fields.", Color.RED, messageLabel);
@@ -75,16 +66,5 @@ public class AddAirlineController implements Initializable {
     private void clearAllTextFields() {
         abbreviationTextField.clear();
         nameTextField.clear();
-    }
-
-    /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     *
-     * @param actionEvent Event representing the action of the button firing, holds extra information.
-     */
-    public void backButtonClicked(ActionEvent actionEvent) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        Launcher.showStage();
     }
 }

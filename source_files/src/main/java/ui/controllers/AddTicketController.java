@@ -7,32 +7,30 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import ui.formatters.FloatTextFormatter;
 
-public class AddTicketController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class AddTicketController extends ThreeColumnController {
     private TicketOperator ticketOperator = TicketOperator.getInstance();
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private PassengerOnFlightOperator passengerOnFlightOperator = PassengerOnFlightOperator.getInstance();
     private PassengerOperator passengerOperator = PassengerOperator.getInstance();
     private SeatClassTypeOperator seatClassTypeOperator = SeatClassTypeOperator.getInstance();
 
-    @FXML private GridPane mainGridPane;
-    @FXML private Button backButton;
     @FXML private Button addButton;
     @FXML private ComboBox<Flight> flightComboBox;
     @FXML private ComboBox<Passenger> passengerComboBox;
     @FXML private ComboBox<SeatClassType> seatClassComboBox;
     @FXML private TextField seatTextField;
     @FXML private TextField priceTextField;
-    @FXML private Label messageLabel;
 
+    @Override
     @FXML
-    public void initialize() {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
 
         priceTextField.setTextFormatter(new FloatTextFormatter());
@@ -48,8 +46,7 @@ public class AddTicketController {
                 seatTextField.getText() != null && !seatTextField.getText().isEmpty() &&
                 priceTextField.getText() != null && !seatTextField.getText().isEmpty()) {
             // disable buttons until a success/failure is received
-            mainGridPane.setDisable(true);
-            messageLabel.setText("Request in progress...");
+            disable();
 
             // First try to add in the passenger on flight.
             PassengerOnFlight pof = new PassengerOnFlight();
@@ -58,7 +55,7 @@ public class AddTicketController {
             int rowsAffected = passengerOnFlightOperator.insert(pof);
 
             // If passenger on flight was inserted, try to make a ticket.
-            if(rowsAffected != 0) {
+            if (rowsAffected != 0) {
                 Ticket ticket = new Ticket();
                 ticket.setPassenger_on_flight_id(pof.getId());
                 ticket.setSeat_class_id(seatClassComboBox.getValue().getId());
@@ -76,7 +73,7 @@ public class AddTicketController {
                 clearAllTextFields();
                 ui.Util.setMessageLabel("Ticket added.", Color.GREEN, messageLabel);
             }
-            mainGridPane.setDisable(false);
+            enable();
         } else {
             // All fields must not be null. Display error message.
             ui.Util.setMessageLabel("Ticket not added. Please fill the required fields.", Color.RED, messageLabel);
@@ -97,16 +94,8 @@ public class AddTicketController {
     }
 
     /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     */
-    public void backButtonClicked(ActionEvent actionEvent) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        ui.Launcher.showStage();
-    }
-
-    /**
      * Called when the user chooses a Flight in the Flight ComboBox. Fills passenger combo box.
+     *
      * @param actionEvent holds extra event information
      */
     public void flightChosen(ActionEvent actionEvent) {

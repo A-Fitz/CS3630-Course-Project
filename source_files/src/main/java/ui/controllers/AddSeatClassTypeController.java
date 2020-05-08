@@ -5,15 +5,8 @@ import database.tables.SeatClassType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import ui.Launcher;
-import ui.UIConstants;
 import ui.Util;
 
 import java.net.URL;
@@ -22,15 +15,13 @@ import java.util.ResourceBundle;
 /**
  * Class representing an example controller for others to use. Is related to the resources/ExampleScreen.fxml FXML file for the UI.
  */
-public class AddSeatClassTypeController implements Initializable {
+public class AddSeatClassTypeController extends ThreeColumnController {
     SeatClassTypeOperator seatClassTypeOperator = SeatClassTypeOperator.getInstance();
 
     // Put your JavaFX components here. Buttons, Labels, TextFields, etc. The name of this variable will be the fx:id of the component in FXML.
     // Follow camelCase naming with the component type as the last phrase in the word (i.e. 'Button' is the last phrase).
     // Each controller should have the following components.
-    @FXML private GridPane mainGridPane;
-    @FXML private Button backButton;
-    @FXML private Label messageLabel;
+
 
     // The following are example components.
     @FXML private TextField titleTextField;
@@ -51,8 +42,7 @@ public class AddSeatClassTypeController implements Initializable {
 
         if (titleTextField.getText() != null) {
             // Disable interacting with components while the operator is running. Must be done for multithreaded environment.
-            mainGridPane.setDisable(true);
-            messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
+            disable();
 
             SeatClassType seatClassType = new SeatClassType();
             seatClassType.setTitle(titleTextField.getText());
@@ -69,23 +59,13 @@ public class AddSeatClassTypeController implements Initializable {
         } else {
             Util.setMessageLabel("Seat class type not added. Please fill all fields.", Color.RED, messageLabel);
         }
-        mainGridPane.setDisable(false);
+        enable();
     }
 
     private void clearAllFields() {
         titleTextField.setText(null);
     }
 
-    /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     * The name of this method is the 'onAction' FXML value for the backButton.
-     *
-     * @param actionEvent Event representing the action of the button firing, holds extra information.
-     */
-    public void backButtonClicked(ActionEvent actionEvent) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        Launcher.showStage();
-    }
+
 }
 

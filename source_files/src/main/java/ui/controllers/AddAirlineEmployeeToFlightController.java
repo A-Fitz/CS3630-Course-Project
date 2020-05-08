@@ -9,15 +9,8 @@ import database.tables.Flight;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import ui.Launcher;
-import ui.UIConstants;
 import ui.Util;
 
 import java.net.URL;
@@ -26,19 +19,12 @@ import java.util.ResourceBundle;
 /**
  * Class representing an example controller for others to use. Is related to the resources/ExampleScreen.fxml FXML file for the UI.
  */
-public class AddAirlineEmployeeToFlightController implements Initializable {
+public class AddAirlineEmployeeToFlightController extends ThreeColumnController {
     private AirlineEmployeeOperator airlineEmployeeOperator = AirlineEmployeeOperator.getInstance();
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private AirlineEmployeeOnFlightOperator airlineEmployeeOnFlightOperator = AirlineEmployeeOnFlightOperator.getInstance();
 
-    // Put your JavaFX components here. Buttons, Labels, TextFields, etc. The name of this variable will be the fx:id of the component in FXML.
-    // Follow camelCase naming with the component type as the last phrase in the word (i.e. 'Button' is the last phrase).
-    // Each controller should have the following components.
-    @FXML private GridPane mainGridPane;
-    @FXML private Button backButton;
-    @FXML private Label messageLabel;
 
-    // The following are example components.
     @FXML private ComboBox<AirlineEmployee> employeeComboBox;
     @FXML private ComboBox<Flight> flightComboBox;
 
@@ -61,8 +47,7 @@ public class AddAirlineEmployeeToFlightController implements Initializable {
         if (employeeComboBox.getValue() != null &&
                 flightComboBox.getValue() != null) {
 
-            mainGridPane.setDisable(true);
-            messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
+            disable();
 
             AirlineEmployeeOnFlight airlineEmployeeOnFlight = new AirlineEmployeeOnFlight();
             airlineEmployeeOnFlight.setAirline_employee_id(employeeComboBox.getValue().getId());
@@ -80,7 +65,7 @@ public class AddAirlineEmployeeToFlightController implements Initializable {
         } else {
             Util.setMessageLabel("Airline employee was not added to flight. Please fill all fields.", Color.RED, messageLabel);
         }
-        mainGridPane.setDisable(false);
+        enable();
     }
 
     /**
@@ -89,17 +74,5 @@ public class AddAirlineEmployeeToFlightController implements Initializable {
     private void clearAllFields() {
         employeeComboBox.setValue(null);
         flightComboBox.setValue(null);
-    }
-
-    /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     * The name of this method is the 'onAction' FXML value for the backButton.
-     *
-     * @param actionEvent Event representing the action of the button firing, holds extra information.
-     */
-    public void backButtonClicked(ActionEvent actionEvent) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        Launcher.showStage();
     }
 }

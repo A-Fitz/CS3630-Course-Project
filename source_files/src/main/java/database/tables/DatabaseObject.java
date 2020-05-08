@@ -1,4 +1,4 @@
-package database;
+package database.tables;
 
 /**
  * Interface which is implemented by clases which represent a row in a table given by the class's name.

@@ -5,37 +5,31 @@ import database.tables.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import ui.formatters.FloatTextFormatter;
-import ui.Launcher;
 import ui.Util;
+import ui.formatters.FloatTextFormatter;
 
-import java.util.List;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class AddBaggageController {
+public class AddBaggageController extends ThreeColumnController {
     private PassengerOnFlightOperator passengerOnFlightOperator = PassengerOnFlightOperator.getInstance();
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private PassengerOperator passengerOperator = PassengerOperator.getInstance();
     private BaggageOperator baggageOperator = BaggageOperator.getInstance();
     private BaggageStatusTypeOperator baggageStatusTypeOperator = BaggageStatusTypeOperator.getInstance();
 
-    @FXML
-    private GridPane mainGridPane;
-    @FXML private Button backButton;
     @FXML private Button addButton;
     @FXML private ComboBox<Flight> flightComboBox;
     @FXML private ComboBox<Passenger> passengerComboBox;
     @FXML private TextField weightTextField;
     @FXML private ComboBox<BaggageStatusType> baggageStatusComboBox;
 
-    @FXML private Label messageLabel;
-
-    @FXML
-    public void initialize()
-    {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() -> backButton.getScene().getRoot().requestFocus());
 
         weightTextField.setTextFormatter(new FloatTextFormatter());
@@ -48,11 +42,9 @@ public class AddBaggageController {
         if (flightComboBox.getValue() != null &&
                 passengerComboBox.getValue() != null &&
                 weightTextField.getText() != null && !weightTextField.getText().isEmpty() &&
-                baggageStatusComboBox.getValue() != null)
-        {
+                baggageStatusComboBox.getValue() != null) {
             // disable buttons until a success/failure is received
-            mainGridPane.setDisable(true);
-            messageLabel.setText("Request in progress...");
+            disable();
 
             PassengerOnFlight passengerOnFlight = passengerOnFlightOperator.selectByPassengerAndFlightId(passengerComboBox.getValue().getId(), flightComboBox.getValue().getId());
 
@@ -71,7 +63,7 @@ public class AddBaggageController {
                 clearAllTextFields();
                 Util.setMessageLabel("Baggage added.", Color.GREEN, messageLabel);
             }
-            mainGridPane.setDisable(false);
+            enable();
         } else {
             // All fields must not be null. Display error message.
             Util.setMessageLabel("Baggage not added. Please fill the required fields.", Color.RED, messageLabel);
@@ -91,26 +83,15 @@ public class AddBaggageController {
     }
 
     /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     */
-    public void backButtonClicked(ActionEvent actionEvent) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        Launcher.showStage();
-    }
-
-    /**
      * Called when the user chooses a Flight in the Flight ComboBox.
+     *
      * @param actionEvent holds extra event information
      */
     public void flightChosen(ActionEvent actionEvent) {
         if (flightComboBox.getValue() != null) {
             passengerComboBox.getItems().clear();
             passengerComboBox.setValue(null);
-            List<PassengerOnFlight> passengerOnFlightObjects = passengerOnFlightOperator.selectByFlightId(flightComboBox.getValue().getId());
-            for (PassengerOnFlight pof : passengerOnFlightObjects) {
-                passengerComboBox.getItems().add(passengerOperator.selectById(pof.getPassenger_id()));
-            }
+            passengerComboBox.getItems().addAll(passengerOperator.selectManyByFlightId(flightComboBox.getValue().getId()));
         }
     }
 }

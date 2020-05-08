@@ -7,12 +7,10 @@ import database.tables.Airline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import ui.*;
+import ui.Util;
 import ui.exceptions.IncorrectInputException;
 import ui.formatters.IntegerTextFormatter;
 
@@ -22,13 +20,11 @@ import java.util.ResourceBundle;
 /**
  * Controller for the Add Aircraft view.
  */
-public class AddAircraftController implements Initializable {
+public class AddAircraftController extends ThreeColumnController {
     private AircraftOperator aircraftOperator = AircraftOperator.getInstance();
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
 
-    @FXML private GridPane mainGridPane;
-    @FXML private Button backButton;
-    @FXML private Label messageLabel;
+
     @FXML private ComboBox<Airline> airlineChoiceComboBox;
     @FXML private TextField serialNumberTextField;
     @FXML private TextField makeTextField;
@@ -64,6 +60,9 @@ public class AddAircraftController implements Initializable {
                 if (yearTextField.getText().length() != 4) // Check if the year is length 4
                     throw new IncorrectInputException("The year field must be four digits in length.");
 
+                // disable buttons until a success/failure is received
+                disable();
+
                 Aircraft aircraft = new Aircraft();
                 aircraft.setAirline_id(airlineChoiceComboBox.getValue().getId());
                 aircraft.setSerial_number(serialNumberTextField.getText());
@@ -71,10 +70,6 @@ public class AddAircraftController implements Initializable {
                 aircraft.setModel(modelTextField.getText());
                 aircraft.setYear(Integer.parseInt(yearTextField.getText()));
                 aircraft.setCapacity(Integer.parseInt((capacityTextField.getText())));
-
-                // disable buttons until a success/failure is received
-                mainGridPane.setDisable(true);
-                messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
 
                 int rowsAffected = aircraftOperator.insert(aircraft);
 
@@ -84,14 +79,13 @@ public class AddAircraftController implements Initializable {
                     clearComponents();
                     Util.setMessageLabel("Aircraft added.", Color.GREEN, messageLabel);
                 }
-                mainGridPane.setDisable(false);
+                enable();
             } catch (IncorrectInputException iie) {
                 Util.setMessageLabel(iie.getMessage(), Color.RED, messageLabel);
             }
         } else
-        Util.setMessageLabel("Aircraft not added. Please fill the required fields.", Color.RED, messageLabel);
+            Util.setMessageLabel("Aircraft not added. Please fill the required fields.", Color.RED, messageLabel);
     }
-
 
     private void clearComponents() {
         airlineChoiceComboBox.setValue(null);
@@ -100,17 +94,5 @@ public class AddAircraftController implements Initializable {
         modelTextField.clear();
         yearTextField.clear();
         capacityTextField.clear();
-    }
-
-    /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     * The name of this method is the 'onAction' FXML value for the backButton.
-     *
-     * @param actionEvent Event representing the action of the button firing, holds extra information.
-     */
-    public void backButtonClicked(ActionEvent actionEvent) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        Launcher.showStage();
     }
 }

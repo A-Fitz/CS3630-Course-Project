@@ -1,7 +1,6 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.DatabaseOperator;
 import database.extractors.PassengerOnFlightExtractor;
 import database.tables.PassengerOnFlight;
 import org.springframework.dao.DuplicateKeyException;

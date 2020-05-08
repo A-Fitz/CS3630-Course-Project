@@ -2,49 +2,45 @@ package ui.controllers;
 
 import database.operators.AirlineOperator;
 import database.tables.Airline;
-import database.tables.Flight;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import ui.Launcher;
-import ui.UIConstants;
 import ui.Util;
 
-public class EditAirlineController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class EditAirlineController extends ThreeColumnController {
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
 
-    @FXML private GridPane mainGridPane;
-    @FXML private Button backButton;
+
     @FXML private ComboBox<Airline> airlineChoiceComboBox;
     @FXML private TextField nameTextField;
     @FXML private TextField abbreviationTextField;
-    @FXML private Label messageLabel;
 
-    public void initialize() {
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() ->
         {
             backButton.getScene().getRoot().requestFocus();
-            updateAirlineComboBox();
         });
+        updateAirlineComboBox();
     }
 
-    public void editAirlineButtonClicked()
-    {
-        if(airlineChoiceComboBox.getValue()!=null &&
-                nameTextField.getText()!= null &&
-                abbreviationTextField.getText()!= null)
-        {
+    public void editAirlineButtonClicked() {
+        if (airlineChoiceComboBox.getValue() != null &&
+                nameTextField.getText() != null &&
+                abbreviationTextField.getText() != null) {
+            disable();
+
             Airline airlineChosen = airlineChoiceComboBox.getValue();
-            Airline newAirline=new Airline();
+            Airline newAirline = new Airline();
             newAirline.setAbbreviation(abbreviationTextField.getText());
             newAirline.setName(nameTextField.getText());
-
-            mainGridPane.setDisable(true);
-            messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
 
             int rowsAffected = airlineOperator.updateById(airlineChosen.getId(), newAirline);
 
@@ -55,16 +51,13 @@ public class EditAirlineController {
                 updateAirlineComboBox();
                 Util.setMessageLabel("Airline updated.", Color.GREEN, messageLabel);
             }
-            mainGridPane.setDisable(false);
-        }
-        else
-        {
+            enable();
+        } else {
             Util.setMessageLabel("Error. Please fill the required fields.", Color.RED, messageLabel);
         }
     }
 
-    private void updateAirlineComboBox()
-    {
+    private void updateAirlineComboBox() {
         airlineChoiceComboBox.getItems().addAll(airlineOperator.selectAll());
     }
 
@@ -87,14 +80,5 @@ public class EditAirlineController {
         airlineChoiceComboBox.setValue(null);
         nameTextField.clear();
         abbreviationTextField.clear();
-    }
-
-    /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     */
-    public void backButtonClicked() {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        Launcher.showStage();
     }
 }

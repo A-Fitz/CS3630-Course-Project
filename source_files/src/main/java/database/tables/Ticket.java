@@ -1,7 +1,5 @@
 package database.tables;
 
-import database.DatabaseObject;
-
 import java.sql.Timestamp;
 
 public class Ticket implements DatabaseObject {

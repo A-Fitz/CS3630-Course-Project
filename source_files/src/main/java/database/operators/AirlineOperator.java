@@ -1,7 +1,6 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.DatabaseOperator;
 import database.extractors.AirlineExtractor;
 import database.tables.Airline;
 import database.tables.Ticket;

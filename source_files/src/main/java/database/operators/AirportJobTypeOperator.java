@@ -1,7 +1,6 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.DatabaseOperator;
 import database.extractors.AirportJobTypeExtractor;
 import database.tables.AirportJobType;
 import org.springframework.dao.DuplicateKeyException;

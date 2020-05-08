@@ -1,7 +1,6 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.DatabaseOperator;
 import database.extractors.TicketStatusTypeExtractor;
 import database.tables.TicketStatusType;
 import org.springframework.dao.DuplicateKeyException;

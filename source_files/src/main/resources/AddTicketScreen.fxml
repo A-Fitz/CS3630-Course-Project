@@ -4,80 +4,109 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<GridPane fx:id = "mainGridPane" minHeight="450.0" minWidth="800.0" prefHeight="720.0" prefWidth="1280.0"
+<?import ui.*?>
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:id="mainGridPane"
           xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
           fx:controller="ui.controllers.AddTicketController">
+    <fx:define>
+        <ui.UIConstants fx:id="LABEL_COLUMN_WIDTH_PERCENTAGE" fx:constant="VIEW_LABEL_COLUMN_WIDTH_PERCENTAGE"/>
+        <ui.UIConstants fx:id="SELECTOR_COLUMN_WIDTH_PERCENTAGE" fx:constant="VIEW_SELECTOR_COLUMN_WIDTH_PERCENTAGE"/>
+        <ui.UIConstants fx:id="MAIN_GRIDPANE_CONTENT_ROW_HEIGHT_PERCENTAGE"
+                        fx:constant="VIEW_MAIN_GRIDPANE_CONTENT_ROW_HEIGHT_PERCENTAGE"/>
+        <ui.UIConstants fx:id="MAIN_GRIDPANE_BACK_BUTTON_GRIDPANE_ROW_HEIGHT_PERCENTAGE"
+                        fx:constant="VIEW_MAIN_GRIDPANE_BACK_BUTTON_GRIDPANE_ROW_HEIGHT_PERCENTAGE"/>
+        <ui.UIConstants fx:id="TRIPLE_COLUMN_GRIDPANE_CONTENT_COLUMN_WIDTH_PERCENTAGE"
+                        fx:constant="VIEW_TRIPLE_COLUMN_GRIDPANE_CONTENT_COLUMN_WIDTH_PERCENTAGE"/>
+        <ui.UIConstants fx:id="TRIPLE_COLUMN_GRIDPANE_NON_CONTENT_COLUMN_WIDTH_PERCENTAGE"
+                        fx:constant="VIEW_TRIPLE_COLUMN_GRIDPANE_NON_CONTENT_COLUMN_WIDTH_PERCENTAGE"/>
+        <ui.UIConstants fx:id="VBOX_HBOX_SPACING" fx:constant="VIEW_VBOX_HBOX_SPACING"/>
+        <ui.UIConstants fx:id="INSETS" fx:constant="VIEW_INSETS"/>
+        <ui.UIConstants fx:id="BACK_BUTTON_GRIDPANE_NON_BUTTON_COLUMN_WIDTH_PERCENTAGE"
+                        fx:constant="VIEW_BACK_BUTTON_GRIDPANE_NON_BUTTON_COLUMN_WIDTH_PERCENTAGE"/>
+        <ui.UIConstants fx:id="BACK_BUTTON_GRIDPANE_BUTTON_COLUMN_WIDTH_PERCENTAGE"
+                        fx:constant="VIEW_BACK_BUTTON_GRIDPANE_BUTTON_COLUMN_WIDTH_PERCENTAGE"/>
+    </fx:define>
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+        <ColumnConstraints percentWidth="100"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="428.0" percentHeight="95.0" prefHeight="684.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="22.0" percentHeight="5.0" prefHeight="36.0" vgrow="SOMETIMES"/>
+        <RowConstraints percentHeight="$MAIN_GRIDPANE_CONTENT_ROW_HEIGHT_PERCENTAGE" vgrow="SOMETIMES"/>
+        <RowConstraints percentHeight="$MAIN_GRIDPANE_BACK_BUTTON_GRIDPANE_ROW_HEIGHT_PERCENTAGE" vgrow="SOMETIMES"/>
     </rowConstraints>
     <children>
-        <GridPane alignment="CENTER">
+        <GridPane fx:id="tripleColumnGridPane" alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="33.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="33.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="33.0"/>
+                <ColumnConstraints hgrow="SOMETIMES"
+                                   percentWidth="$TRIPLE_COLUMN_GRIDPANE_NON_CONTENT_COLUMN_WIDTH_PERCENTAGE"/>
+                <ColumnConstraints hgrow="SOMETIMES"
+                                   percentWidth="$TRIPLE_COLUMN_GRIDPANE_CONTENT_COLUMN_WIDTH_PERCENTAGE"/>
+                <ColumnConstraints hgrow="SOMETIMES"
+                                   percentWidth="$TRIPLE_COLUMN_GRIDPANE_NON_CONTENT_COLUMN_WIDTH_PERCENTAGE"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints/>
             </rowConstraints>
             <children>
-                <VBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                <VBox alignment="CENTER" spacing="$VBOX_HBOX_SPACING" GridPane.columnIndex="1"
+                      GridPane.halignment="CENTER"
                       GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <children>
-                        <HBox alignment="CENTER_LEFT" spacing="5.0">
-                            <children>
-                                <Label text="Flight" />
-                                <ComboBox fx:id="flightComboBox" onAction="#flightChosen" maxWidth="1.7976931348623157E308" promptText="required" HBox.hgrow="ALWAYS"  />
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="5.0">
-                            <children>
-                                <Label text="Passenger" />
-                                <ComboBox fx:id="passengerComboBox" maxWidth="1.7976931348623157E308" promptText="required" HBox.hgrow="ALWAYS" />
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="5.0">
-                            <children>
-                                <Label text="Seat Class" />
-                                <ComboBox fx:id="seatClassComboBox" maxWidth="1.7976931348623157E308" promptText="required" HBox.hgrow="ALWAYS" />
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="5.0">
-                            <children>
-                                <Label text="Seat"/>
-                                <TextField fx:id="seatTextField" promptText="required" HBox.hgrow="ALWAYS"/>
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="5.0">
-                            <children>
-                                <Label text="Price"/>
-                                <TextField fx:id="priceTextField" promptText="required" HBox.hgrow="ALWAYS"/>
-                            </children>
-                        </HBox>
-                        <Button fx:id="addButton" onAction="#addTicketButtonClicked" mnemonicParsing="false" text="Add Ticket"/>
+                        <GridPane HBox.hgrow="ALWAYS" vgap="$INSETS">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="$LABEL_COLUMN_WIDTH_PERCENTAGE"/>
+                                <ColumnConstraints percentWidth="$SELECTOR_COLUMN_WIDTH_PERCENTAGE"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints/>
+                                <RowConstraints/>
+                                <RowConstraints/>
+                                <RowConstraints/>
+                                <RowConstraints/>
+                            </rowConstraints>
+
+                            <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="Flight"/>
+                            <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="flightComboBox"
+                                      onAction="#flightChosen" maxWidth="Infinity" promptText="required"
+                                      HBox.hgrow="ALWAYS"/>
+
+                            <Label GridPane.columnIndex="0" GridPane.rowIndex="1" text="Passenger"/>
+                            <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="passengerComboBox"
+                                      maxWidth="Infinity" promptText="required" HBox.hgrow="ALWAYS"/>
+
+                            <Label GridPane.columnIndex="0" GridPane.rowIndex="2" text="Seat Class"/>
+                            <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="seatClassComboBox"
+                                      maxWidth="Infinity" promptText="required" HBox.hgrow="ALWAYS"/>
+
+                            <Label GridPane.columnIndex="0" GridPane.rowIndex="3" text="Seat"/>
+                            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="seatTextField"
+                                       promptText="required" HBox.hgrow="ALWAYS"/>
+
+                            <Label GridPane.columnIndex="0" GridPane.rowIndex="4" text="Price"/>
+                            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" fx:id="priceTextField"
+                                       promptText="required" HBox.hgrow="ALWAYS"/>
+                        </GridPane>
+                        <Button fx:id="addButton" onAction="#addTicketButtonClicked" mnemonicParsing="false"
+                                text="Add Ticket"/>
                     </children>
                 </VBox>
             </children>
             <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                <Insets bottom="$INSETS" left="$INSETS" right="$INSETS" top="$INSETS"/>
             </padding>
         </GridPane>
-        <GridPane GridPane.rowIndex="1">
+        <GridPane fx:id="backButtonGridPane" GridPane.rowIndex="1">
             <columnConstraints>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="5.0"/>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="95.0"
-                                   prefWidth="100.0"/>
+                <ColumnConstraints halignment="CENTER"
+                                   percentWidth="$BACK_BUTTON_GRIDPANE_BUTTON_COLUMN_WIDTH_PERCENTAGE"/>
+                <ColumnConstraints halignment="CENTER"
+                                   percentWidth="$BACK_BUTTON_GRIDPANE_NON_BUTTON_COLUMN_WIDTH_PERCENTAGE"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints/>
             </rowConstraints>
             <padding>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="$INSETS" right="$INSETS"/>
             </padding>
             <children>
                 <Button fx:id="backButton" onAction="#backButtonClicked" mnemonicParsing="false" text="Back"/>

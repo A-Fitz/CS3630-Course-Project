@@ -1,7 +1,6 @@
 package database.operators;
 
 import database.DatabaseConnection;
-import database.DatabaseOperator;
 import database.extractors.BaggageStatusTypeExtractor;
 import database.tables.BaggageStatusType;
 import org.springframework.dao.DuplicateKeyException;

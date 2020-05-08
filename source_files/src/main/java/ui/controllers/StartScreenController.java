@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.Launcher;
+import ui.UIConstants;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,6 +35,10 @@ public class StartScreenController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle(title);
+            stage.setWidth(UIConstants.VIEW_PREFERRED_WIDTH);
+            stage.setHeight(UIConstants.VIEW_PREFERRED_HEIGHT);
+            stage.setMinWidth(UIConstants.VIEW_MIN_WIDTH);
+            stage.setMinHeight(UIConstants.VIEW_MIN_HEIGHT);
             stage.show();
             Launcher.closeStage();
         } catch (Exception ex) {

@@ -5,31 +5,25 @@ import database.tables.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import ui.Launcher;
-import ui.UIConstants;
 import ui.Util;
 
 import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
-public class AddFlightController implements Initializable {
+public class AddFlightController extends ThreeColumnController {
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
     private AirportOperator airportOperator = AirportOperator.getInstance();
     private GateOperator gateOperator = GateOperator.getInstance();
-    private TerminalOperator terminalOperator = TerminalOperator.getInstance();
     private AircraftOperator aircraftOperator = AircraftOperator.getInstance();
     private FlightStatusTypeOperator flightStatusTypeOperator = FlightStatusTypeOperator.getInstance();
 
-    @FXML private GridPane mainGridPane;
-    @FXML private Button backButton;
-    @FXML private Label messageLabel;
+
     @FXML private TextField callsignTextField;
     @FXML private ComboBox<Airline> airlineComboBox;
     @FXML private ComboBox<Airport> departureAirportComboBox;
@@ -114,6 +108,9 @@ public class AddFlightController implements Initializable {
                 && aircraftComboBox.getValue() != null
                 && flightStatusComboBox.getValue() != null
                 && boardingDateDatePicker.getValue() != null) {
+            // disable buttons until a success/failure is received
+            disable();
+
             Flight flight = new Flight();
             flight.setCallsign(callsignTextField.getText());
             flight.setAirline_id(airlineComboBox.getValue().getId());
@@ -125,10 +122,6 @@ public class AddFlightController implements Initializable {
             flight.setFlight_status_id(flightStatusComboBox.getValue().getId());
             flight.setBoarding_date(Date.valueOf(boardingDateDatePicker.getValue()));
 
-            // disable buttons until a success/failure is received
-            mainGridPane.setDisable(true);
-            messageLabel.setText(UIConstants.CONTROLLER_QUERY_RUNNING_MESSAGE);
-
             int rowsAffected = flightOperator.insert(flight);
 
             if (rowsAffected == 0) {
@@ -139,7 +132,7 @@ public class AddFlightController implements Initializable {
                 clearComponents();
                 Util.setMessageLabel("Flight added.", Color.GREEN, messageLabel);
             }
-            mainGridPane.setDisable(false);
+            enable();
         } else {
             // All fields must not be null. Display error message.
             Util.setMessageLabel("Flight not added. Please fill the required fields.", Color.RED, messageLabel);
@@ -163,15 +156,5 @@ public class AddFlightController implements Initializable {
         boardingDateDatePicker.setValue(null);
     }
 
-    /**
-     * Called when the back button is clicked. Replaces the current screen with the main screen.
-     * The name of this method is the 'onAction' FXML value for the backButton.
-     *
-     * @param actionEvent Event representing the action of the button firing, holds extra information.
-     */
-    public void backButtonClicked(ActionEvent actionEvent) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        Launcher.showStage();
-    }
+
 }
