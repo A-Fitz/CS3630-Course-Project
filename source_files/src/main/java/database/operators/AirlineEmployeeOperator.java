@@ -5,6 +5,7 @@ import database.extractors.AirlineEmployeeExtractor;
 import database.tables.Airline;
 import database.tables.AirlineEmployee;
 import database.tables.AirlineJobType;
+import javafx.scene.control.Alert;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -152,8 +153,10 @@ public class AirlineEmployeeOperator implements DatabaseOperator<AirlineEmployee
         String queryTemplate = "DELETE FROM airline_employee "
                 + " WHERE " + AirlineEmployee.ID_COLUMN_NAME + " = :id";
 
+
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);
+
 
         return namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
