@@ -15,3 +15,6 @@ In a real Airport Management System there would be hundreds of thousands of data
 3. [Database] Audit functionality - Austin FitzGerald on behalf of team
 - Users of an Airport Management System may want some automatic logging capabilities in case of audit or backup. We wanted to implement automatic logging on deletion of rows for certain tables (baggage, airline_employee, airline_employee_on_flight, passenger, pasenger_on_flight, ticket).
 - We have created procedures which will save all attributes of a deleted row into a specific audit table. These procedures are run when a row is deleted.
+
+4. [Database] Indexes - Austin FitzGerald on behalf of team
+- We have added indexes on to all foreign keys in each table. Our system requires many select statements to all needed information in most views, so we were having performance issues related to selects. These indexes should increase performance on selects involving foreign keys.
