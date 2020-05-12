@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -47,14 +48,16 @@ public class AddSeatClassTypeController extends ThreeColumnController {
             SeatClassType seatClassType = new SeatClassType();
             seatClassType.setTitle(titleTextField.getText());
 
-            int rowsAffected = seatClassTypeOperator.insert(seatClassType);
+            try {
+                seatClassTypeOperator.insert(seatClassType);
+            }
 
-            if (rowsAffected == 0)
+            catch (DataAccessException dae) {
                 Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel);
-            else {
+                return;
+            }
                 clearAllFields();
                 Util.setMessageLabel("Seat class type added.", Color.GREEN, messageLabel);
-            }
 
         } else {
             Util.setMessageLabel("Seat class type not added. Please fill all fields.", Color.RED, messageLabel);

@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -48,28 +49,32 @@ public class AddJobTypeController extends ThreeColumnController {
         AirportJobType airportJobType = new AirportJobType();
         airportJobType.setTitle(jobTypeTextField.getText());
 
-        int rowsAffected = airportJobTypeOperator.insert(airportJobType);
+        try {
+            airportJobTypeOperator.insert(airportJobType);
+        }
 
-        if (rowsAffected == 0) {
+        catch (DataAccessException dae) {
             Util.setMessageLabel("Airport Job Title not added.", Color.RED, messageLabel);
-        } else {
+            return;
+        }
             clearAllFields();
             Util.setMessageLabel("Airport Job Title added.", Color.GREEN, messageLabel);
-        }
     }
 
     private void setAirlineJobType() {
         AirlineJobType airlineJobType = new AirlineJobType();
         airlineJobType.setTitle(jobTypeTextField.getText());
 
-        int rowsAffected = airlineJobTypeOperator.insert(airlineJobType);
+        try {
+            airlineJobTypeOperator.insert(airlineJobType);
+        }
 
-        if (rowsAffected == 0) {
+        catch (DataAccessException dae) {
             Util.setMessageLabel("Airline Job Title not added.", Color.RED, messageLabel);
-        } else {
+            return;
+        }
             clearAllFields();
             Util.setMessageLabel("Airline Job Title added.", Color.GREEN, messageLabel);
-        }
     }
 
     private void clearAllFields() {

@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -48,16 +49,19 @@ public class AddAirportController extends ThreeColumnController {
             airport.setCity(cityTextField.getText());
             airport.setCountry(countryTextField.getText());
 
-            int rowsAffected = airportOperator.insert(airport);
+            try {
+                airportOperator.insert(airport);
+            }
 
-            if (rowsAffected == 0) {
+            catch (DataAccessException dae) {
                 // Airport not inserted (probably due to unique constraint on the IATA code). Display error message.
                 Util.setMessageLabel("Airport not added. The IATA code is unique to an airport.", Color.RED, messageLabel);
-            } else {
+                return;
+            }
                 // Airport inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Airport added.", Color.GREEN, messageLabel);
-            }
+
             enable();
         } else {
             // All fields must not be empty. Display error message.

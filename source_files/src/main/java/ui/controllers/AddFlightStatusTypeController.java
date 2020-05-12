@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -39,16 +40,18 @@ public class AddFlightStatusTypeController extends ThreeColumnController {
             FlightStatusType flightStatusType = new FlightStatusType();
             flightStatusType.setTitle(flightStatusTypeTextField.getText());
 
-            int rowsAffected = flightStatusTypeOperator.insert(flightStatusType);
+            try {
+                flightStatusTypeOperator.insert(flightStatusType);
+            }
 
-            if (rowsAffected == 0) {
+            catch (DataAccessException dae) {
                 // Flight status type not inserted (probably due to unique constraint on title). Display error message.
                 Util.setMessageLabel("Flight status type not added. The title is unique to a flight status type.", Color.RED, messageLabel);
-            } else {
+                return;
+            }
                 // Flight status type inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Flight status type added.", Color.GREEN, messageLabel);
-            }
             enable();
         } else {
             // All fields must not be null. Display error message.

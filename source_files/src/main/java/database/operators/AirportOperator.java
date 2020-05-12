@@ -3,6 +3,7 @@ package database.operators;
 import database.DatabaseConnection;
 import database.extractors.AirportExtractor;
 import database.tables.Airport;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -71,7 +72,7 @@ public class AirportOperator implements DatabaseOperator<Airport> {
     }
 
     @Override
-    public int insert(Airport airport) {
+    public void insert(Airport airport) throws DataAccessException {
         String queryTemplate = "INSERT INTO airport ("
                 + Airport.NAME_COLUMN_NAME + ", "
                 + Airport.IATA_CODE_COLUMN_NAME + ", "
@@ -90,11 +91,9 @@ public class AirportOperator implements DatabaseOperator<Airport> {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

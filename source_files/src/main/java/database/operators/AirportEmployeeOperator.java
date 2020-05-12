@@ -5,6 +5,7 @@ import database.extractors.AirportEmployeeExtractor;
 import database.tables.Airport;
 import database.tables.AirportEmployee;
 import database.tables.AirportJobType;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -111,7 +112,7 @@ public class AirportEmployeeOperator implements DatabaseOperator<AirportEmployee
     }
 
     @Override
-    public int insert(AirportEmployee airportEmployee) {
+    public void insert(AirportEmployee airportEmployee) throws DataAccessException {
         String queryTemplate = "INSERT INTO airport_employee ("
                 + AirportEmployee.AIRPORT_ID_COLUMN_NAME + ", "
                 + AirportEmployee.JOB_ID_COLUMN_NAME + ", "
@@ -140,11 +141,9 @@ public class AirportEmployeeOperator implements DatabaseOperator<AirportEmployee
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

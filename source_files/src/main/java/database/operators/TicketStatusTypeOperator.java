@@ -3,6 +3,7 @@ package database.operators;
 import database.DatabaseConnection;
 import database.extractors.TicketStatusTypeExtractor;
 import database.tables.TicketStatusType;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -64,7 +65,9 @@ public class TicketStatusTypeOperator implements DatabaseOperator<TicketStatusTy
     }
 
     @Override
-    public int insert(TicketStatusType ticketStatusType) {
+    public void insert(TicketStatusType ticketStatusType) throws DataAccessException
+
+    {
         String queryTemplate = "INSERT INTO ticket_status_type ("
                 + TicketStatusType.TITLE_COLUMN_NAME + ") "
                 + "VALUES(:title)";
@@ -77,11 +80,9 @@ public class TicketStatusTypeOperator implements DatabaseOperator<TicketStatusTy
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

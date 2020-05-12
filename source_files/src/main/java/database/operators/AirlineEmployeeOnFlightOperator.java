@@ -3,6 +3,7 @@ package database.operators;
 import database.DatabaseConnection;
 import database.extractors.AirlineEmployeeOnFlightExtractor;
 import database.tables.AirlineEmployeeOnFlight;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -70,7 +71,7 @@ public class AirlineEmployeeOnFlightOperator implements DatabaseOperator<Airline
     }
 
     @Override
-    public int insert(AirlineEmployeeOnFlight airlineEmployeeOnFlight) {
+    public void insert(AirlineEmployeeOnFlight airlineEmployeeOnFlight) throws DataAccessException {
         String queryTemplate = "INSERT INTO airline_employee_on_flight ("
                 + AirlineEmployeeOnFlight.FLIGHT_ID_COLUMN_NAME + ", "
                 + AirlineEmployeeOnFlight.AIRLINE_EMPLOYEE_ID_COLUMN_NAME + ") "
@@ -88,11 +89,9 @@ public class AirlineEmployeeOnFlightOperator implements DatabaseOperator<Airline
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

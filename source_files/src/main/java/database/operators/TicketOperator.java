@@ -3,13 +3,14 @@ package database.operators;
 import database.DatabaseConnection;
 import database.extractors.TicketExtractor;
 import database.tables.Ticket;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 
-public class TicketOperator implements DatabaseOperator<Ticket> {
+public class TicketOperator implements DatabaseOperator<Ticket>{
     private static TicketOperator instance = new TicketOperator();
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate = DatabaseConnection.getInstance().getNamedParameterJdbcTemplate();
 
@@ -75,7 +76,7 @@ public class TicketOperator implements DatabaseOperator<Ticket> {
     }
 
     @Override
-    public int insert(Ticket ticket) {
+    public void insert(Ticket ticket) throws DataAccessException {
         String queryTemplate = "INSERT INTO ticket ("
                 + Ticket.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + ", "
                 + Ticket.PRICE_COLUMN_NAME + ", "
@@ -99,11 +100,9 @@ public class TicketOperator implements DatabaseOperator<Ticket> {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

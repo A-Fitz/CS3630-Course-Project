@@ -4,6 +4,7 @@ import database.DatabaseConnection;
 import database.extractors.TerminalExtractor;
 import database.tables.Airport;
 import database.tables.Terminal;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -78,7 +79,7 @@ public class TerminalOperator implements DatabaseOperator<Terminal> {
     }
 
     @Override
-    public int insert(Terminal terminal) {
+    public void insert(Terminal terminal) throws DataAccessException {
         String queryTemplate = "INSERT INTO terminal ("
                 + Terminal.AIRPORT_ID_COLUMN_NAME + ", "
                 + Terminal.TERMINAL_CODE_COLUMN_NAME + ") "
@@ -93,11 +94,9 @@ public class TerminalOperator implements DatabaseOperator<Terminal> {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

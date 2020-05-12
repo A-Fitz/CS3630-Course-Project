@@ -3,6 +3,7 @@ package database.operators;
 import database.DatabaseConnection;
 import database.extractors.SeatClassTypeExtractor;
 import database.tables.SeatClassType;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -64,7 +65,7 @@ public class SeatClassTypeOperator implements DatabaseOperator<SeatClassType> {
     }
 
     @Override
-    public int insert(SeatClassType seatClassType) {
+    public void insert(SeatClassType seatClassType) throws DataAccessException {
         String queryTemplate = "INSERT INTO seat_class_type ("
                 + SeatClassType.TITLE_COLUMN_NAME + ") "
                 + "VALUES(:title)";
@@ -77,11 +78,9 @@ public class SeatClassTypeOperator implements DatabaseOperator<SeatClassType> {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

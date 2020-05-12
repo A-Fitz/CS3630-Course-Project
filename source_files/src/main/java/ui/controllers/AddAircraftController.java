@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 import ui.exceptions.IncorrectInputException;
 import ui.formatters.IntegerTextFormatter;
@@ -25,12 +26,18 @@ public class AddAircraftController extends ThreeColumnController {
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
 
 
-    @FXML private ComboBox<Airline> airlineChoiceComboBox;
-    @FXML private TextField serialNumberTextField;
-    @FXML private TextField makeTextField;
-    @FXML private TextField modelTextField;
-    @FXML private TextField yearTextField;
-    @FXML private TextField capacityTextField;
+    @FXML
+    private ComboBox<Airline> airlineChoiceComboBox;
+    @FXML
+    private TextField serialNumberTextField;
+    @FXML
+    private TextField makeTextField;
+    @FXML
+    private TextField modelTextField;
+    @FXML
+    private TextField yearTextField;
+    @FXML
+    private TextField capacityTextField;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -71,14 +78,16 @@ public class AddAircraftController extends ThreeColumnController {
                 aircraft.setYear(Integer.parseInt(yearTextField.getText()));
                 aircraft.setCapacity(Integer.parseInt((capacityTextField.getText())));
 
-                int rowsAffected = aircraftOperator.insert(aircraft);
-
-                if (rowsAffected == 0) {
+                try {
+                    aircraftOperator.insert(aircraft);
+                } catch (DataAccessException dae) {
                     Util.setMessageLabel("Aircraft not added. The serial number is unique to an aircraft.", Color.RED, messageLabel);
-                } else {
-                    clearComponents();
-                    Util.setMessageLabel("Aircraft added.", Color.GREEN, messageLabel);
+                    return;
                 }
+
+                clearComponents();
+                Util.setMessageLabel("Aircraft added.", Color.GREEN, messageLabel);
+
                 enable();
             } catch (IncorrectInputException iie) {
                 Util.setMessageLabel(iie.getMessage(), Color.RED, messageLabel);

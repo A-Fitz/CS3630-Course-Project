@@ -3,6 +3,7 @@ package database.operators;
 import database.DatabaseConnection;
 import database.extractors.BaggageStatusTypeExtractor;
 import database.tables.BaggageStatusType;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -64,7 +65,7 @@ public class BaggageStatusTypeOperator implements DatabaseOperator<BaggageStatus
     }
 
     @Override
-    public int insert(BaggageStatusType baggageStatusType) {
+    public void insert(BaggageStatusType baggageStatusType) throws DataAccessException {
         String queryTemplate = "INSERT INTO baggage_status_type ("
                 + BaggageStatusType.TITLE_COLUMN_NAME + ") "
                 + "VALUES(:title)";
@@ -77,11 +78,9 @@ public class BaggageStatusTypeOperator implements DatabaseOperator<BaggageStatus
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

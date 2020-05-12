@@ -3,6 +3,7 @@ package database.operators;
 import database.DatabaseConnection;
 import database.extractors.AirlineJobTypeExtractor;
 import database.tables.AirlineJobType;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -63,7 +64,7 @@ public class AirlineJobTypeOperator implements DatabaseOperator<AirlineJobType> 
     }
 
     @Override
-    public int insert(AirlineJobType airlineJobType) {
+    public void insert(AirlineJobType airlineJobType) throws DataAccessException {
         String queryTemplate = "INSERT INTO airline_job_type ("
                 + AirlineJobType.TITLE_COLUMN_NAME + ") "
                 + "VALUES(:title)";
@@ -76,11 +77,9 @@ public class AirlineJobTypeOperator implements DatabaseOperator<AirlineJobType> 
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

@@ -6,6 +6,7 @@ import database.tables.Airline;
 import database.tables.AirlineEmployee;
 import database.tables.AirlineJobType;
 import javafx.scene.control.Alert;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -51,7 +52,7 @@ public class AirlineEmployeeOperator implements DatabaseOperator<AirlineEmployee
     }
 
     @Override
-    public AirlineEmployee selectById(int id) {
+    public AirlineEmployee selectById(int id) throws DataAccessException {
         AirlineEmployeeExtractor extractor = new AirlineEmployeeExtractor();
 
         String queryTemplate = "SELECT airline_employee." + AirlineEmployee.ID_COLUMN_NAME + ", "
@@ -112,7 +113,7 @@ public class AirlineEmployeeOperator implements DatabaseOperator<AirlineEmployee
     }
 
     @Override
-    public int insert(AirlineEmployee airlineEmployee) {
+    public void insert(AirlineEmployee airlineEmployee) throws DataAccessException {
         String queryTemplate = "INSERT INTO airline_employee ("
                 + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + ", "
                 + AirlineEmployee.JOB_ID_COLUMN_NAME + ", "
@@ -141,11 +142,9 @@ public class AirlineEmployeeOperator implements DatabaseOperator<AirlineEmployee
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

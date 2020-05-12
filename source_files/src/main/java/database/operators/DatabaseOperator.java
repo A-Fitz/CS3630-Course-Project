@@ -1,5 +1,8 @@
 package database.operators;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
+
 import java.util.List;
 
 /**
@@ -47,7 +50,7 @@ public interface DatabaseOperator<DatabaseObject>
      * @param toInsert The DatabaseObject which holds the data to insert into columns
      * @return (0 if a constraint was not met and the row could not be inserted) (1 if the row was inserted)
      */
-    int insert(DatabaseObject toInsert);
+    void insert(DatabaseObject toInsert) throws DataAccessException;
 
 
     /**

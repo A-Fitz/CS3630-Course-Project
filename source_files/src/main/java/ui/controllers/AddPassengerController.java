@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -61,16 +62,18 @@ public class AddPassengerController extends ThreeColumnController {
 
 
 
-            int rowsAffected = operator.insert(passenger);
+            try {
+                operator.insert(passenger);
+            }
 
-            if (rowsAffected == 0) {
+            catch (DataAccessException dae) {
                 // Passenger not inserted (probably due to unique constraints on abbreviation or name). Display error message.
                 Util.setMessageLabel("Passenger not added.", Color.RED, messageLabel);
-            } else {
+                return;
+            }
                 // Passenger inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Passenger added.", Color.GREEN, messageLabel);
-            }
             enable();
         } else {
             // All fields must not be null. Display error message.

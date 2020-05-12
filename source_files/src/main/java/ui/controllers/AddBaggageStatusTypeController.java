@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -39,16 +40,18 @@ public class AddBaggageStatusTypeController extends ThreeColumnController {
             BaggageStatusType baggageStatusType = new BaggageStatusType();
             baggageStatusType.setTitle(baggageStatusTypeTextField.getText());
 
-            int rowsAffected = baggageStatusTypeOperator.insert(baggageStatusType);
+            try {
+                baggageStatusTypeOperator.insert(baggageStatusType);
+            }
 
-            if (rowsAffected == 0) {
+            catch (DataAccessException dae) {
                 // Baggage status type not inserted (probably due to unique constraint on title). Display error message.
                 Util.setMessageLabel("Baggage status type not added. The title is unique to a baggage status type.", Color.RED, messageLabel);
-            } else {
+                return;
+            }
                 // Baggage status type inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Baggage status type added.", Color.GREEN, messageLabel);
-            }
             enable();
         } else {
             // All fields must not be null. Display error message.

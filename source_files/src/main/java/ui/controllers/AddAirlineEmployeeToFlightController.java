@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -53,14 +54,20 @@ public class AddAirlineEmployeeToFlightController extends ThreeColumnController 
             airlineEmployeeOnFlight.setAirline_employee_id(employeeComboBox.getValue().getId());
             airlineEmployeeOnFlight.setFlight_id(flightComboBox.getValue().getId());
 
-            int rowsAffected = airlineEmployeeOnFlightOperator.insert(airlineEmployeeOnFlight);
-
-            if (rowsAffected == 0)
-                Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel); //TODO : what went wrong?
-            else {
-                clearAllFields();
-                Util.setMessageLabel("Airline employee was added to flight.", Color.GREEN, messageLabel);
+            try {
+                airlineEmployeeOnFlightOperator.insert(airlineEmployeeOnFlight);
             }
+
+            catch (DataAccessException dae)
+            {
+                Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel); //TODO : what went wrong?
+                return;
+            }
+
+            // Catch and handle more exceptions here
+
+            clearAllFields();
+            Util.setMessageLabel("Airline employee was added to flight.", Color.GREEN, messageLabel);
 
         } else {
             Util.setMessageLabel("Airline employee was not added to flight. Please fill all fields.", Color.RED, messageLabel);

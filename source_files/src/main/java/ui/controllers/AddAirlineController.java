@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -43,16 +44,18 @@ public class AddAirlineController extends ThreeColumnController {
             // disable buttons until a success/failure is received
             disable();
 
-            int rowsAffected = airlineOperator.insert(airline);
+            try {
+                airlineOperator.insert(airline);
+            }
 
-            if (rowsAffected == 0) {
+            catch (DataAccessException dae) {
                 // Airline not inserted (probably due to unique constraints on abbreviation or name). Display error message.
                 Util.setMessageLabel("Airline not added. Both the abbreviation and name fields are unique to an airline.", Color.RED, messageLabel);
-            } else {
-                // Airline inserted. Clear each text field and display success message.
+                return;
+            }
                 clearAllTextFields();
                 Util.setMessageLabel("Airline added.", Color.GREEN, messageLabel);
-            }
+
             enable();
         } else {
             // All fields must not be null. Display error message.

@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -122,16 +123,18 @@ public class AddFlightController extends ThreeColumnController {
             flight.setFlight_status_id(flightStatusComboBox.getValue().getId());
             flight.setBoarding_date(Date.valueOf(boardingDateDatePicker.getValue()));
 
-            int rowsAffected = flightOperator.insert(flight);
+            try {
+                flightOperator.insert(flight);
+            }
 
-            if (rowsAffected == 0) {
+            catch (DataAccessException dae) {
                 // Flight not edited. Display error message.
                 Util.setMessageLabel("Flight not added. Some error occurred.", Color.RED, messageLabel); //TODO what kind of errors can happen here?
-            } else {
+                return;
+            }
                 // Flight inserted. Clear each component and display success message.
                 clearComponents();
                 Util.setMessageLabel("Flight added.", Color.GREEN, messageLabel);
-            }
             enable();
         } else {
             // All fields must not be null. Display error message.

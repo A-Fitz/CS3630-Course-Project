@@ -9,9 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.formatters.FloatTextFormatter;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddTicketController extends ThreeColumnController {
@@ -52,27 +54,35 @@ public class AddTicketController extends ThreeColumnController {
             PassengerOnFlight pof = new PassengerOnFlight();
             pof.setFlight_id(flightComboBox.getValue().getId());
             pof.setPassenger_id(passengerComboBox.getValue().getId());
-            int rowsAffected = passengerOnFlightOperator.insert(pof);
 
-            // If passenger on flight was inserted, try to make a ticket.
-            if (rowsAffected != 0) {
+            try {
+                passengerOnFlightOperator.insert(pof);
+            }
+
+            catch (DataAccessException dae) {
+                ui.Util.setMessageLabel("Passenger on Flight not added.", Color.RED, messageLabel);
+                return;
+            }
+
                 Ticket ticket = new Ticket();
                 ticket.setPassenger_on_flight_id(pof.getId());
                 ticket.setSeat_class_id(seatClassComboBox.getValue().getId());
                 ticket.setSeat(seatTextField.getText());
                 ticket.setPrice(Float.parseFloat(priceTextField.getText()));
-                rowsAffected = ticketOperator.insert(ticket);
-            }
 
-            if (rowsAffected == 0) {
+                try {
+                    ticketOperator.insert(ticket);
+                }
+
+                catch (DataAccessException dae) {
                 // Ticket not inserted. Display error message.
                 // Could be due to PassengerOnFlight not being inserted as well.
-                ui.Util.setMessageLabel("Ticket not added.", Color.RED, messageLabel); //TODO: why?
-            } else {
+                    ui.Util.setMessageLabel("Ticket not added.", Color.RED, messageLabel); //TODO: why?
+                    return;
+            }
                 // Ticket inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 ui.Util.setMessageLabel("Ticket added.", Color.GREEN, messageLabel);
-            }
             enable();
         } else {
             // All fields must not be null. Display error message.

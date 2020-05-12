@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -79,14 +80,16 @@ public class AddEmployeeController extends ThreeColumnController {
         airportEmployee.setPhone(phoneTextField.getText());
         airportEmployee.setBirth_date(Date.valueOf(birthDateDatePicker.getValue()));
 
-        int rowsAffected = airportEmployeeOperator.insert(airportEmployee);
+        try {
+            airportEmployeeOperator.insert(airportEmployee);
+        }
 
-        if (rowsAffected == 0) {
+        catch (DataAccessException dae) {
             Util.setMessageLabel("Airport Employee not added.", Color.RED, messageLabel);
-        } else {
+            return;
+        }
             clearAllFields();
             Util.setMessageLabel("Airport Employee added.", Color.GREEN, messageLabel);
-        }
     }
 
     private void setAirlineEmployee() {
@@ -101,14 +104,16 @@ public class AddEmployeeController extends ThreeColumnController {
         airlineEmployee.setPhone(phoneTextField.getText());
         airlineEmployee.setBirth_date(Date.valueOf(birthDateDatePicker.getValue()));
 
-        int rowsAffected = airlineEmployeeOperator.insert(airlineEmployee);
+        try {
+            airlineEmployeeOperator.insert(airlineEmployee);
+        }
 
-        if (rowsAffected == 0) {
+        catch (DataAccessException dae){
             Util.setMessageLabel("Airline Employee not added.", Color.RED, messageLabel);
-        } else {
+            return;
+        }
             clearAllFields();
             Util.setMessageLabel("Airline Employee added.", Color.GREEN, messageLabel);
-        }
     }
 
     /**

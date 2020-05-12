@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 
 import java.net.URL;
@@ -35,14 +36,16 @@ public class AddTicketStatusTypeController extends ThreeColumnController {
             TicketStatusType ticketStatusType = new TicketStatusType();
             ticketStatusType.setTitle(titleTextField.getText());
 
-            int rowsAffected = ticketStatusTypeOperator.insert(ticketStatusType);
+            try {
+                ticketStatusTypeOperator.insert(ticketStatusType);
+            }
 
-            if (rowsAffected == 0)
+            catch (DataAccessException dae) {
                 Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel);
-            else {
+                return;
+            }
                 clearAllFields();
                 Util.setMessageLabel("Ticket status type added.", Color.GREEN, messageLabel);
-            }
 
         } else {
             Util.setMessageLabel("Ticket status type not added. Please fill all fields.", Color.RED, messageLabel);

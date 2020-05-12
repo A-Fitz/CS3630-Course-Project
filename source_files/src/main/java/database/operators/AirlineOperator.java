@@ -4,6 +4,7 @@ import database.DatabaseConnection;
 import database.extractors.AirlineExtractor;
 import database.tables.Airline;
 import database.tables.Ticket;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -67,7 +68,7 @@ public class AirlineOperator implements DatabaseOperator<Airline> {
     }
 
     @Override
-    public int insert(Airline airline) throws DuplicateKeyException {
+    public void insert(Airline airline) throws DataAccessException {
         String queryTemplate = "INSERT INTO airline ("
                 + Airline.NAME_COLUMN_NAME + ", "
                 + Airline.ABBREVIATION_COLUMN_NAME + ") "
@@ -82,11 +83,9 @@ public class AirlineOperator implements DatabaseOperator<Airline> {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override

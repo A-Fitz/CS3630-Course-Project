@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
 import ui.Util;
 import ui.formatters.FloatTextFormatter;
 
@@ -53,16 +54,18 @@ public class AddBaggageController extends ThreeColumnController {
             baggage.setWeight(Float.parseFloat(weightTextField.getText()));
             baggage.setBaggage_status_id(baggageStatusComboBox.getValue().getId());
 
-            int rowsAffected = baggageOperator.insert(baggage);
+            try {
+                baggageOperator.insert(baggage);
+            }
 
-            if (rowsAffected == 0) {
+            catch (DataAccessException dae) {
                 // Baggage not inserted. Display error message.
                 Util.setMessageLabel("Baggage not added.", Color.RED, messageLabel); //TODO: why?
-            } else {
+                return;
+            }
                 // Baggage inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Baggage added.", Color.GREEN, messageLabel);
-            }
             enable();
         } else {
             // All fields must not be null. Display error message.

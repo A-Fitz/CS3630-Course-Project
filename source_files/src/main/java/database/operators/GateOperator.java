@@ -5,6 +5,7 @@ import database.extractors.GateExtractor;
 import database.tables.Airport;
 import database.tables.Gate;
 import database.tables.Terminal;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -97,7 +98,7 @@ public class GateOperator implements DatabaseOperator<Gate> {
     }
 
     @Override
-    public int insert(Gate gate) {
+    public void insert(Gate gate) throws DataAccessException {
         String queryTemplate = "INSERT INTO gate ("
                 + Gate.TERMINAL_ID_COLUMN_NAME + ", "
                 + Gate.GATE_CODE_COLUMN_NAME + ")"
@@ -112,11 +113,9 @@ public class GateOperator implements DatabaseOperator<Gate> {
         int rowsAffected = 0;
         try {
             rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DuplicateKeyException dke) {
-            // do nothing
+        } catch (DataAccessException dae) {
+            throw dae;
         }
-
-        return rowsAffected;
     }
 
     @Override
