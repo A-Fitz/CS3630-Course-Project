@@ -56,8 +56,10 @@ public class AddAirportController extends ThreeColumnController {
             catch (DataAccessException dae) {
                 // Airport not inserted (probably due to unique constraint on the IATA code). Display error message.
                 Util.setMessageLabel("Airport not added. The IATA code is unique to an airport.", Color.RED, messageLabel);
+                enable();
                 return;
             }
+
                 // Airport inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Airport added.", Color.GREEN, messageLabel);

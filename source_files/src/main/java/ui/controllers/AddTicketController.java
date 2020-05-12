@@ -61,6 +61,7 @@ public class AddTicketController extends ThreeColumnController {
 
             catch (DataAccessException dae) {
                 ui.Util.setMessageLabel("Passenger on Flight not added.", Color.RED, messageLabel);
+                enable();
                 return;
             }
 
@@ -78,6 +79,7 @@ public class AddTicketController extends ThreeColumnController {
                 // Ticket not inserted. Display error message.
                 // Could be due to PassengerOnFlight not being inserted as well.
                     ui.Util.setMessageLabel("Ticket not added.", Color.RED, messageLabel); //TODO: why?
+                    enable();
                     return;
             }
                 // Ticket inserted. Clear each text field and display success message.

@@ -51,8 +51,10 @@ public class AddAirlineController extends ThreeColumnController {
             catch (DataAccessException dae) {
                 // Airline not inserted (probably due to unique constraints on abbreviation or name). Display error message.
                 Util.setMessageLabel("Airline not added. Both the abbreviation and name fields are unique to an airline.", Color.RED, messageLabel);
+                enable();
                 return;
             }
+
                 clearAllTextFields();
                 Util.setMessageLabel("Airline added.", Color.GREEN, messageLabel);
 

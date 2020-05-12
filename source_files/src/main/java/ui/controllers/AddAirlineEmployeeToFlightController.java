@@ -61,6 +61,7 @@ public class AddAirlineEmployeeToFlightController extends ThreeColumnController 
             catch (DataAccessException dae)
             {
                 Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel); //TODO : what went wrong?
+                enable();
                 return;
             }
 

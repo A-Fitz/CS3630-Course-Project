@@ -82,6 +82,7 @@ public class AddAircraftController extends ThreeColumnController {
                     aircraftOperator.insert(aircraft);
                 } catch (DataAccessException dae) {
                     Util.setMessageLabel("Aircraft not added. The serial number is unique to an aircraft.", Color.RED, messageLabel);
+                    enable();
                     return;
                 }
 

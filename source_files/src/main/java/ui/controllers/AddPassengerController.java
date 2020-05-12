@@ -69,6 +69,7 @@ public class AddPassengerController extends ThreeColumnController {
             catch (DataAccessException dae) {
                 // Passenger not inserted (probably due to unique constraints on abbreviation or name). Display error message.
                 Util.setMessageLabel("Passenger not added.", Color.RED, messageLabel);
+                enable();
                 return;
             }
                 // Passenger inserted. Clear each text field and display success message.

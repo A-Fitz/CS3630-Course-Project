@@ -61,8 +61,10 @@ public class AddBaggageController extends ThreeColumnController {
             catch (DataAccessException dae) {
                 // Baggage not inserted. Display error message.
                 Util.setMessageLabel("Baggage not added.", Color.RED, messageLabel); //TODO: why?
+                enable();
                 return;
             }
+
                 // Baggage inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Baggage added.", Color.GREEN, messageLabel);

@@ -47,6 +47,7 @@ public class AddBaggageStatusTypeController extends ThreeColumnController {
             catch (DataAccessException dae) {
                 // Baggage status type not inserted (probably due to unique constraint on title). Display error message.
                 Util.setMessageLabel("Baggage status type not added. The title is unique to a baggage status type.", Color.RED, messageLabel);
+                enable();
                 return;
             }
                 // Baggage status type inserted. Clear each text field and display success message.

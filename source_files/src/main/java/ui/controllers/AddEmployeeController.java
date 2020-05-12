@@ -86,8 +86,10 @@ public class AddEmployeeController extends ThreeColumnController {
 
         catch (DataAccessException dae) {
             Util.setMessageLabel("Airport Employee not added.", Color.RED, messageLabel);
+            enable();
             return;
         }
+
             clearAllFields();
             Util.setMessageLabel("Airport Employee added.", Color.GREEN, messageLabel);
     }
@@ -110,6 +112,7 @@ public class AddEmployeeController extends ThreeColumnController {
 
         catch (DataAccessException dae){
             Util.setMessageLabel("Airline Employee not added.", Color.RED, messageLabel);
+            enable();
             return;
         }
             clearAllFields();

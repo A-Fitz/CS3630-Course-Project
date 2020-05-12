@@ -54,6 +54,7 @@ public class AddSeatClassTypeController extends ThreeColumnController {
 
             catch (DataAccessException dae) {
                 Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel);
+                enable();
                 return;
             }
                 clearAllFields();

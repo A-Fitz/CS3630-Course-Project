@@ -130,6 +130,7 @@ public class AddFlightController extends ThreeColumnController {
             catch (DataAccessException dae) {
                 // Flight not edited. Display error message.
                 Util.setMessageLabel("Flight not added. Some error occurred.", Color.RED, messageLabel); //TODO what kind of errors can happen here?
+                enable();
                 return;
             }
                 // Flight inserted. Clear each component and display success message.

@@ -47,6 +47,7 @@ public class AddFlightStatusTypeController extends ThreeColumnController {
             catch (DataAccessException dae) {
                 // Flight status type not inserted (probably due to unique constraint on title). Display error message.
                 Util.setMessageLabel("Flight status type not added. The title is unique to a flight status type.", Color.RED, messageLabel);
+                enable();
                 return;
             }
                 // Flight status type inserted. Clear each text field and display success message.

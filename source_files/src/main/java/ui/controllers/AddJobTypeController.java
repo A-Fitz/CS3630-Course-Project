@@ -55,6 +55,7 @@ public class AddJobTypeController extends ThreeColumnController {
 
         catch (DataAccessException dae) {
             Util.setMessageLabel("Airport Job Title not added.", Color.RED, messageLabel);
+            enable();
             return;
         }
             clearAllFields();
@@ -71,6 +72,7 @@ public class AddJobTypeController extends ThreeColumnController {
 
         catch (DataAccessException dae) {
             Util.setMessageLabel("Airline Job Title not added.", Color.RED, messageLabel);
+            enable();
             return;
         }
             clearAllFields();
