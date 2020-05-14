@@ -26,7 +26,7 @@ public class PassengerOperator implements DatabaseOperator<Passenger> {
         return instance;
     }
 
-    public List<Passenger> selectManyByFlightId(int flightId)
+    public List<Passenger> selectManyByFlightId(int flightId) throws DataAccessException
     {
         PassengerExtractor extractor = new PassengerExtractor();
 
@@ -42,7 +42,7 @@ public class PassengerOperator implements DatabaseOperator<Passenger> {
     }
 
     @Override
-    public List<Passenger> selectAll()
+    public List<Passenger> selectAll() throws DataAccessException
     {
         PassengerExtractor extractor = new PassengerExtractor();
 
@@ -52,7 +52,7 @@ public class PassengerOperator implements DatabaseOperator<Passenger> {
     }
 
     @Override
-    public Passenger selectById(int id) {
+    public Passenger selectById(int id) throws DataAccessException {
         PassengerExtractor extractor = new PassengerExtractor();
 
         String queryTemplate = "SELECT * FROM passenger WHERE id = :id";
@@ -69,7 +69,7 @@ public class PassengerOperator implements DatabaseOperator<Passenger> {
     }
 
     @Override
-    public int updateById(int id, Passenger passenger) {
+    public int updateById(int id, Passenger passenger) throws DataAccessException {
         String queryTemplate = "UPDATE passenger SET "
                 + Passenger.PASSPORT_NUMBER_COLUMN_NAME + " = :new_passport_number, "
                 + Passenger.FIRST_NAME_COLUMN_NAME + " = :new_first_name, "
@@ -120,16 +120,11 @@ public class PassengerOperator implements DatabaseOperator<Passenger> {
         parameters.addValue("birth_date", passenger.getBirth_date());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM passenger "
                 + " WHERE " + Passenger.ID_COLUMN_NAME + " = :id";
 

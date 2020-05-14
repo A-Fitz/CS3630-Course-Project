@@ -26,7 +26,7 @@ public class TicketStatusTypeOperator implements DatabaseOperator<TicketStatusTy
     }
 
     @Override
-    public List<TicketStatusType> selectAll() {
+    public List<TicketStatusType> selectAll() throws DataAccessException {
         TicketStatusTypeExtractor extractor = new TicketStatusTypeExtractor();
 
         String queryTemplate = "SELECT * FROM ticket_status_type";
@@ -35,7 +35,7 @@ public class TicketStatusTypeOperator implements DatabaseOperator<TicketStatusTy
     }
 
     @Override
-    public TicketStatusType selectById(int id) {
+    public TicketStatusType selectById(int id) throws DataAccessException {
         TicketStatusTypeExtractor extractor = new TicketStatusTypeExtractor();
 
         String queryTemplate = "SELECT * FROM ticket_status_type WHERE id = :id";
@@ -52,7 +52,7 @@ public class TicketStatusTypeOperator implements DatabaseOperator<TicketStatusTy
     }
 
     @Override
-    public int updateById(int id, TicketStatusType ticketStatusTypeList) {
+    public int updateById(int id, TicketStatusType ticketStatusTypeList) throws DataAccessException {
         String queryTemplate = "UPDATE ticket_status_type SET "
                 + TicketStatusType.TITLE_COLUMN_NAME + " = :title"
                 + " WHERE " + TicketStatusType.ID_COLUMN_NAME + " = :id";
@@ -77,16 +77,11 @@ public class TicketStatusTypeOperator implements DatabaseOperator<TicketStatusTy
         parameters.addValue("title", ticketStatusType.getTitle());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM ticket_status_type "
                 + " WHERE " + TicketStatusType.ID_COLUMN_NAME + " = :id";
 

@@ -27,7 +27,7 @@ public class GateOperator implements DatabaseOperator<Gate> {
         return instance;
     }
 
-    public List<Gate> selectManyByAirportId(int airportId)
+    public List<Gate> selectManyByAirportId(int airportId) throws DataAccessException
     {
         GateExtractor extractor = new GateExtractor();
 
@@ -46,7 +46,7 @@ public class GateOperator implements DatabaseOperator<Gate> {
     }
 
     @Override
-    public List<Gate> selectAll() {
+    public List<Gate> selectAll() throws DataAccessException {
         GateExtractor extractor = new GateExtractor();
 
         String queryTemplate = "SELECT gate." + Gate.ID_COLUMN_NAME + ", "
@@ -60,7 +60,7 @@ public class GateOperator implements DatabaseOperator<Gate> {
     }
 
     @Override
-    public Gate selectById(int id) {
+    public Gate selectById(int id) throws DataAccessException {
         GateExtractor extractor = new GateExtractor();
 
         String queryTemplate = "SELECT gate." + Gate.ID_COLUMN_NAME + ", "
@@ -83,7 +83,7 @@ public class GateOperator implements DatabaseOperator<Gate> {
     }
 
     @Override
-    public int updateById(int id, Gate gate) {
+    public int updateById(int id, Gate gate) throws DataAccessException {
         String queryTemplate = "UPDATE gate SET "
                 + Gate.TERMINAL_ID_COLUMN_NAME + " = :terminal_id,"
                 + Gate.GATE_CODE_COLUMN_NAME + " = :gate_code"
@@ -110,16 +110,11 @@ public class GateOperator implements DatabaseOperator<Gate> {
         parameters.addValue("gate_code", gate.getGate_code());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM gate "
                 + " WHERE " + Gate.ID_COLUMN_NAME + " = :id";
 

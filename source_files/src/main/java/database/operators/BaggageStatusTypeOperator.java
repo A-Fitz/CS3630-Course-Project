@@ -26,7 +26,7 @@ public class BaggageStatusTypeOperator implements DatabaseOperator<BaggageStatus
     }
 
     @Override
-    public List<BaggageStatusType> selectAll() {
+    public List<BaggageStatusType> selectAll() throws DataAccessException {
         BaggageStatusTypeExtractor extractor = new BaggageStatusTypeExtractor();
 
         String queryTemplate = "SELECT * FROM baggage_status_type";
@@ -35,7 +35,7 @@ public class BaggageStatusTypeOperator implements DatabaseOperator<BaggageStatus
     }
 
     @Override
-    public BaggageStatusType selectById(int id) {
+    public BaggageStatusType selectById(int id) throws DataAccessException {
         BaggageStatusTypeExtractor extractor = new BaggageStatusTypeExtractor();
 
         String queryTemplate = "SELECT * FROM baggage_status_type WHERE id = :id";
@@ -52,7 +52,7 @@ public class BaggageStatusTypeOperator implements DatabaseOperator<BaggageStatus
     }
 
     @Override
-    public int updateById(int id, BaggageStatusType baggageStatusTypeList) {
+    public int updateById(int id, BaggageStatusType baggageStatusTypeList) throws DataAccessException {
         String queryTemplate = "UPDATE baggage_status_type SET "
                 + BaggageStatusType.TITLE_COLUMN_NAME + " = :title"
                 + " WHERE " + BaggageStatusType.ID_COLUMN_NAME + " = :id";
@@ -75,16 +75,11 @@ public class BaggageStatusTypeOperator implements DatabaseOperator<BaggageStatus
         parameters.addValue("title", baggageStatusType.getTitle());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM baggage_status_type "
                 + " WHERE " + BaggageStatusType.ID_COLUMN_NAME + " = :id";
 

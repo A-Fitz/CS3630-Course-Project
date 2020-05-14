@@ -27,7 +27,7 @@ public class FlightOperator implements DatabaseOperator<Flight> {
     }
 
     @Override
-    public List<Flight> selectAll() {
+    public List<Flight> selectAll() throws DataAccessException {
         FlightExtractor extractor = new FlightExtractor();
 
         String queryTemplate = "SELECT flight." + Flight.ID_COLUMN_NAME + ", "
@@ -60,7 +60,7 @@ public class FlightOperator implements DatabaseOperator<Flight> {
     }
 
     @Override
-    public Flight selectById(int id) {
+    public Flight selectById(int id) throws DataAccessException {
         FlightExtractor extractor = new FlightExtractor();
 
         String queryTemplate = "SELECT flight." + Flight.ID_COLUMN_NAME + ", "
@@ -103,7 +103,7 @@ public class FlightOperator implements DatabaseOperator<Flight> {
     }
 
     @Override
-    public int updateById(int id, Flight flight)
+    public int updateById(int id, Flight flight) throws DataAccessException
     {
         String queryTemplate = "UPDATE flight SET "
                 + Flight.CALLSIGN_COLUMN_NAME + " = :new_callsign, "
@@ -161,16 +161,11 @@ public class FlightOperator implements DatabaseOperator<Flight> {
         parameters.addValue("boarding_date", flight.getBoarding_date());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM flight "
                 + " WHERE " + Flight.ID_COLUMN_NAME + " = :id";
 

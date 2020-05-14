@@ -37,7 +37,7 @@ public class PassengerOnFlightOperator implements DatabaseOperator<PassengerOnFl
      * @return (null if no passenger_on_flight exists with that passenger_id and flight_id) or
      * (a java object representing that passenger_on_flight row)
      */
-    public PassengerOnFlight selectByPassengerAndFlightId(int passengerId, int flightId) {
+    public PassengerOnFlight selectByPassengerAndFlightId(int passengerId, int flightId) throws DataAccessException {
         PassengerOnFlightExtractor extractor = new PassengerOnFlightExtractor();
 
         String queryTemplate = "SELECT * FROM passenger_on_flight WHERE " +
@@ -59,7 +59,7 @@ public class PassengerOnFlightOperator implements DatabaseOperator<PassengerOnFl
      * @return (null if no passenger_on_flight exists with that flight_id) or
      * (A List of objects representing the rows in the table)
      */
-    public List<PassengerOnFlight> selectByFlightId(int flightId) {
+    public List<PassengerOnFlight> selectByFlightId(int flightId) throws DataAccessException {
         PassengerOnFlightExtractor extractor = new PassengerOnFlightExtractor();
 
         String queryTemplate = "SELECT * FROM passenger_on_flight WHERE " +
@@ -72,7 +72,7 @@ public class PassengerOnFlightOperator implements DatabaseOperator<PassengerOnFl
     }
 
     @Override
-    public List<PassengerOnFlight> selectAll() {
+    public List<PassengerOnFlight> selectAll() throws DataAccessException {
         PassengerOnFlightExtractor extractor = new PassengerOnFlightExtractor();
 
         String queryTemplate = "SELECT * FROM passenger_on_flight";
@@ -81,7 +81,7 @@ public class PassengerOnFlightOperator implements DatabaseOperator<PassengerOnFl
     }
 
     @Override
-    public PassengerOnFlight selectById(int id) {
+    public PassengerOnFlight selectById(int id) throws DataAccessException {
         PassengerOnFlightExtractor extractor = new PassengerOnFlightExtractor();
 
         String queryTemplate = "SELECT * FROM passenger_on_flight WHERE id = :id";
@@ -99,7 +99,7 @@ public class PassengerOnFlightOperator implements DatabaseOperator<PassengerOnFl
     }
 
     @Override
-    public int updateById(int id, PassengerOnFlight passengerOnFlight) {
+    public int updateById(int id, PassengerOnFlight passengerOnFlight) throws DataAccessException {
         String queryTemplate = "UPDATE passenger_on_flight SET "
                 + PassengerOnFlight.FLIGHT_ID_COLUMN_NAME + " = :new_flight_id, "
                 + PassengerOnFlight.PASSSENGER_ID_COLUMN_NAME + " = :new_airline_employee_id"
@@ -126,16 +126,11 @@ public class PassengerOnFlightOperator implements DatabaseOperator<PassengerOnFl
         parameters.addValue("passenger_id", passengerOnFlight.getPassenger_id());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM passenger_on_flight "
                 + " WHERE " + PassengerOnFlight.ID_COLUMN_NAME + " = :id";
 

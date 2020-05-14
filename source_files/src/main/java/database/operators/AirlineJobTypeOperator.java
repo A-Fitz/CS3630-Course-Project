@@ -26,7 +26,7 @@ public class AirlineJobTypeOperator implements DatabaseOperator<AirlineJobType> 
     }
 
     @Override
-    public List<AirlineJobType> selectAll() {
+    public List<AirlineJobType> selectAll() throws DataAccessException {
         AirlineJobTypeExtractor extractor = new AirlineJobTypeExtractor();
 
         String queryTemplate = "SELECT * FROM airline_job_type";
@@ -34,7 +34,7 @@ public class AirlineJobTypeOperator implements DatabaseOperator<AirlineJobType> 
         return namedParameterJdbcTemplate.query(queryTemplate, extractor);    }
 
     @Override
-    public AirlineJobType selectById(int id) {
+    public AirlineJobType selectById(int id) throws DataAccessException {
         AirlineJobTypeExtractor extractor = new AirlineJobTypeExtractor();
 
         String queryTemplate = "SELECT * FROM airline_job_type WHERE id = :id";
@@ -51,7 +51,7 @@ public class AirlineJobTypeOperator implements DatabaseOperator<AirlineJobType> 
     }
 
     @Override
-    public int updateById(int id, AirlineJobType airlineJobType) {
+    public int updateById(int id, AirlineJobType airlineJobType) throws DataAccessException {
         String queryTemplate = "UPDATE airline_job_type SET "
                 + AirlineJobType.TITLE_COLUMN_NAME + " = :new_title"
                 + " WHERE " + AirlineJobType.ID_COLUMN_NAME + " = :id";
@@ -74,16 +74,11 @@ public class AirlineJobTypeOperator implements DatabaseOperator<AirlineJobType> 
         parameters.addValue("title", airlineJobType.getTitle());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM airline_job_type "
                 + " WHERE " + AirlineJobType.ID_COLUMN_NAME + " = :id";
 

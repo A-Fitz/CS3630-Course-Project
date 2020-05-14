@@ -27,7 +27,7 @@ public class TerminalOperator implements DatabaseOperator<Terminal> {
     }
 
     @Override
-    public List<Terminal> selectAll() {
+    public List<Terminal> selectAll() throws DataAccessException {
         TerminalExtractor extractor = new TerminalExtractor();
 
         String queryTemplate = "SELECT terminal." + Terminal.ID_COLUMN_NAME + ", "
@@ -41,7 +41,7 @@ public class TerminalOperator implements DatabaseOperator<Terminal> {
     }
 
     @Override
-    public Terminal selectById(int id) {
+    public Terminal selectById(int id) throws DataAccessException {
         TerminalExtractor extractor = new TerminalExtractor();
 
         String queryTemplate = "SELECT terminal." + Terminal.ID_COLUMN_NAME + ", "
@@ -64,7 +64,7 @@ public class TerminalOperator implements DatabaseOperator<Terminal> {
     }
 
     @Override
-    public int updateById(int id, Terminal terminal) {
+    public int updateById(int id, Terminal terminal) throws DataAccessException {
         String queryTemplate = "UPDATE terminal SET "
                 + Terminal.AIRPORT_ID_COLUMN_NAME + " = :airport_id,"
                 + Terminal.TERMINAL_CODE_COLUMN_NAME + " = :terminal_code"
@@ -91,16 +91,11 @@ public class TerminalOperator implements DatabaseOperator<Terminal> {
         parameters.addValue("terminal_code", terminal.getTerminal_code());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM terminal "
                 + " WHERE " + Terminal.ID_COLUMN_NAME + " = :id";
 

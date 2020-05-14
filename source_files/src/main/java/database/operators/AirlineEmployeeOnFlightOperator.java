@@ -29,7 +29,7 @@ public class AirlineEmployeeOnFlightOperator implements DatabaseOperator<Airline
     }
 
     @Override
-    public List<AirlineEmployeeOnFlight> selectAll() {
+    public List<AirlineEmployeeOnFlight> selectAll() throws DataAccessException {
         AirlineEmployeeOnFlightExtractor extractor = new AirlineEmployeeOnFlightExtractor();
 
         String queryTemplate = "SELECT * FROM airline_employee_on_flight";
@@ -38,7 +38,7 @@ public class AirlineEmployeeOnFlightOperator implements DatabaseOperator<Airline
     }
 
     @Override
-    public AirlineEmployeeOnFlight selectById(int id) {
+    public AirlineEmployeeOnFlight selectById(int id) throws DataAccessException {
         AirlineEmployeeOnFlightExtractor extractor = new AirlineEmployeeOnFlightExtractor();
 
         String queryTemplate = "SELECT * FROM airline_employee_on_flight WHERE id = :id";
@@ -56,7 +56,7 @@ public class AirlineEmployeeOnFlightOperator implements DatabaseOperator<Airline
     }
 
     @Override
-    public int updateById(int id, AirlineEmployeeOnFlight airlineEmployeeOnFlight) {
+    public int updateById(int id, AirlineEmployeeOnFlight airlineEmployeeOnFlight) throws DataAccessException {
         String queryTemplate = "UPDATE airline_employee_on_flight SET "
                 + AirlineEmployeeOnFlight.FLIGHT_ID_COLUMN_NAME + " = :new_flight_id, "
                 + AirlineEmployeeOnFlight.AIRLINE_EMPLOYEE_ID_COLUMN_NAME + " = :new_airline_employee_id"
@@ -86,16 +86,11 @@ public class AirlineEmployeeOnFlightOperator implements DatabaseOperator<Airline
         List<Map<String, Object>> keyList = new ArrayList<>();
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM airline_employee_on_flight "
                 + " WHERE " + AirlineEmployeeOnFlight.ID_COLUMN_NAME + " = :id";
 

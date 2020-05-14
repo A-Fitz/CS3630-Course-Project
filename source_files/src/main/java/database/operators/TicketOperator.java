@@ -26,7 +26,7 @@ public class TicketOperator implements DatabaseOperator<Ticket>{
     }
 
     @Override
-    public List<Ticket> selectAll()
+    public List<Ticket> selectAll() throws DataAccessException
     {
         TicketExtractor extractor = new TicketExtractor();
 
@@ -36,7 +36,7 @@ public class TicketOperator implements DatabaseOperator<Ticket>{
     }
 
     @Override
-    public Ticket selectById(int id) {
+    public Ticket selectById(int id) throws DataAccessException {
         TicketExtractor extractor = new TicketExtractor();
 
         String queryTemplate = "SELECT * FROM ticket WHERE id = :id";
@@ -53,7 +53,7 @@ public class TicketOperator implements DatabaseOperator<Ticket>{
     }
 
     @Override
-    public int updateById(int id, Ticket ticket) {
+    public int updateById(int id, Ticket ticket) throws DataAccessException {
         String queryTemplate = "UPDATE ticket SET "
                 + Ticket.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + " = :new_passenger_on_flight_id,"
                 + Ticket.PRICE_COLUMN_NAME + " = :new_price,"
@@ -97,16 +97,11 @@ public class TicketOperator implements DatabaseOperator<Ticket>{
         parameters.addValue("new_purchase_timestamp", ticket.getPurchase_timestamp());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM ticket "
                 + " WHERE " + Ticket.ID_COLUMN_NAME + " = :id";
 

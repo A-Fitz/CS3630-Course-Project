@@ -26,7 +26,7 @@ public class SeatClassTypeOperator implements DatabaseOperator<SeatClassType> {
     }
 
     @Override
-    public List<SeatClassType> selectAll() {
+    public List<SeatClassType> selectAll() throws DataAccessException {
         SeatClassTypeExtractor extractor = new SeatClassTypeExtractor();
 
         String queryTemplate = "SELECT * FROM seat_class_type";
@@ -35,7 +35,7 @@ public class SeatClassTypeOperator implements DatabaseOperator<SeatClassType> {
     }
 
     @Override
-    public SeatClassType selectById(int id) {
+    public SeatClassType selectById(int id) throws DataAccessException {
         SeatClassTypeExtractor extractor = new SeatClassTypeExtractor();
 
         String queryTemplate = "SELECT * FROM seat_class_type WHERE id = :id";
@@ -52,7 +52,7 @@ public class SeatClassTypeOperator implements DatabaseOperator<SeatClassType> {
     }
 
     @Override
-    public int updateById(int id, SeatClassType seatClassTypeList) {
+    public int updateById(int id, SeatClassType seatClassTypeList) throws DataAccessException {
         String queryTemplate = "UPDATE seat_class_type SET "
                 + SeatClassType.TITLE_COLUMN_NAME + " = :title"
                 + " WHERE " + SeatClassType.ID_COLUMN_NAME + " = :id";
@@ -75,16 +75,11 @@ public class SeatClassTypeOperator implements DatabaseOperator<SeatClassType> {
         parameters.addValue("title", seatClassType.getTitle());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM seat_class_type "
                 + " WHERE " + SeatClassType.ID_COLUMN_NAME + " = :id";
 

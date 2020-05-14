@@ -25,7 +25,7 @@ public class BaggageOperator implements DatabaseOperator<Baggage> {
         return instance;
     }
 
-    public List<Baggage> selectByPassengerId(int passengerId) {
+    public List<Baggage> selectByPassengerId(int passengerId) throws DataAccessException {
         BaggageExtractor extractor = new BaggageExtractor();
 
         String queryTemplate = "SELECT baggage." + Baggage.ID_COLUMN_NAME + ", "
@@ -48,7 +48,7 @@ public class BaggageOperator implements DatabaseOperator<Baggage> {
     }
 
     @Override
-    public List<Baggage> selectAll() {
+    public List<Baggage> selectAll() throws DataAccessException {
         BaggageExtractor extractor = new BaggageExtractor();
 
         String queryTemplate = "SELECT baggage." + Baggage.ID_COLUMN_NAME + ", "
@@ -67,7 +67,7 @@ public class BaggageOperator implements DatabaseOperator<Baggage> {
     }
 
     @Override
-    public Baggage selectById(int id) {
+    public Baggage selectById(int id) throws DataAccessException {
         BaggageExtractor extractor = new BaggageExtractor();
 
         String queryTemplate = "SELECT baggage." + Baggage.ID_COLUMN_NAME + ", "
@@ -95,7 +95,7 @@ public class BaggageOperator implements DatabaseOperator<Baggage> {
     }
 
     @Override
-    public int updateById(int id, Baggage baggage) {
+    public int updateById(int id, Baggage baggage) throws DataAccessException {
         String queryTemplate = "UPDATE baggage SET "
                 + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + " = :new_passenger_on_flight_id, "
                 + Baggage.WEIGHT_COLUMN_NAME + " = :new_weight, "
@@ -126,16 +126,11 @@ public class BaggageOperator implements DatabaseOperator<Baggage> {
         parameters.addValue("baggage_status_id", baggage.getBaggage_status_id());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM baggage "
                 + " WHERE " + Baggage.ID_COLUMN_NAME + " = :id";
 

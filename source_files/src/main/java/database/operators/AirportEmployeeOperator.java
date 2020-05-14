@@ -28,7 +28,7 @@ public class AirportEmployeeOperator implements DatabaseOperator<AirportEmployee
     }
 
     @Override
-    public List<AirportEmployee> selectAll() {
+    public List<AirportEmployee> selectAll() throws DataAccessException {
         AirportEmployeeExtractor extractor = new AirportEmployeeExtractor();
 
         String queryTemplate = "SELECT airport_employee." + AirportEmployee.ID_COLUMN_NAME + ", "
@@ -51,7 +51,7 @@ public class AirportEmployeeOperator implements DatabaseOperator<AirportEmployee
     }
 
     @Override
-    public AirportEmployee selectById(int id) {
+    public AirportEmployee selectById(int id) throws DataAccessException {
         AirportEmployeeExtractor extractor = new AirportEmployeeExtractor();
 
         String queryTemplate = "SELECT airport_employee." + AirportEmployee.ID_COLUMN_NAME + ", "
@@ -83,7 +83,7 @@ public class AirportEmployeeOperator implements DatabaseOperator<AirportEmployee
     }
 
     @Override
-    public int updateById(int id, AirportEmployee airportEmployee) {
+    public int updateById(int id, AirportEmployee airportEmployee) throws DataAccessException {
         String queryTemplate = "UPDATE airport_employee SET "
                 + AirportEmployee.AIRPORT_ID_COLUMN_NAME + " = :new_airport_id, "
                 + AirportEmployee.JOB_ID_COLUMN_NAME + " = :new_job_id, "
@@ -138,16 +138,11 @@ public class AirportEmployeeOperator implements DatabaseOperator<AirportEmployee
         parameters.addValue("birth_date", airportEmployee.getBirth_date());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM airport_employee "
                 + " WHERE " + AirportEmployee.ID_COLUMN_NAME + " = :id";
 

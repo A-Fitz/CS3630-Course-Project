@@ -27,7 +27,7 @@ public class AirlineOperator implements DatabaseOperator<Airline> {
     }
 
     @Override
-    public List<Airline> selectAll() {
+    public List<Airline> selectAll() throws DataAccessException {
         AirlineExtractor extractor = new AirlineExtractor();
 
         String queryTemplate = "SELECT * FROM airline";
@@ -36,7 +36,7 @@ public class AirlineOperator implements DatabaseOperator<Airline> {
     }
 
     @Override
-    public Airline selectById(int id) {
+    public Airline selectById(int id) throws DataAccessException {
         AirlineExtractor extractor = new AirlineExtractor();
 
         String queryTemplate = "SELECT * FROM airline WHERE id = :id";
@@ -53,7 +53,7 @@ public class AirlineOperator implements DatabaseOperator<Airline> {
     }
 
     @Override
-    public int updateById(int id, Airline airline) {
+    public int updateById(int id, Airline airline) throws DataAccessException {
         String queryTemplate = "UPDATE airline SET "
                 + Airline.NAME_COLUMN_NAME + " = :name,"
                 + Airline.ABBREVIATION_COLUMN_NAME + " = :abbreviation"
@@ -80,16 +80,11 @@ public class AirlineOperator implements DatabaseOperator<Airline> {
         parameters.addValue("abbreviation", airline.getAbbreviation());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM airline "
                 + " WHERE " + Airline.ID_COLUMN_NAME + " = :id";
 

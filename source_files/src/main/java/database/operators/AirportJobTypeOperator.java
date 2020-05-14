@@ -26,7 +26,7 @@ public class AirportJobTypeOperator implements DatabaseOperator<AirportJobType> 
     }
 
     @Override
-    public List<AirportJobType> selectAll() {
+    public List<AirportJobType> selectAll() throws DataAccessException {
         AirportJobTypeExtractor extractor = new AirportJobTypeExtractor();
 
         String queryTemplate = "SELECT * FROM airport_job_type";
@@ -34,7 +34,7 @@ public class AirportJobTypeOperator implements DatabaseOperator<AirportJobType> 
         return namedParameterJdbcTemplate.query(queryTemplate, extractor);    }
 
     @Override
-    public AirportJobType selectById(int id) {
+    public AirportJobType selectById(int id) throws DataAccessException {
         AirportJobTypeExtractor extractor = new AirportJobTypeExtractor();
 
         String queryTemplate = "SELECT * FROM airport_job_type WHERE id = :id";
@@ -51,7 +51,7 @@ public class AirportJobTypeOperator implements DatabaseOperator<AirportJobType> 
     }
 
     @Override
-    public int updateById(int id, AirportJobType airportJobType) {
+    public int updateById(int id, AirportJobType airportJobType) throws DataAccessException {
         String queryTemplate = "UPDATE airport_job_type SET "
                 + AirportJobType.TITLE_COLUMN_NAME + " = :new_title"
                 + " WHERE " + AirportJobType.ID_COLUMN_NAME + " = :id";
@@ -74,16 +74,11 @@ public class AirportJobTypeOperator implements DatabaseOperator<AirportJobType> 
         parameters.addValue("title", airportJobType.getTitle());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM airport_job_type "
                 + " WHERE " + AirportJobType.ID_COLUMN_NAME + " = :id";
 

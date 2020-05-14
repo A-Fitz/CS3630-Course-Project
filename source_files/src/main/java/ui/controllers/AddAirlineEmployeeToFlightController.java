@@ -60,18 +60,16 @@ public class AddAirlineEmployeeToFlightController extends ThreeColumnController 
 
             catch (DataAccessException dae)
             {
-                Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel); //TODO : what went wrong?
+                Util.setMessageLabel("Airline employee not added to flight. The airline employee was already on the flight.", Color.RED, messageLabel); //TODO : what went wrong?
                 enable();
                 return;
             }
 
-            // Catch and handle more exceptions here
-
             clearAllFields();
-            Util.setMessageLabel("Airline employee was added to flight.", Color.GREEN, messageLabel);
+            Util.setMessageLabel("Airline employee added to flight.", Color.GREEN, messageLabel);
 
         } else {
-            Util.setMessageLabel("Airline employee was not added to flight. Please fill all fields.", Color.RED, messageLabel);
+            Util.setMessageLabel("Airline employee not added to flight. Please fill the required fields.", Color.RED, messageLabel);
         }
         enable();
     }
