@@ -64,7 +64,7 @@ public class TerminalOperator implements DatabaseOperator<Terminal> {
     }
 
     @Override
-    public int updateById(int id, Terminal terminal) throws DataAccessException {
+    public void updateById(int id, Terminal terminal) throws DataAccessException {
         String queryTemplate = "UPDATE terminal SET "
                 + Terminal.AIRPORT_ID_COLUMN_NAME + " = :airport_id,"
                 + Terminal.TERMINAL_CODE_COLUMN_NAME + " = :terminal_code"
@@ -75,7 +75,7 @@ public class TerminalOperator implements DatabaseOperator<Terminal> {
         parameters.addValue("terminal_code", terminal.getTerminal_code());
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
@@ -95,13 +95,13 @@ public class TerminalOperator implements DatabaseOperator<Terminal> {
     }
 
     @Override
-    public int deleteById(int id) throws DataAccessException {
+    public void deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM terminal "
                 + " WHERE " + Terminal.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 }

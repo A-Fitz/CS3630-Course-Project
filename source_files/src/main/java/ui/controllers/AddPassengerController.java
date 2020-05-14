@@ -9,6 +9,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -64,17 +65,18 @@ public class AddPassengerController extends ThreeColumnController {
 
             try {
                 operator.insert(passenger);
-            }
 
-            catch (DataAccessException dae) {
-                // Passenger not inserted (probably due to unique constraints on abbreviation or name). Display error message.
-                Util.setMessageLabel("Passenger not added.", Color.RED, messageLabel);
-                enable();
-                return;
-            }
                 // Passenger inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Passenger added.", Color.GREEN, messageLabel);
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Passenger not added. The passport number is unique to a passenger.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+            }
             enable();
         } else {
             // All fields must not be null. Display error message.

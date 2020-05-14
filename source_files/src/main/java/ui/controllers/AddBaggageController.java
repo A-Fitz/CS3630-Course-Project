@@ -10,6 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 import ui.formatters.FloatTextFormatter;
 
@@ -56,18 +57,19 @@ public class AddBaggageController extends ThreeColumnController {
 
             try {
                 baggageOperator.insert(baggage);
-            }
 
-            catch (DataAccessException dae) {
-                // Baggage not inserted. Display error message.
-                Util.setMessageLabel("Baggage not added.", Color.RED, messageLabel);
-                enable();
-                return;
-            }
 
                 // Baggage inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Baggage added.", Color.GREEN, messageLabel);
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Baggage not added.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+            }
             enable();
         } else {
             // All fields must not be null. Display error message.

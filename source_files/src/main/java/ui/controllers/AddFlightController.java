@@ -10,6 +10,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -125,17 +126,19 @@ public class AddFlightController extends ThreeColumnController {
 
             try {
                 flightOperator.insert(flight);
-            }
 
-            catch (DataAccessException dae) {
-                // Flight not edited. Display error message.
-                Util.setMessageLabel("Flight not added. Some error occurred.", Color.RED, messageLabel); //TODO what kind of errors can happen here?
-                enable();
-                return;
-            }
                 // Flight inserted. Clear each component and display success message.
                 clearComponents();
                 Util.setMessageLabel("Flight added.", Color.GREEN, messageLabel);
+                enable();
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Flight not added. The callsign and boarding date are unique to a flight.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+            }
             enable();
         } else {
             // All fields must not be null. Display error message.

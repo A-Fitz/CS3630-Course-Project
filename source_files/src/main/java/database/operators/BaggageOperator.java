@@ -95,7 +95,7 @@ public class BaggageOperator implements DatabaseOperator<Baggage> {
     }
 
     @Override
-    public int updateById(int id, Baggage baggage) throws DataAccessException {
+    public void updateById(int id, Baggage baggage) throws DataAccessException {
         String queryTemplate = "UPDATE baggage SET "
                 + Baggage.PASSENGER_ON_FLIGHT_ID_COLUMN_NAME + " = :new_passenger_on_flight_id, "
                 + Baggage.WEIGHT_COLUMN_NAME + " = :new_weight, "
@@ -108,7 +108,7 @@ public class BaggageOperator implements DatabaseOperator<Baggage> {
         parameters.addValue("new_baggage_status_id", baggage.getBaggage_status_id());
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
@@ -130,13 +130,13 @@ public class BaggageOperator implements DatabaseOperator<Baggage> {
     }
 
     @Override
-    public int deleteById(int id) throws DataAccessException {
+    public void deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM baggage "
                 + " WHERE " + Baggage.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 }

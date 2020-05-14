@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -38,20 +39,21 @@ public class AddTicketStatusTypeController extends ThreeColumnController {
 
             try {
                 ticketStatusTypeOperator.insert(ticketStatusType);
-            }
 
-            catch (DataAccessException dae) {
-                Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel);
-                enable();
-                return;
-            }
                 clearAllFields();
                 Util.setMessageLabel("Ticket status type added.", Color.GREEN, messageLabel);
-
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Ticket status type not added. The title is unique to a ticket status type.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+            }
+            enable();
         } else {
             Util.setMessageLabel("Ticket status type not added. Please fill all fields.", Color.RED, messageLabel);
         }
-        enable();
     }
 
     private void clearAllFields() {

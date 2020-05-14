@@ -51,7 +51,7 @@ public class AirlineJobTypeOperator implements DatabaseOperator<AirlineJobType> 
     }
 
     @Override
-    public int updateById(int id, AirlineJobType airlineJobType) throws DataAccessException {
+    public void updateById(int id, AirlineJobType airlineJobType) throws DataAccessException {
         String queryTemplate = "UPDATE airline_job_type SET "
                 + AirlineJobType.TITLE_COLUMN_NAME + " = :new_title"
                 + " WHERE " + AirlineJobType.ID_COLUMN_NAME + " = :id";
@@ -60,7 +60,7 @@ public class AirlineJobTypeOperator implements DatabaseOperator<AirlineJobType> 
         parameters.addValue("new_title", airlineJobType.getTitle());
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
@@ -78,13 +78,13 @@ public class AirlineJobTypeOperator implements DatabaseOperator<AirlineJobType> 
     }
 
     @Override
-    public int deleteById(int id) throws DataAccessException {
+    public void deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM airline_job_type "
                 + " WHERE " + AirlineJobType.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 }

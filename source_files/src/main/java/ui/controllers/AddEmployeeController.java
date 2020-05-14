@@ -12,6 +12,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -82,16 +83,17 @@ public class AddEmployeeController extends ThreeColumnController {
 
         try {
             airportEmployeeOperator.insert(airportEmployee);
-        }
-
-        catch (DataAccessException dae) {
-            Util.setMessageLabel("Airport Employee not added.", Color.RED, messageLabel);
-            enable();
-            return;
-        }
 
             clearAllFields();
             Util.setMessageLabel("Airport Employee added.", Color.GREEN, messageLabel);
+        }
+        catch (DuplicateKeyException dke) {
+            Util.setMessageLabel("Airport employee not added. The entire name and all fields of an airport employee are unique.", Color.RED, messageLabel);
+        } catch (DataAccessException dae) {
+            Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+        } catch (Exception e) {
+            Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+        }
     }
 
     private void setAirlineEmployee() {
@@ -108,15 +110,16 @@ public class AddEmployeeController extends ThreeColumnController {
 
         try {
             airlineEmployeeOperator.insert(airlineEmployee);
-        }
-
-        catch (DataAccessException dae){
-            Util.setMessageLabel("Airline Employee not added.", Color.RED, messageLabel);
-            enable();
-            return;
-        }
             clearAllFields();
             Util.setMessageLabel("Airline Employee added.", Color.GREEN, messageLabel);
+        }
+        catch (DuplicateKeyException dke) {
+            Util.setMessageLabel("Airline employee not added. The entire name and all fields of an airline employee are unique.", Color.RED, messageLabel);
+        } catch (DataAccessException dae) {
+            Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+        } catch (Exception e) {
+            Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+        }
     }
 
     /**

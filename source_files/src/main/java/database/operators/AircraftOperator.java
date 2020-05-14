@@ -93,7 +93,7 @@ public class AircraftOperator implements DatabaseOperator<Aircraft> {
     }
 
     @Override
-    public int updateById(int id, Aircraft aircraft) throws DataAccessException {
+    public void updateById(int id, Aircraft aircraft) throws DataAccessException {
         String queryTemplate = "UPDATE aircraft SET "
                 + Aircraft.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id, "
                 + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " = :new_serial_number, "
@@ -112,7 +112,7 @@ public class AircraftOperator implements DatabaseOperator<Aircraft> {
         parameters.addValue("new_capacity", aircraft.getCapacity());
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
@@ -140,13 +140,13 @@ public class AircraftOperator implements DatabaseOperator<Aircraft> {
     }
 
     @Override
-    public int deleteById(int id) throws DataAccessException {
+    public void deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM aircraft "
                 + " WHERE " + Aircraft.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 }

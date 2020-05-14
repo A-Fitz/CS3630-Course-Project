@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -46,18 +47,17 @@ public class AddAirlineController extends ThreeColumnController {
 
             try {
                 airlineOperator.insert(airline);
-            }
-
-            catch (DataAccessException dae) {
-                // Airline not inserted (probably due to unique constraints on abbreviation or name). Display error message.
-                Util.setMessageLabel("Airline not added. Both the abbreviation and name fields are unique to an airline.", Color.RED, messageLabel);
-                enable();
-                return;
-            }
 
                 clearAllTextFields();
                 Util.setMessageLabel("Airline added.", Color.GREEN, messageLabel);
-
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Aircraft not added. Both the abbreviation and name are unique to an airline.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+            }
             enable();
         } else {
             // All fields must not be null. Display error message.

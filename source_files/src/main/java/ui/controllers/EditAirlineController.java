@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -42,14 +44,19 @@ public class EditAirlineController extends ThreeColumnController {
             newAirline.setAbbreviation(abbreviationTextField.getText());
             newAirline.setName(nameTextField.getText());
 
-            int rowsAffected = airlineOperator.updateById(airlineChosen.getId(), newAirline);
+            try {
+                airlineOperator.updateById(airlineChosen.getId(), newAirline);
 
-            if (rowsAffected == 0) {
-                Util.setMessageLabel("Airline not updated. Both the abbreviation and name fields are unique to an airline.", Color.RED, messageLabel);
-            } else {
                 clearAllFields();
                 updateAirlineComboBox();
                 Util.setMessageLabel("Airline updated.", Color.GREEN, messageLabel);
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Airline not updated. Both the abbreviation and name fields are unique to an airline.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
             }
             enable();
         } else {

@@ -10,6 +10,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
+import ui.Util;
 import ui.formatters.FloatTextFormatter;
 
 import java.net.URL;
@@ -59,10 +61,12 @@ public class AddTicketController extends ThreeColumnController {
                 passengerOnFlightOperator.insert(pof);
             }
 
-            catch (DataAccessException dae) {
-                ui.Util.setMessageLabel("Passenger on Flight not added.", Color.RED, messageLabel);
-                enable();
-                return;
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Ticket not added. The passenger was already added to the flight.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
             }
 
                 Ticket ticket = new Ticket();
@@ -73,20 +77,21 @@ public class AddTicketController extends ThreeColumnController {
 
                 try {
                     ticketOperator.insert(ticket);
-                }
 
-                catch (DataAccessException dae) {
-                // Ticket not inserted. Display error message.
-                // Could be due to PassengerOnFlight not being inserted as well.
-                    ui.Util.setMessageLabel("Ticket not added.", Color.RED, messageLabel); //TODO: why?
-                    enable();
-                    return;
-            }
-                // Ticket inserted. Clear each text field and display success message.
-                clearAllTextFields();
-                ui.Util.setMessageLabel("Ticket added.", Color.GREEN, messageLabel);
+                    // Ticket inserted. Clear each text field and display success message.
+                    clearAllTextFields();
+                    ui.Util.setMessageLabel("Ticket added.", Color.GREEN, messageLabel);
+                }
+                catch (DuplicateKeyException dke) {
+                    Util.setMessageLabel("Ticket not added.", Color.RED, messageLabel);
+                } catch (DataAccessException dae) {
+                    Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+                } catch (Exception e) {
+                    Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+                }
             enable();
-        } else {
+        }
+        else {
             // All fields must not be null. Display error message.
             ui.Util.setMessageLabel("Ticket not added. Please fill the required fields.", Color.RED, messageLabel);
         }

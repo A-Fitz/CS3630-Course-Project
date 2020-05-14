@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -42,17 +43,18 @@ public class AddFlightStatusTypeController extends ThreeColumnController {
 
             try {
                 flightStatusTypeOperator.insert(flightStatusType);
-            }
 
-            catch (DataAccessException dae) {
-                // Flight status type not inserted (probably due to unique constraint on title). Display error message.
-                Util.setMessageLabel("Flight status type not added. The title is unique to a flight status type.", Color.RED, messageLabel);
-                enable();
-                return;
-            }
                 // Flight status type inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Flight status type added.", Color.GREEN, messageLabel);
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Flight status type not added. The title is unique to a flight status type.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+            }
             enable();
         } else {
             // All fields must not be null. Display error message.

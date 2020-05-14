@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -56,22 +57,21 @@ public class AddAirlineEmployeeToFlightController extends ThreeColumnController 
 
             try {
                 airlineEmployeeOnFlightOperator.insert(airlineEmployeeOnFlight);
+
+                clearAllFields();
+                Util.setMessageLabel("Airline employee added to flight.", Color.GREEN, messageLabel);
             }
-
-            catch (DataAccessException dae)
-            {
-                Util.setMessageLabel("Airline employee not added to flight. The airline employee was already on the flight.", Color.RED, messageLabel); //TODO : what went wrong?
-                enable();
-                return;
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Airline employee not added to flight. The employee was already on the flight.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
             }
-
-            clearAllFields();
-            Util.setMessageLabel("Airline employee added to flight.", Color.GREEN, messageLabel);
-
+            enable();
         } else {
             Util.setMessageLabel("Airline employee not added to flight. Please fill the required fields.", Color.RED, messageLabel);
         }
-        enable();
     }
 
     /**

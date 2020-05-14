@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -38,16 +40,21 @@ public class DeletePassengerOnFlightController extends ThreeColumnController {
         if (flightComboBox.getValue() != null && passengerComboBox.getValue() != null) {
             disable();
 
-            int rowsAffected = passengerOnFlightOperator.deleteById(
-                    passengerOnFlightOperator.selectByPassengerAndFlightId(
-                            passengerComboBox.getValue().getId(), flightComboBox.getValue().getId()
-                    ).getId());
+            try {
+                passengerOnFlightOperator.deleteById(
+                        passengerOnFlightOperator.selectByPassengerAndFlightId(
+                                passengerComboBox.getValue().getId(), flightComboBox.getValue().getId()
+                        ).getId());
 
-            if (rowsAffected == 0) {
-                Util.setMessageLabel("Passenger on flight not deleted.", Color.RED, messageLabel); // TODO for what reason could this happen?
-            } else {
                 clearAllFields();
                 Util.setMessageLabel("Passenger on flight deleted.", Color.GREEN, messageLabel);
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Passenger on flight not deleted.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
             }
             enable();
         } else {

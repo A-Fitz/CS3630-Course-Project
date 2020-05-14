@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -50,20 +51,21 @@ public class AddSeatClassTypeController extends ThreeColumnController {
 
             try {
                 seatClassTypeOperator.insert(seatClassType);
-            }
 
-            catch (DataAccessException dae) {
-                Util.setMessageLabel("Something went wrong.", Color.RED, messageLabel);
-                enable();
-                return;
-            }
                 clearAllFields();
                 Util.setMessageLabel("Seat class type added.", Color.GREEN, messageLabel);
-
-        } else {
+            }
+                catch(DuplicateKeyException dke){
+                    Util.setMessageLabel("Seat class type not added. The title is unique to a seat class type.", Color.RED, messageLabel);
+                } catch(DataAccessException dae){
+                    Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+                } catch(Exception e){
+                    Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+                }
+            enable();
+            } else {
             Util.setMessageLabel("Seat class type not added. Please fill all fields.", Color.RED, messageLabel);
         }
-        enable();
     }
 
     private void clearAllFields() {

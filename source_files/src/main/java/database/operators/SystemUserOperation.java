@@ -41,8 +41,8 @@ public class SystemUserOperation implements DatabaseOperator<SystemUser> {
     }
 
     @Override
-    public int updateById(int id, SystemUser holdingUpdatedValues) {
-        return 0;
+    public void updateById(int id, SystemUser holdingUpdatedValues) {
+
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SystemUserOperation implements DatabaseOperator<SystemUser> {
     }
 
     @Override
-    public int deleteById(int id) {
-        return 0;
+    public void deleteById(int id) {
+
     }
 }

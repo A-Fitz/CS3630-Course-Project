@@ -56,7 +56,7 @@ public class AirlineEmployeeOnFlightOperator implements DatabaseOperator<Airline
     }
 
     @Override
-    public int updateById(int id, AirlineEmployeeOnFlight airlineEmployeeOnFlight) throws DataAccessException {
+    public void updateById(int id, AirlineEmployeeOnFlight airlineEmployeeOnFlight) throws DataAccessException {
         String queryTemplate = "UPDATE airline_employee_on_flight SET "
                 + AirlineEmployeeOnFlight.FLIGHT_ID_COLUMN_NAME + " = :new_flight_id, "
                 + AirlineEmployeeOnFlight.AIRLINE_EMPLOYEE_ID_COLUMN_NAME + " = :new_airline_employee_id"
@@ -67,7 +67,7 @@ public class AirlineEmployeeOnFlightOperator implements DatabaseOperator<Airline
         parameters.addValue("new_airline_employee_id", airlineEmployeeOnFlight.getAirline_employee_id());
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
@@ -90,13 +90,13 @@ public class AirlineEmployeeOnFlightOperator implements DatabaseOperator<Airline
     }
 
     @Override
-    public int deleteById(int id) throws DataAccessException {
+    public void deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM airline_employee_on_flight "
                 + " WHERE " + AirlineEmployeeOnFlight.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 }

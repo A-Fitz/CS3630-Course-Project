@@ -53,7 +53,7 @@ public class AirportOperator implements DatabaseOperator<Airport> {
     }
 
     @Override
-    public int updateById(int id, Airport airport) throws DataAccessException {
+    public void updateById(int id, Airport airport) throws DataAccessException {
         String queryTemplate = "UPDATE airport SET "
                 + Airport.NAME_COLUMN_NAME + " = :new_name, "
                 + Airport.IATA_CODE_COLUMN_NAME + " = :new_iata_code, "
@@ -68,7 +68,7 @@ public class AirportOperator implements DatabaseOperator<Airport> {
         parameters.addValue("new_country", airport.getCountry());
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
@@ -92,13 +92,13 @@ public class AirportOperator implements DatabaseOperator<Airport> {
     }
 
     @Override
-    public int deleteById(int id) throws DataAccessException {
+    public void deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM airport "
                 + " WHERE " + Airport.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 }

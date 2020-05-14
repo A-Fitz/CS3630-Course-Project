@@ -52,7 +52,7 @@ public class BaggageStatusTypeOperator implements DatabaseOperator<BaggageStatus
     }
 
     @Override
-    public int updateById(int id, BaggageStatusType baggageStatusTypeList) throws DataAccessException {
+    public void updateById(int id, BaggageStatusType baggageStatusTypeList) throws DataAccessException {
         String queryTemplate = "UPDATE baggage_status_type SET "
                 + BaggageStatusType.TITLE_COLUMN_NAME + " = :title"
                 + " WHERE " + BaggageStatusType.ID_COLUMN_NAME + " = :id";
@@ -61,7 +61,7 @@ public class BaggageStatusTypeOperator implements DatabaseOperator<BaggageStatus
         parameters.addValue("title", baggageStatusTypeList.getTitle());
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
@@ -79,13 +79,13 @@ public class BaggageStatusTypeOperator implements DatabaseOperator<BaggageStatus
     }
 
     @Override
-    public int deleteById(int id) throws DataAccessException {
+    public void deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM baggage_status_type "
                 + " WHERE " + BaggageStatusType.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 }

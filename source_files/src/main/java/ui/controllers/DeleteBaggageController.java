@@ -9,6 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -34,13 +36,18 @@ public class DeleteBaggageController extends ThreeColumnController {
         if (passengerComboBox.getValue() != null && baggageComboBox.getValue() != null) {
             disable();
 
-            int rowsAffected = baggageOperator.deleteById(baggageComboBox.getValue().getId());
+            try {
+                baggageOperator.deleteById(baggageComboBox.getValue().getId());
 
-            if (rowsAffected == 0) {
-                Util.setMessageLabel("Baggage not deleted.", Color.RED, messageLabel); // TODO for what reason could this happen?
-            } else {
                 updateBaggageComboBox();
                 Util.setMessageLabel("Baggage deleted.", Color.GREEN, messageLabel);
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Baggage not deleted.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
             }
             enable();
         } else {

@@ -84,7 +84,7 @@ public class AirlineEmployeeOperator implements DatabaseOperator<AirlineEmployee
     }
 
     @Override
-    public int updateById(int id, AirlineEmployee airlineEmployee) throws DataAccessException {
+    public void updateById(int id, AirlineEmployee airlineEmployee) throws DataAccessException {
         String queryTemplate = "UPDATE airline_employee SET "
                 + AirlineEmployee.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id, "
                 + AirlineEmployee.JOB_ID_COLUMN_NAME + " = :new_job_id, "
@@ -109,7 +109,7 @@ public class AirlineEmployeeOperator implements DatabaseOperator<AirlineEmployee
         parameters.addValue("new_birth_date", airlineEmployee.getBirth_date());
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class AirlineEmployeeOperator implements DatabaseOperator<AirlineEmployee
     }
 
     @Override
-    public int deleteById(int id) throws DataAccessException {
+    public void deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM airline_employee "
                 + " WHERE " + AirlineEmployee.ID_COLUMN_NAME + " = :id";
 
@@ -152,6 +152,6 @@ public class AirlineEmployeeOperator implements DatabaseOperator<AirlineEmployee
         parameters.addValue("id", id);
 
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 }

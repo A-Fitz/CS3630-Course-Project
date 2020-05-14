@@ -9,6 +9,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -155,16 +157,20 @@ public class EditFlightController extends ThreeColumnController {
             flight.setFlight_status_id(flightStatusComboBox.getValue().getId());
             flight.setBoarding_date(Date.valueOf(boardingDateDatePicker.getValue()));
 
-            int rowsAffected = flightOperator.updateById(flightChoiceComboBox.getValue().getId(), flight);
+            try {
+                flightOperator.updateById(flightChoiceComboBox.getValue().getId(), flight);
 
-            if (rowsAffected == 0) {
-                // Flight not edited. Display error message.
-                Util.setMessageLabel("Flight not edited. Some error occurred.", Color.RED, messageLabel); //TODO what kind of errors can happen here?
-            } else {
                 // Airline inserted. Clear each component and display success message.
                 clearComponents();
                 updateFlightComboBox();
                 Util.setMessageLabel("Flight edited.", Color.GREEN, messageLabel);
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Flight no edited. The callsign and boarding date are unique to a flight.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
             }
             enable();
         } else {

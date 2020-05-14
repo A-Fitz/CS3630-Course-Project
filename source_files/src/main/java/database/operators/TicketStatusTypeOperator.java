@@ -52,7 +52,7 @@ public class TicketStatusTypeOperator implements DatabaseOperator<TicketStatusTy
     }
 
     @Override
-    public int updateById(int id, TicketStatusType ticketStatusTypeList) throws DataAccessException {
+    public void updateById(int id, TicketStatusType ticketStatusTypeList) throws DataAccessException {
         String queryTemplate = "UPDATE ticket_status_type SET "
                 + TicketStatusType.TITLE_COLUMN_NAME + " = :title"
                 + " WHERE " + TicketStatusType.ID_COLUMN_NAME + " = :id";
@@ -61,7 +61,7 @@ public class TicketStatusTypeOperator implements DatabaseOperator<TicketStatusTy
         parameters.addValue("title", ticketStatusTypeList.getTitle());
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
@@ -81,13 +81,13 @@ public class TicketStatusTypeOperator implements DatabaseOperator<TicketStatusTy
     }
 
     @Override
-    public int deleteById(int id) throws DataAccessException {
+    public void deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM ticket_status_type "
                 + " WHERE " + TicketStatusType.ID_COLUMN_NAME + " = :id";
 
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("id", id);
 
-        return namedParameterJdbcTemplate.update(queryTemplate, parameters);
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 }

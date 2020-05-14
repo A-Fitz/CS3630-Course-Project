@@ -10,6 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -51,15 +52,17 @@ public class AddJobTypeController extends ThreeColumnController {
 
         try {
             airportJobTypeOperator.insert(airportJobType);
-        }
 
-        catch (DataAccessException dae) {
-            Util.setMessageLabel("Airport Job Title not added.", Color.RED, messageLabel);
-            enable();
-            return;
-        }
             clearAllFields();
             Util.setMessageLabel("Airport Job Title added.", Color.GREEN, messageLabel);
+        }
+        catch (DuplicateKeyException dke) {
+            Util.setMessageLabel("Airport job type not added. The title is unique to an airport job type.", Color.RED, messageLabel);
+        } catch (DataAccessException dae) {
+            Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+        } catch (Exception e) {
+            Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+        }
     }
 
     private void setAirlineJobType() {
@@ -68,15 +71,17 @@ public class AddJobTypeController extends ThreeColumnController {
 
         try {
             airlineJobTypeOperator.insert(airlineJobType);
-        }
 
-        catch (DataAccessException dae) {
-            Util.setMessageLabel("Airline Job Title not added.", Color.RED, messageLabel);
-            enable();
-            return;
-        }
             clearAllFields();
             Util.setMessageLabel("Airline Job Title added.", Color.GREEN, messageLabel);
+        }
+        catch (DuplicateKeyException dke) {
+            Util.setMessageLabel("Airline job type not added. The title is unique to an airline job type.", Color.RED, messageLabel);
+        } catch (DataAccessException dae) {
+            Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+        } catch (Exception e) {
+            Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+        }
     }
 
     private void clearAllFields() {

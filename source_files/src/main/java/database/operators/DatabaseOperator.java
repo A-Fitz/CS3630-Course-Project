@@ -40,7 +40,7 @@ public interface DatabaseOperator<DatabaseObject>
      * @param holdingUpdatedValues A java object representing the new values for the row.
      * @return (0 if the update failed, the id did not exist in the table) (1 if the row was successfully updated)
      */
-    int updateById(int id, DatabaseObject holdingUpdatedValues) throws DataAccessException;
+    void updateById(int id, DatabaseObject holdingUpdatedValues) throws DataAccessException;
 
 
     /**
@@ -59,5 +59,5 @@ public interface DatabaseOperator<DatabaseObject>
      * @param id The value of the id column of the row to delete.
      * @return (0 if the delete failed, the id did not exist in the table) (1 if the row was successfully deleted)
      */
-    int deleteById(int id) throws DataAccessException;
+    void deleteById(int id) throws DataAccessException;
 }

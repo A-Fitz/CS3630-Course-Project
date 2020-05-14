@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 
 import java.net.URL;
@@ -51,19 +52,19 @@ public class AddAirportController extends ThreeColumnController {
 
             try {
                 airportOperator.insert(airport);
-            }
 
-            catch (DataAccessException dae) {
-                // Airport not inserted (probably due to unique constraint on the IATA code). Display error message.
-                Util.setMessageLabel("Airport not added. The IATA code is unique to an airport.", Color.RED, messageLabel);
-                enable();
-                return;
-            }
 
                 // Airport inserted. Clear each text field and display success message.
                 clearAllTextFields();
                 Util.setMessageLabel("Airport added.", Color.GREEN, messageLabel);
-
+            }
+            catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Airport not added. The IATA code is unique to an airport.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
+            }
             enable();
         } else {
             // All fields must not be empty. Display error message.
