@@ -26,8 +26,7 @@ public class AircraftOperator implements DatabaseOperator<Aircraft> {
         return instance;
     }
 
-    public List<Aircraft> selectManyByAirlineId(int airlineId)
-    {
+    public List<Aircraft> selectManyByAirlineId(int airlineId) throws DataAccessException {
         AircraftExtractor extractor = new AircraftExtractor();
 
         String queryTemplate = "SELECT aircraft." + Aircraft.ID_COLUMN_NAME + ", "
@@ -48,8 +47,7 @@ public class AircraftOperator implements DatabaseOperator<Aircraft> {
     }
 
     @Override
-    public List<Aircraft> selectAll()
-    {
+    public List<Aircraft> selectAll() throws DataAccessException {
         AircraftExtractor extractor = new AircraftExtractor();
 
         String queryTemplate = "SELECT aircraft." + Aircraft.ID_COLUMN_NAME + ", "
@@ -67,8 +65,7 @@ public class AircraftOperator implements DatabaseOperator<Aircraft> {
     }
 
     @Override
-    public Aircraft selectById(int id)
-    {
+    public Aircraft selectById(int id) throws DataAccessException {
         AircraftExtractor extractor = new AircraftExtractor();
 
         String queryTemplate = "SELECT aircraft." + Aircraft.ID_COLUMN_NAME + ", "
@@ -96,7 +93,7 @@ public class AircraftOperator implements DatabaseOperator<Aircraft> {
     }
 
     @Override
-    public int updateById(int id, Aircraft aircraft) {
+    public int updateById(int id, Aircraft aircraft) throws DataAccessException {
         String queryTemplate = "UPDATE aircraft SET "
                 + Aircraft.AIRLINE_ID_COLUMN_NAME + " = :new_airline_id, "
                 + Aircraft.SERIAL_NUMBER_COLUMN_NAME + " = :new_serial_number, "
@@ -119,7 +116,7 @@ public class AircraftOperator implements DatabaseOperator<Aircraft> {
     }
 
     @Override
-    public void insert(Aircraft aircraft) throws DataAccessException{
+    public void insert(Aircraft aircraft) throws DataAccessException {
         String queryTemplate = "INSERT INTO aircraft ("
                 + Aircraft.AIRLINE_ID_COLUMN_NAME + ", "
                 + Aircraft.SERIAL_NUMBER_COLUMN_NAME + ", "
@@ -139,16 +136,11 @@ public class AircraftOperator implements DatabaseOperator<Aircraft> {
         parameters.addValue("capacity", aircraft.getCapacity());
 
         // Statement to insert the row
-        int rowsAffected = 0;
-        try {
-            rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters);
-        } catch (DataAccessException dae) {
-            throw dae;
-        }
+        namedParameterJdbcTemplate.update(queryTemplate, parameters);
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws DataAccessException {
         String queryTemplate = "DELETE FROM aircraft "
                 + " WHERE " + Aircraft.ID_COLUMN_NAME + " = :id";
 

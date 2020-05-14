@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import ui.Util;
 import ui.exceptions.IncorrectInputException;
 import ui.formatters.IntegerTextFormatter;
@@ -64,11 +65,11 @@ public class AddAircraftController extends ThreeColumnController {
                 && yearTextField.getText() != null && !yearTextField.getText().isEmpty()
                 && capacityTextField.getText() != null && !capacityTextField.getText().isEmpty()) {
             try {
-                if (yearTextField.getText().length() != 4) // Check if the year is length 4
-                    throw new IncorrectInputException("The year field must be four digits in length.");
-
                 // disable buttons until a success/failure is received
                 disable();
+
+                if (yearTextField.getText().length() != 4) // Check if the year is length 4
+                    throw new IncorrectInputException("The year field must be four digits in length.");
 
                 Aircraft aircraft = new Aircraft();
                 aircraft.setAirline_id(airlineChoiceComboBox.getValue().getId());
@@ -78,21 +79,24 @@ public class AddAircraftController extends ThreeColumnController {
                 aircraft.setYear(Integer.parseInt(yearTextField.getText()));
                 aircraft.setCapacity(Integer.parseInt((capacityTextField.getText())));
 
-                try {
-                    aircraftOperator.insert(aircraft);
-                } catch (DataAccessException dae) {
-                    Util.setMessageLabel("Aircraft not added. The serial number is unique to an aircraft.", Color.RED, messageLabel);
-                    enable();
-                    return;
-                }
+                // We don't need to surround this with a try-catch because the catches below will pick that up
+                aircraftOperator.insert(aircraft);
 
+                // Below only runs if no exception was caught.
                 clearComponents();
                 Util.setMessageLabel("Aircraft added.", Color.GREEN, messageLabel);
-
-                enable();
             } catch (IncorrectInputException iie) {
                 Util.setMessageLabel(iie.getMessage(), Color.RED, messageLabel);
+            } catch (DuplicateKeyException dke) {
+                Util.setMessageLabel("Aircraft not added. The serial number is unique to an aircraft.", Color.RED, messageLabel);
+            } catch (DataAccessException dae) {
+                Util.setMessageLabel("There was a failure while accessing related data in the database. Please try again.", Color.RED, messageLabel);
+            } catch (Exception e) {
+                Util.setMessageLabel("There was a major failure during this operation.", Color.RED, messageLabel);
             }
+
+            // This will run even if an exception is caught.
+            enable();
         } else
             Util.setMessageLabel("Aircraft not added. Please fill the required fields.", Color.RED, messageLabel);
     }
