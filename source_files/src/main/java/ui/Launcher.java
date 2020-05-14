@@ -59,7 +59,7 @@ public class Launcher extends Application {
         task.setOnSucceeded((e) -> {
             try {
                 // show the start screen
-                Parent root = FXMLLoader.load(getClass().getResource("/StartScreen.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/LoginScreen.fxml"));
                 stage.setTitle("Airport Management System");
                 stage.setScene(new Scene(root));
                 stage.show();
