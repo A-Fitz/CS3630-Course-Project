@@ -16,7 +16,7 @@ import ui.Util;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddJobTypeController extends ThreeColumnController {
+public class AddJobTypeController extends DatabaseManipulatingController {
 
     private AirportJobTypeOperator airportJobTypeOperator = AirportJobTypeOperator.getInstance();
     private AirlineJobTypeOperator airlineJobTypeOperator = AirlineJobTypeOperator.getInstance();

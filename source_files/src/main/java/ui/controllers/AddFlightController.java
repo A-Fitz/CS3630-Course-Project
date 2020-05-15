@@ -17,7 +17,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
-public class AddFlightController extends ThreeColumnController {
+public class AddFlightController extends DatabaseManipulatingController {
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
     private AirportOperator airportOperator = AirportOperator.getInstance();

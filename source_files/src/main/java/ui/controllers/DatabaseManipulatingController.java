@@ -1,6 +1,5 @@
 package ui.controllers;
 
-import database.tables.SystemUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,9 +9,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.Launcher;
 import ui.UIConstants;
+import ui.UserTypes;
+import ui.Util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,23 +22,22 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Abstract class representing basic data and methods that each three column controller class has.
+ * Abstract class representing basic data and methods that each database manipulating controller class has.
  */
-public abstract class ThreeColumnController implements Initializable {
-    private SystemUser activeUser=null;
+public abstract class DatabaseManipulatingController implements Initializable {
     @FXML protected GridPane mainGridPane;
     @FXML protected GridPane tripleColumnGridPane;
     @FXML protected GridPane backButtonGridPane;
     @FXML protected Button backButton;
     @FXML protected Label messageLabel;
+    private UserTypes activeUserType;
+
+    protected void setActiveUserType(UserTypes activeUserType) {
+        this.activeUserType = activeUserType;
+    }
 
     @Override
     public abstract void initialize(URL url, ResourceBundle resourceBundle);
-
-    public void setActiveUser(SystemUser activeUser){
-        this.activeUser=activeUser;
-    }
-
     /**
      * Called when the back button is clicked. Replaces the current screen with the main screen.
      * The name of this method is the 'onAction' FXML value for the backButton.
@@ -44,29 +45,23 @@ public abstract class ThreeColumnController implements Initializable {
      * @param actionEvent Event representing the action of the button firing, holds extra information.
      */
     public void backButtonClicked(ActionEvent actionEvent) {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-
         try {
-            String fxmlPath = "src/main/resources/RunTimeStartScreen.fxml";
-            FileInputStream fileInputStream = new FileInputStream(new File(fxmlPath));
-            FXMLLoader loader = new FXMLLoader();
-            Parent root = loader.load(fileInputStream);
-            RunTimeStartScreenController controller = loader.getController();
-            controller.setActiveUser(activeUser);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ButtonScreen.fxml"));
+            Parent root = fxmlLoader.load();
+            ButtonScreenController buttonScreenController = fxmlLoader.getController();
+            buttonScreenController.setActiveUserType(activeUserType);
 
-
-
-            Stage runTimeStage = new Stage();
-            runTimeStage.setScene(new Scene(root));
-            runTimeStage.setWidth(UIConstants.VIEW_PREFERRED_WIDTH);
-            runTimeStage.setHeight(UIConstants.VIEW_PREFERRED_HEIGHT);
-            runTimeStage.setMinWidth(UIConstants.VIEW_MIN_WIDTH);
-            runTimeStage.setMinHeight(UIConstants.VIEW_MIN_HEIGHT);
-            runTimeStage.show();
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Button Screen");
+            stage.setWidth(UIConstants.VIEW_PREFERRED_WIDTH);
+            stage.setHeight(UIConstants.VIEW_PREFERRED_HEIGHT);
+            stage.setMinWidth(UIConstants.VIEW_MIN_WIDTH);
+            stage.setMinHeight(UIConstants.VIEW_MIN_HEIGHT);
+            stage.show();
             Launcher.closeStage();
         } catch (Exception ex) {
-            ex.printStackTrace(); // TODO better exception handling
+            Util.setMessageLabel("There was an issue loading the button screen.", Color.RED, messageLabel);
         }
     }
 

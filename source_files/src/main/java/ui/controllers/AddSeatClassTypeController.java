@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * Class representing an example controller for others to use. Is related to the resources/ExampleScreen.fxml FXML file for the UI.
  */
-public class AddSeatClassTypeController extends ThreeColumnController {
+public class AddSeatClassTypeController extends DatabaseManipulatingController {
     SeatClassTypeOperator seatClassTypeOperator = SeatClassTypeOperator.getInstance();
 
     // Put your JavaFX components here. Buttons, Labels, TextFields, etc. The name of this variable will be the fx:id of the component in FXML.

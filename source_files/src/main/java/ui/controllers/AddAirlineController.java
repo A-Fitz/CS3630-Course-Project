@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * Controls the "Add Airline" screen. Will allow for inserting an Airline into the database given valid input.
  */
-public class AddAirlineController extends ThreeColumnController {
+public class AddAirlineController extends DatabaseManipulatingController {
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
 
     @FXML private TextField abbreviationTextField;

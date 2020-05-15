@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * Controls the "Add Flight Status Type" screen. Will allow for inserting a flight status type into the database given valid input.
  */
-public class AddFlightStatusTypeController extends ThreeColumnController {
+public class AddFlightStatusTypeController extends DatabaseManipulatingController {
     private FlightStatusTypeOperator flightStatusTypeOperator = FlightStatusTypeOperator.getInstance();
 
     @FXML private TextField flightStatusTypeTextField;

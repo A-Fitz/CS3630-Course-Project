@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * Controls the "Add Baggage Status Type" screen. Will allow for inserting a baggage status type into the database given valid input.
  */
-public class AddBaggageStatusTypeController extends ThreeColumnController {
+public class AddBaggageStatusTypeController extends DatabaseManipulatingController {
     private BaggageStatusTypeOperator baggageStatusTypeOperator = BaggageStatusTypeOperator.getInstance();
 
     @FXML private TextField baggageStatusTypeTextField;

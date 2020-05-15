@@ -17,7 +17,7 @@ import ui.formatters.FloatTextFormatter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddBaggageController extends ThreeColumnController {
+public class AddBaggageController extends DatabaseManipulatingController {
     private PassengerOnFlightOperator passengerOnFlightOperator = PassengerOnFlightOperator.getInstance();
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private PassengerOperator passengerOperator = PassengerOperator.getInstance();

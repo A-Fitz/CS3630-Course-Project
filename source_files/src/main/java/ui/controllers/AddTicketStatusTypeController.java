@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * Class representing an example controller for others to use. Is related to the resources/ExampleScreen.fxml FXML file for the UI.
  */
-public class AddTicketStatusTypeController extends ThreeColumnController {
+public class AddTicketStatusTypeController extends DatabaseManipulatingController {
     TicketStatusTypeOperator ticketStatusTypeOperator = TicketStatusTypeOperator.getInstance();
 
     @FXML private TextField titleTextField;

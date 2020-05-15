@@ -19,7 +19,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
-public class AddEmployeeController extends ThreeColumnController {
+public class AddEmployeeController extends DatabaseManipulatingController {
     private AirportOperator airportOperator = AirportOperator.getInstance();
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
     private AirportEmployeeOperator airportEmployeeOperator = AirportEmployeeOperator.getInstance();

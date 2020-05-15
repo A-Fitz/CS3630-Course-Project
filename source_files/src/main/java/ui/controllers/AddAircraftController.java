@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 /**
  * Controller for the Add Aircraft view.
  */
-public class AddAircraftController extends ThreeColumnController {
+public class AddAircraftController extends DatabaseManipulatingController {
     private AircraftOperator aircraftOperator = AircraftOperator.getInstance();
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
 

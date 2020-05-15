@@ -5,36 +5,30 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import ui.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <GridPane xmlns:fx="http://javafx.com/fxml/1"
           fx:id="mainGridPane" xmlns="http://javafx.com/javafx/11.0.1"
           fx:controller="ui.controllers.LoginController">
     <fx:define>
         <ui.UIConstants fx:id="LABEL_COLUMN_WIDTH_PERCENTAGE" fx:constant="VIEW_LABEL_COLUMN_WIDTH_PERCENTAGE"/>
         <ui.UIConstants fx:id="SELECTOR_COLUMN_WIDTH_PERCENTAGE" fx:constant="VIEW_SELECTOR_COLUMN_WIDTH_PERCENTAGE"/>
-        <ui.UIConstants fx:id="MAIN_GRIDPANE_CONTENT_ROW_HEIGHT_PERCENTAGE"
-                        fx:constant="VIEW_MAIN_GRIDPANE_CONTENT_ROW_HEIGHT_PERCENTAGE"/>
-        <ui.UIConstants fx:id="MAIN_GRIDPANE_BACK_BUTTON_GRIDPANE_ROW_HEIGHT_PERCENTAGE"
-                        fx:constant="VIEW_MAIN_GRIDPANE_BACK_BUTTON_GRIDPANE_ROW_HEIGHT_PERCENTAGE"/>
         <ui.UIConstants fx:id="TRIPLE_COLUMN_GRIDPANE_CONTENT_COLUMN_WIDTH_PERCENTAGE"
                         fx:constant="VIEW_TRIPLE_COLUMN_GRIDPANE_CONTENT_COLUMN_WIDTH_PERCENTAGE"/>
         <ui.UIConstants fx:id="TRIPLE_COLUMN_GRIDPANE_NON_CONTENT_COLUMN_WIDTH_PERCENTAGE"
                         fx:constant="VIEW_TRIPLE_COLUMN_GRIDPANE_NON_CONTENT_COLUMN_WIDTH_PERCENTAGE"/>
         <ui.UIConstants fx:id="VBOX_HBOX_SPACING" fx:constant="VIEW_VBOX_HBOX_SPACING"/>
         <ui.UIConstants fx:id="INSETS" fx:constant="VIEW_INSETS"/>
-        <ui.UIConstants fx:id="BACK_BUTTON_GRIDPANE_NON_BUTTON_COLUMN_WIDTH_PERCENTAGE"
-                        fx:constant="VIEW_BACK_BUTTON_GRIDPANE_NON_BUTTON_COLUMN_WIDTH_PERCENTAGE"/>
-        <ui.UIConstants fx:id="BACK_BUTTON_GRIDPANE_BUTTON_COLUMN_WIDTH_PERCENTAGE"
-                        fx:constant="VIEW_BACK_BUTTON_GRIDPANE_BUTTON_COLUMN_WIDTH_PERCENTAGE"/>
     </fx:define>
     <columnConstraints>
         <ColumnConstraints percentWidth="100"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints percentHeight="$MAIN_GRIDPANE_CONTENT_ROW_HEIGHT_PERCENTAGE" vgrow="SOMETIMES"/>
-        <RowConstraints percentHeight="$MAIN_GRIDPANE_BACK_BUTTON_GRIDPANE_ROW_HEIGHT_PERCENTAGE" vgrow="SOMETIMES"/>
+        <RowConstraints percentHeight="90" vgrow="SOMETIMES"/>
+        <RowConstraints percentHeight="10" vgrow="SOMETIMES"/>
     </rowConstraints>
     <children>
-        <GridPane fx:id="tripleColumnGridPane" alignment="CENTER">
+        <GridPane alignment="CENTER">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES"
                                    percentWidth="$TRIPLE_COLUMN_GRIDPANE_NON_CONTENT_COLUMN_WIDTH_PERCENTAGE"/>
@@ -60,19 +54,17 @@
                                 <RowConstraints/>
                                 <RowConstraints/>
                             </rowConstraints>
-                            <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="Use Name"/>
-                            <TextField GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="userNameTextField"
-                                      maxWidth="Infinity" promptText="required" HBox.hgrow="ALWAYS"/>
-
-                            <Label GridPane.columnIndex="0" GridPane.rowIndex="1" text="Password"/>
-                            <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="1"
-                                           fx:id="passwordField" promptText="required" HBox.hgrow="ALWAYS"/>
-
-
-                            <Button GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"
-                                    mnemonicParsing="false" onAction="#loginButtonClicked"  text="Log in"
-                                    maxWidth="Infinity"/>
+                            <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="User Type"/>
+                            <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="userTypeComboBox"
+                                      maxWidth="Infinity" promptText="required"
+                                      HBox.hgrow="ALWAYS">
+                            </ComboBox>
                         </GridPane>
+
+                            <Button GridPane.columnIndex="0"
+                                    mnemonicParsing="false" onAction="#loginButtonClicked"  text="Login"
+                                    maxWidth="Infinity"/>
+
                     </children>
                 </VBox>
             </children>
@@ -80,12 +72,9 @@
                 <Insets bottom="$INSETS" left="$INSETS" right="$INSETS" top="$INSETS"/>
             </padding>
         </GridPane>
-        <GridPane fx:id="backButtonGridPane" GridPane.rowIndex="1">
+        <GridPane GridPane.rowIndex="1">
             <columnConstraints>
-                <ColumnConstraints halignment="CENTER"
-                                   percentWidth="$BACK_BUTTON_GRIDPANE_BUTTON_COLUMN_WIDTH_PERCENTAGE"/>
-                <ColumnConstraints halignment="CENTER"
-                                   percentWidth="$BACK_BUTTON_GRIDPANE_NON_BUTTON_COLUMN_WIDTH_PERCENTAGE"/>
+                <ColumnConstraints halignment="CENTER" percentWidth="100"/>
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints/>
@@ -94,8 +83,7 @@
                 <Insets left="$INSETS" right="$INSETS"/>
             </padding>
             <children>
-                <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitButtonClicked" text="Exit"/>
-                <Label fx:id="messageLabel" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                <Label fx:id="messageLabel" alignment="CENTER" GridPane.halignment="CENTER"
                        GridPane.hgrow="ALWAYS">
                     <font>
                         <Font size="14.0"/>

@@ -16,7 +16,7 @@ import ui.Util;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DeleteBaggageController extends ThreeColumnController {
+public class DeleteBaggageController extends DatabaseManipulatingController {
     private PassengerOperator passengerOperator = PassengerOperator.getInstance();
     private BaggageOperator baggageOperator = BaggageOperator.getInstance();
 

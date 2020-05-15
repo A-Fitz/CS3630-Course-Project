@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 /**
  * Class representing an example controller for others to use. Is related to the resources/ExampleScreen.fxml FXML file for the UI.
  */
-public class AddAirlineEmployeeToFlightController extends ThreeColumnController {
+public class AddAirlineEmployeeToFlightController extends DatabaseManipulatingController {
     private AirlineEmployeeOperator airlineEmployeeOperator = AirlineEmployeeOperator.getInstance();
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private AirlineEmployeeOnFlightOperator airlineEmployeeOnFlightOperator = AirlineEmployeeOnFlightOperator.getInstance();

@@ -16,7 +16,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
-public class AddPassengerController extends ThreeColumnController {
+public class AddPassengerController extends DatabaseManipulatingController {
     private PassengerOperator operator = PassengerOperator.getInstance();
 
     @FXML private Button addButton;

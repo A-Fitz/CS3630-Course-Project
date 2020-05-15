@@ -62,8 +62,12 @@ public class Launcher extends Application {
                 Parent root = FXMLLoader.load(getClass().getResource("/LoginScreen.fxml"));
                 stage.setTitle("Airport Management System");
                 stage.setScene(new Scene(root));
-                stage.show();
+                stage.setWidth(UIConstants.VIEW_PREFERRED_WIDTH);
+                stage.setHeight(UIConstants.VIEW_PREFERRED_HEIGHT);
+                stage.setMinWidth(UIConstants.VIEW_MIN_WIDTH);
+                stage.setMinHeight(UIConstants.VIEW_MIN_HEIGHT);
                 dialog.hide();
+                stage.show();
             } catch (Exception ex) {
                 changeDialogToErrorDialog(dialog, "Could not load the Start Screen.");
             }

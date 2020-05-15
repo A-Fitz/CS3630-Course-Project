@@ -15,10 +15,9 @@ import ui.Util;
 import ui.formatters.FloatTextFormatter;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class AddTicketController extends ThreeColumnController {
+public class AddTicketController extends DatabaseManipulatingController {
     private TicketOperator ticketOperator = TicketOperator.getInstance();
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private PassengerOnFlightOperator passengerOnFlightOperator = PassengerOnFlightOperator.getInstance();

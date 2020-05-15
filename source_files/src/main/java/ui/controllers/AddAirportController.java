@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * Controls the "Add Airport" screen. Will allow for inserting an Airport into the database given valid input.
  */
-public class AddAirportController extends ThreeColumnController {
+public class AddAirportController extends DatabaseManipulatingController {
     private AirportOperator airportOperator = AirportOperator.getInstance();
 
     @FXML private TextField nameTextField;

@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 /**
  * Controls the "Edit Flight" screen. Will allow for editing a row of the flight table in the database given valid input.
  */
-public class EditFlightController extends ThreeColumnController {
+public class EditFlightController extends DatabaseManipulatingController {
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
     private AirportOperator airportOperator = AirportOperator.getInstance();

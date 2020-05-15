@@ -15,7 +15,7 @@ import ui.Util;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditAirlineController extends ThreeColumnController {
+public class EditAirlineController extends DatabaseManipulatingController {
     private AirlineOperator airlineOperator = AirlineOperator.getInstance();
 
 

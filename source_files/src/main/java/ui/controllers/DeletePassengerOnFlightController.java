@@ -17,7 +17,7 @@ import ui.Util;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DeletePassengerOnFlightController extends ThreeColumnController {
+public class DeletePassengerOnFlightController extends DatabaseManipulatingController {
     private PassengerOperator passengerOperator = PassengerOperator.getInstance();
     private FlightOperator flightOperator = FlightOperator.getInstance();
     private PassengerOnFlightOperator passengerOnFlightOperator = PassengerOnFlightOperator.getInstance();
