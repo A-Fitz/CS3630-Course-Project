@@ -1,8 +1,10 @@
+
 ## CS3630 S20 - Course Project - Team_01
 
+*See the 'documentation/Project_Rubric.pdf' file for information on what we were assigned.*
+
 **Project Description**
-Airport Management System. Utilizes a database to record and track entities related to airports 
-such as aircrafts, employees, flights, as well as passengers and their belongings.
+Airport Management System. Utilizes a database to record and track entities related to airports such as aircrafts, employees, flights, as well as passengers and their belongings.
 
 **Running and Development**
 See the 'documentation/DEVELOPMENT_ENVIRONMENT.md' file.
@@ -10,7 +12,7 @@ See the 'documentation/DEVELOPMENT_ENVIRONMENT.md' file.
 **Authors**
 Ross Baldwin, Austin FitzGerald, Zexin/Jason Liu
 
-**Repository/Project Rules**
-1. Check the files you are staging to add. The .svnignore file should stop any bad files from ending up in the remote repository, but check first.
-2. Commit messages should start with some variation of "[JIRA-TASK-ID]" if they are applicable to a Jira task.
-3. Don't push broken code to the master branch.
+----------------------------------------------------------------------------
+
+![Entity relationship diagram](documentation/ERD/ERD.png)
+Our database design is not the best, but it was a learning experience. It is definitely stuck in the second normal form, and the passenger_on_flight table should be consolidated with the ticket table. Live and learn.

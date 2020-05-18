@@ -6,9 +6,10 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String DATABASE_URL = "jdbc:postgresql://75.100.19.88:5432/team_01";
-    private static final String DATABASE_USER = "fitzgeralaus";
-    private static final String DATABASE_PASSWORD = "UrEmW6ARhNCNhGg";
+	/* In previous commits you can see the DataSource information below. The information was temporary and has since changed. */
+    private static final String DATABASE_URL = "jdbc:postgresql://";
+    private static final String DATABASE_USER = "";
+    private static final String DATABASE_PASSWORD = "";
     private static final String DATABASE_DRIVER = "org.postgresql.Driver";
     private static DatabaseConnection instance = new DatabaseConnection();
     // Class for the driver manager to manage the JDBC connection and interface with the driver
